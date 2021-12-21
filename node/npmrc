@@ -1,0 +1,13 @@
+init-author-name=Austin Traver
+init-author-email=austintraver@gmail.com
+init-author-url=https://github.com/austintraver
+init-license=MIT
+init-version=0.1.0
+editor=vi
+loglevel=warn
+sign-git-commit=true
+sign-git-tag=true
+update-notifier=true
+global-style=true
+fund=false
+script-shell=/bin/zsh
