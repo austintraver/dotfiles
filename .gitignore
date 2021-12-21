@@ -1,0 +1,27 @@
+# macOS system files
+.DS_Store
+
+# IntelliJ project files
+/.idea/
+
+# NeoVim packages
+/nvim/pack/
+
+# GitHub Copilot
+/github-copilot/
+
+# Delve
+/dlv/
+
+# Google Cloud SDK
+/gcloud
+
+# Z-Shell files
+/zsh/.zsh_sessions/
+/zsh/.zcompdump
+
+/.mypy_cache/
+/Battle.net/
+/NuGet/
+/gh/hosts.yml
+/fzf-tab/
