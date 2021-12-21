@@ -1,0 +1,21 @@
+" CSS Highlighting
+
+highlight cssAttrComma ctermfg=5
+highlight cssAttributeSelector ctermfg=2
+highlight cssBraces ctermfg=7
+highlight cssClassName ctermfg=11
+highlight cssClassNameDot ctermfg=11
+highlight cssDefinition ctermfg=5
+highlight cssFontAttr ctermfg=11
+highlight cssFontDescriptor ctermfg=5
+highlight cssFunctionName ctermfg=4
+highlight cssIdentifier ctermfg=4
+highlight cssImportant ctermfg=5
+highlight cssInclude ctermfg=7
+highlight cssIncludeKeyword ctermfg=5
+highlight cssMediaType ctermfg=11
+highlight cssProp ctermfg=7
+highlight cssPseudoClassId ctermfg=11
+highlight cssSelectorOp ctermfg=5
+highlight cssSelectorOp2 ctermfg=5
+highlight cssTagName ctermfg=1

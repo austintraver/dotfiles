@@ -1,0 +1,211 @@
+"          _                       _             
+"  _______| |__    ___ _   _ _ __ | |_ __ ___  __
+" |_  / __| '_ \  / __| | | | '_ \| __/ _` \ \/ /
+"  / /\__ \ | | | \__ \ |_| | | | | || (_| |>  < 
+" /___|___/_| |_| |___/\__, |_| |_|\__\__,_/_/\_\
+"                      |___/                     
+" ================================================
+
+" Original syntax declared in $VIMRUNTIME/syntax/zsh.vim
+
+syntax keyword zshOption containedin=zshOptStart contained skipwhite
+      \ AUTO_CD
+      \ AUTO_PUSHD
+      \ CDABLE_VARS
+      \ CHASE_DOTS
+      \ CHASE_LINKS
+      \ POSIX_CD
+      \ PUSHD_IGNORE_DUPS
+      \ PUSHD_MINUS
+      \ PUSHD_SILENT
+      \ PUSHD_TO_HOME
+      \ ALWAYS_LAST_PROMPT
+      \ ALWAYS_TO_END
+      \ AUTO_LIST
+      \ AUTO_MENU
+      \ AUTO_NAME_DIRS
+      \ AUTO_PARAM_KEYS
+      \ AUTO_PARAM_SLASH
+      \ AUTO_REMOVE_SLASH
+      \ BASH_AUTO_LIST
+      \ COMPLETE_ALIASES
+      \ COMPLETE_IN_WORD
+      \ GLOB_COMPLETE
+      \ HASH_LIST_ALL
+      \ LIST_AMBIGUOUS
+      \ LIST_BEEP
+      \ LIST_PACKED
+      \ LIST_ROWS_FIRST
+      \ LIST_TYPES
+      \ MENU_COMPLETE
+      \ REC_EXACT
+      \ BAD_PATTERN
+      \ BARE_GLOB_QUAL
+      \ BRACE_CCL
+      \ CASE_GLOB
+      \ CASE_MATCH
+      \ CSH_NULL_GLOB
+      \ EQUALS
+      \ EXTENDED_GLOB
+      \ FORCE_FLOAT
+      \ GLOB
+      \ GLOB_ASSIGN
+      \ GLOB_DOTS
+      \ GLOB_STAR_SHORT
+      \ GLOB_SUBST
+      \ HIST_SUBST_PATTERN
+      \ IGNORE_BRACES
+      \ IGNORE_CLOSE_BRACES
+      \ KSH_GLOB
+      \ MAGIC_EQUAL_SUBST
+      \ MARK_DIRS
+      \ MULTIBYTE
+      \ NOMATCH
+      \ NULL_GLOB
+      \ NUMERIC_GLOB_SORT
+      \ RC_EXPAND_PARAM
+      \ REMATCH_PCRE
+      \ SH_GLOB
+      \ UNSET
+      \ WARN_CREATE_GLOBAL
+      \ WARN_NESTED_VAR
+      \ APPEND_HISTORY
+      \ BANG_HIST
+      \ EXTENDED_HISTORY
+      \ HIST_ALLOW_CLOBBER
+      \ HIST_BEEP
+      \ HIST_EXPIRE_DUPS_FIRST
+      \ HIST_FCNTL_LOCK
+      \ HIST_FIND_NO_DUPS
+      \ HIST_IGNORE_ALL_DUPS
+      \ HIST_IGNORE_DUPS
+      \ HIST_IGNORE_SPACE
+      \ HIST_LEX_WORDS
+      \ HIST_NO_FUNCTIONS
+      \ HIST_NO_STORE
+      \ HIST_REDUCE_BLANKS
+      \ HIST_SAVE_BY_COPY
+      \ HIST_SAVE_NO_DUPS
+      \ HIST_VERIFY
+      \ INC_APPEND_HISTORY
+      \ INC_APPEND_HISTORY_TIME
+      \ SHARE_HISTORY
+      \ ALL_EXPORT
+      \ GLOBAL_EXPORT
+      \ GLOBAL_RCS
+      \ RCS
+      \ ALIASES
+      \ CLOBBER
+      \ CORRECT
+      \ CORRECT_ALL
+      \ FLOW_CONTROL
+      \ IGNORE_EOF
+      \ INTERACTIVE_COMMENTS
+      \ HASH_CMDS
+      \ HASH_DIRS
+      \ HASH_EXECUTABLES_ONLY
+      \ MAIL_WARNING
+      \ PATH_DIRS
+      \ PATH_SCRIPT
+      \ PRINT_EIGHT_BIT
+      \ PRINT_EXIT_VALUE
+      \ RC_QUOTES
+      \ RM_STAR_SILENT
+      \ RM_STAR_WAIT
+      \ SHORT_LOOPS
+      \ SUN_KEYBOARD_HACK
+      \ AUTO_CONTINUE
+      \ AUTO_RESUME
+      \ BG_NICE
+      \ CHECK_JOBS
+      \ CHECK_RUNNING_JOBS
+      \ HUP
+      \ LONG_LIST_JOBS
+      \ MONITOR
+      \ NOTIFY
+      \ POSIX_JOBS
+      \ PROMPT_BANG
+      \ PROMPT_CR
+      \ PROMPT_SP
+      \ PROMPT_PERCENT
+      \ PROMPT_SUBST
+      \ TRANSIENT_RPROMPT
+      \ ALIAS_FUNC_DEF
+      \ C_BASES
+      \ C_PRECEDENCES
+      \ DEBUG_BEFORE_CMD
+      \ ERR_EXIT
+      \ ERR_RETURN
+      \ EVAL_LINENO
+      \ EXEC
+      \ FUNCTION_ARGZERO
+      \ LOCAL_LOOPS
+      \ LOCAL_OPTIONS
+      \ LOCAL_PATTERNS
+      \ LOCAL_TRAPS
+      \ MULTI_FUNC_DEF
+      \ MULTIOS
+      \ OCTAL_ZEROES
+      \ PIPE_FAIL
+      \ SOURCE_TRACE
+      \ TYPESET_SILENT
+      \ VERBOSE
+      \ XTRACE
+      \ APPEND_CREATE
+      \ BASH_REMATCH
+      \ BSD_ECHO
+      \ CONTINUE_ON_ERROR
+      \ CSH_JUNKIE_HISTORY
+      \ CSH_JUNKIE_LOOPS
+      \ CSH_JUNKIE_QUOTES
+      \ CSH_NULLCMD
+      \ KSH_ARRAYS
+      \ KSH_AUTOLOAD
+      \ KSH_OPTION_PRINT
+      \ KSH_TYPESET
+      \ KSH_ZERO_SUBSCRIPT
+      \ POSIX_ALIASES
+      \ POSIX_ARGZERO
+      \ POSIX_BUILTINS
+      \ POSIX_IDENTIFIERS
+      \ POSIX_STRINGS
+      \ POSIX_TRAPS
+      \ SH_FILE_EXPANSION
+      \ SH_NULLCMD
+      \ SH_OPTION_LETTERS
+      \ SH_WORD_SPLIT
+      \ TRAPS_ASYNC
+      \ INTERACTIVE
+      \ LOGIN
+      \ PRIVILEGED
+      \ RESTRICTED
+      \ SHIN_STDIN
+      \ SINGLE_COMMAND
+      \ BEEP
+      \ COMBINING_CHARS
+      \ OVERSTRIKE
+      \ SINGLE_LINE_ZLE
+      \ ZLE
+      \ BRACE_EXPAND
+      \ DOT_GLOB
+      \ HASH_ALL
+      \ HIST_APPEND
+      \ HIST_EXPAND
+      \ LOG
+      \ MAIL_WARN
+      \ ONE_CMD
+      \ PHYSICAL
+      \ PROMPT_VARS
+      \ STDIN
+      \ TRACK_ALL
+
+
+" TODO try to write a syntax to detect control flow 
+" blocks written using the zsh short-form 
+" e.g.: `if [[ true ]] { return }`
+" e.g.: `for dir of ./*; { return }`
+
+" Attempt posted below
+" highlight clear zshDelimiter
+" highlight! link zshDelimiter Delimiter
+" syn region zshConditionalBlock start=zshConditional end=zshDelimiter

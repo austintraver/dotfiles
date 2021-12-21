@@ -1,0 +1,375 @@
+" :actionlist - See a list of all IDE :action bindings possible
+" you can reload your vimrc with the 'IdeaVim.ReloadVimRc.reload' action
+
+" :actionlist
+" Find IDE actions by name or keymap pattern (e.g. :actionlist extract, :actionlist <C-D>)
+
+" :action NAME
+" Execute an action named NAME
+
+" Map \r to the Reformat Code action
+" :map \r :action ReformatCode<CR>
+
+" https://github.com/JetBrains/ideavim/blob/master/doc/set-commands.md
+" For links, check this page on the GitHub repository
+
+" Enable ideajoin package
+set ideajoin
+
+" Enable surround package
+set surround
+
+" Replace the error bell with a visual flash instead
+set visualbell
+
+" Enable commentary package
+set commentary
+
+" Enable normal mode in refactor dialogues
+set ideavimsupport+=singleline
+
+" Searches ignore case unless it contains capitalized letters
+set ignorecase
+set smartcase
+
+" Keep a minimum of 5 columns above/below the cursor
+set scrolloff=5
+set sidescrolloff=10
+
+" Maximum number of commands that are remembered in history
+set history=10000
+
+" Show 'relativenumber' values for rows above and below the cursor,
+" but show the absolute 'number' on the cursor's current row
+set number relativenumber
+
+" Don't show the "V" icon in the status bar below the editor
+" set ideastatusicon=disabled
+set ideastatusicon=gray
+
+" Start select mode instead of visual mode when using the mouse
+" `selectmode`   This is a comma-separated list of words, which specify when to
+" start Select mode instead of Visual mode, when a selection is started.
+" Possible values:
+set selectmode^=ideaselection
+set selectmode^=key
+set selectmode^=mouse
+
+set ideawrite=file
+
+set idearefactormode=visual
+
+" Disable digraphs
+set nodigraph
+
+" Show current mode
+set noshowmode
+
+set keymodel=startsel
+
+set nogdefault
+
+" Only highlight the nearest match to the text contents in the search register
+set nohlsearch
+
+" Show incremental matches to a search currently being typed
+set incsearch
+
+" nnoremap % :action EditorMatchBrace<CR>
+" vnoremap % :action EditorMatchBrace<CR>
+
+" nnoremap Y y$
+" nnoremap <M-S-i> <Action>(IdeaVim.ReloadVimRc.reload)
+
+" nnoremap n <Action>(FindNext)
+" nnoremap N <Action>(FindPrevious)
+" nnoremap / <Action>(Find)
+
+" CloseProject
+" nnoremap <C-w>q <Action>(CloseProject)
+" CloseActiveTab
+" nnoremap <C-w>c <Action>(CloseActiveTab)
+
+" inoremap <C-b> <Left>
+" inoremap <C-n> <Down>
+" inoremap <C-p> <Up>
+" inoremap <C-f> <Right>
+
+" inoremap <A-f> <C-o>W
+" inoremap <A-b> <C-o>B
+
+" vnoremap <Left> h
+" vnoremap <Down> j
+" vnoremap <Up> k
+" vnoremap <Right> l
+
+" vnoremap <M-Left> 0
+" vnoremap <M-Right> $
+" vnoremap <M-Up> gg
+" vnoremap <M-Down> G
+
+vnoremap <A-f>W
+vnoremap <A-b>B
+
+vnoremap Q <C-v>
+noremap Q <C-v>
+
+nnoremap U <C-r>
+
+vnoremap > >gv
+vnoremap < <gv
+" ------------------------------------------------------------------------------
+" Set handlers
+sethandler <C-a> a:ide
+sethandler <C-b> a:ide
+sethandler <C-c> a:ide
+sethandler <C-d> a:ide
+sethandler <C-e> a:ide
+sethandler <C-f> a:ide
+sethandler <C-g> a:ide
+sethandler <C-h> a:ide
+sethandler <C-i> a:ide
+sethandler <C-j> a:ide
+sethandler <C-k> a:ide
+sethandler <C-l> a:ide
+sethandler <C-m> a:ide
+sethandler <C-n> a:ide
+sethandler <C-o> a:ide
+sethandler <C-p> a:ide
+sethandler <C-q> a:ide
+sethandler <C-r> a:ide
+sethandler <C-s> a:ide
+sethandler <C-t> a:ide
+sethandler <C-u> a:ide
+sethandler <C-v> a:ide
+sethandler <C-w> a:ide
+sethandler <C-x> a:ide
+sethandler <C-y> a:ide
+sethandler <C-z> a:ide
+sethandler <C-[> a:vim
+sethandler <C-]> a:ide
+sethandler <C-\> a:ide
+sethandler <C-2> a:ide
+sethandler <C-S-2> a:ide
+sethandler <C-S-6> a:ide
+
+" ------------------------------------------------------------------------------
+" EditorBackspace
+" inoremap <BS> <Action>(EditorBackspace)
+" inoremap <S-BS> <Action>(EditorBackspace)
+" inoremap <C-h> <Action>(EditorBackspace)
+" EditorBackwardParagraph
+" >> inoremap <> <Action>(EditorBackwardParagraph)
+" EditorBackwardParagraphWithSelection
+" >> inoremap <> <Action>(EditorBackwardParagraphWithSelection)
+" EditorCodeBlockEnd
+" inoremap <M-A-]> <Action>(EditorCodeBlockEnd)
+" EditorCodeBlockEndWithSelection
+" inoremap <M-A-S-]> <Action>(EditorCodeBlockEndWithSelection)
+" EditorCodeBlockStart
+" inoremap <M-A-[> <Action>(EditorCodeBlockStart)
+" EditorCodeBlockStartWithSelection
+" inoremap <M-A-S-[> <Action>(EditorCodeBlockStartWithSelection)
+" EditorCopy
+" inoremap <M-c> <Action>(EditorCopy)
+" EditorCut
+" inoremap <M-x> <Action>(EditorCut)
+" EditorDelete
+" inoremap <Del> <Action>(EditorDelete)
+" inoremap <C-d> <Action>(EditorDelete)
+" EditorDeleteLine
+" >> inoremap <> <Action>(EditorDeleteLine)
+" EditorDeleteToLineEnd
+" inoremap <C-k> <Action>(EditorDeleteToLineEnd)
+" EditorDeleteToLineStart
+" inoremap <C-u> <Action>(EditorDeleteToLineStart)
+" EditorDeleteToWordEnd
+" inoremap <A-Del> <Action>(EditorDeleteToWordEnd)
+" EditorDeleteToWordStart
+" inoremap <A-BS> <Action>(EditorDeleteToWordStart)
+" EditorDown
+" inoremap <Down> <Action>(EditorDown)
+" inoremap <C-n> <Action>(EditorDown)
+" EditorDownWithSelection
+" inoremap <S-Down> <Action>(EditorDownWithSelection)
+" inoremap <C-S-n> <Action>(EditorDownWithSelection)
+" EditorDecreaseFontSize
+" inoremap <M--> <Action>(EditorDecreaseFontSize)
+" EditorEnter
+" inoremap <CR> <Action>(EditorEnter)
+" inoremap <C-j> <Action>(EditorEnter)
+" inoremap <C-m> <Action>(EditorEnter)
+" EditorForwardParagraph
+" >> inoremap <> <Action>(EditorForwardParagraph)
+" EditorForwardParagraphWithSelection
+" >> inoremap <> <Action>(EditorForwardParagraphWithSelection)
+" EditorIncreaseFontSize
+" inoremap <M-=> <Action>(EditorIncreaseFontSize)
+" EditorIndentSelection
+" inoremap <Tab> <Action>(EditorIndentSelection)
+" EditorLeft
+" inoremap <Left> <Action>(EditorLeft)
+" inoremap <C-b> <Action>(EditorLeft)
+" EditorLeftWithSelection
+" inoremap <S-Left> <Action>(EditorLeftWithSelection)
+" inoremap <C-S-b> <Action>(EditorLeftWithSelection)
+" EditorLineEnd
+" inoremap <M-Right> <Action>(EditorLineEnd)
+" inoremap <C-e> <Action>(EditorLineEnd)
+" EditorLineEndWithSelection
+" inoremap <M-S-Right> <Action>(EditorLineEndWithSelection)
+" inoremap <C-S-e> <Action>(EditorLineEndWithSelection)
+" EditorLineStart
+" inoremap <M-Left> <Action>(EditorLineStart)
+" inoremap <C-a> <Action>(EditorLineStart)
+" EditorLineStartWithSelection
+" inoremap <M-S-Left> <Action>(EditorLineStartWithSelection)
+" inoremap <C-S-a> <Action>(EditorLineStartWithSelection)
+" EditorMatchBrace
+" nnoremap % <Action>(EditorMatchBrace)
+" EditorNextWord
+" inoremap <A-Right> <Action>(EditorNextWord)
+" inoremap <A-C-f> <Action>(EditorNextWord)
+" EditorNextWordWithSelection
+" inoremap <A-S-Right> <Action>(EditorNextWordWithSelection)
+" inoremap <A-C-S-f> <Action>(EditorNextWordWithSelection)
+" EditorPaste
+" inoremap <M-v> <Action>(EditorPaste)
+" EditorPasteSimple
+" inoremap <M-A-S-v> <Action>(EditorPasteSimple)
+" EditorPreviousWord
+" inoremap <A-Left> <Action>(EditorPreviousWord)
+" inoremap <A-C-b> <Action>(EditorPreviousWord)
+" EditorPreviousWordWithSelection
+" inoremap <A-S-Left> <Action>(EditorPreviousWordWithSelection)
+" inoremap <A-C-S-b> <Action>(EditorPreviousWordWithSelection)
+" EditorRight
+" inoremap <Right> <Action>(EditorRight)
+" inoremap <C-f> <Action>(EditorRight)
+" EditorRightWithSelection
+" inoremap <S-Right> <Action>(EditorRightWithSelection)
+" inoremap <C-S-f> <Action>(EditorRightWithSelection)
+" EditorSelectLine
+" >> inoremap <> <Action>(EditorSelectLine)
+" EditorSelectWord
+" inoremap <A-Up> <Action>(EditorSelectWord)
+" EditorSplitLine
+" inoremap <M-CR> <Action>(EditorSplitLine)
+" inoremap <C-o> <Action>(EditorSplitLine)
+" EditorTab
+" inoremap <Tab> <Action>(EditorTab)
+" EditorTextEnd
+" >> inoremap <> <Action>(EditorTextEnd)
+" EditorTextEndWithSelection
+" >> inoremap <> <Action>(EditorTextEndWithSelection)
+" EditorTextStart
+" >> inoremap <> <Action>(EditorTextStart)
+" EditorTextStartWithSelection
+" >> inoremap <> <Action>(EditorTextStartWithSelection)
+" EditorUnindentSelection
+" inoremap <S-Tab> <Action>(EditorUnindentSelection)
+" EditorUnSelectWord
+" inoremap <A-Down> <Action>(EditorUnSelectWord)
+" EditorUp
+" inoremap <Up> <Action>(EditorUp)
+" inoremap <C-p> <Action>(EditorUp)
+" EditorUpWithSelection
+" inoremap <S-Up> <Action>(EditorUpWithSelection)
+" inoremap <C-S-p> <Action>(EditorUpWithSelection)
+" ---------------------------------------------------------
+" NewDialogue
+" nnoremap <C-w>n <Action> NewDialogue
+" ---------------------------------------------------------
+" MarkdownNavigator.InsertRow
+" nnoremap <A-C-i>b <Action>(MarkdownNavigator.InsertRow)
+" MarkdownNavigator.InsertRow
+" nnoremap <M-A-Down> <Action>(MarkdownNavigator.InsertRow)
+" MarkdownNavigator.InsertColumn
+" nnoremap <A-C-i>c <Action>(MarkdownNavigator.InsertColumn)
+" MarkdownNavigator.InsertColumn
+" nnoremap <M-A-Left> <Action>(MarkdownNavigator.InsertColumn)
+" MarkdownNavigator.InsertColumnRight
+" nnoremap <A-C-i>o <Action>(MarkdownNavigator.InsertColumnRight)
+" MarkdownNavigator.InsertColumnRight
+" nnoremap <M-A-Right>o <Action>(MarkdownNavigator.InsertColumnRight)
+" MarkdownNavigator.DeleteColumn
+" nnoremap <A-C-e>e <Action>(MarkdownNavigator.DeleteColumn)
+" MarkdownNavigator.DeleteRow
+" nnoremap <A-C-e>d <Action>(MarkdownNavigator.DeleteRow)
+" MarkdownNavigator.MoveColumnLeft
+" nnoremap <A-C-e>h <Action>(MarkdownNavigator.MoveColumnLeft)
+" MarkdownNavigator.MoveColumnRight
+" nnoremap <A-C-e>l <Action>(MarkdownNavigator.MoveColumnRight)
+" MarkdownNavigator.ListToggleTaskItemDone
+" nnoremap <M-S-u> <Action>(MarkdownNavigator.ListToggleTaskItemDone)
+" MarkdownNavigator.ListToggleTaskItemDone
+" inoremap <M-S-u> <Action>(MarkdownNavigator.ListToggleTaskItemDone)
+" MarkdownNavigator.ListTaskItems
+" nnoremap <M-S-l> <Action>(MarkdownNavigator.ListTaskItems)
+" MarkdownNavigator.ListTaskItems
+" inoremap <M-S-l> <Action>(MarkdownNavigator.ListTaskItems)
+" MarkdownNavigator.InsertLink
+" vnoremap <M-k> <Action>(MarkdownNavigator.InsertLink)
+" MarkdownNavigator.ToggleBold
+" inoremap <M-b> <Action>(MarkdownNavigator.ToggleBold)
+" MarkdownNavigator.ToggleItalic
+" inoremap <M-i> <Action>(MarkdownNavigator.ToggleItalic)
+" MarkdownNavigator.ToggleUnderline
+" inoremap <M-u> <Action>(MarkdownNavigator.ToggleUnderline)
+" ---------------------------------------------------------
+" Find
+" nnoremap / <Action>(Find)
+" ---
+" TODO normal mode
+
+" Ensure that code folds work, 'zc' and whatnot
+" as well as expanding to levels 1, 2, 3, 4, and 5 with the corresponding vi keyboard actions
+
+" the 'go to the next highlighted error' command
+" the 'go to the previous highlighted error' command
+
+" the 'go to the previous VCS change'
+" the 'go to the next VCS change'
+
+" the 'go to next method' command
+" the 'go to previous method' command
+
+" the 'go to last edit location' command
+" the 'go to next edit location' command
+
+" Maybe make some clever commands for "go to type declaration, implementation, declaration or usages, super method, etc.
+
+
+" ---
+" TODO
+
+" command-] = 'indent line or selection'
+" command-[ = 'unindent line or selection'
+" ---
+
+" cnoremap <M-b> <S-Left>
+" inoremap <M-d> <C-o>dW<Space>
+" cnoremap <M-f> <S-Right>
+
+" IdeaVim uses 'a' for alt instead of Vim's 'm'
+" nmap <a-j> 15gj
+" nmap <a-k> 15gk
+
+" Allow pasting lines with readline keybindings
+" cnoremap <C-Y> <C-R>-
+
+" Allow formatting command with Option-Ctrl-f
+" nnoremap <Leader><C-l> :action ReformatCode<CR>
+" nnoremap <Leader><C-r> :action Run<CR>
+" nnoremap <Leader><C-d> :action Debug<CR>
+" nnoremap <Leader><C-f> :action RenameElement<CR>
+" nnoremap <C-z>ActivateTerminalToolWindow
+
+" Allow execution of the current file with Option-Ctrl-r
+" nnoremap <M-C-r> :action Run<CR>
+
+" Assume manpages are formatted with a width of 80
+
+" Won't work in visual mode (with vmap) for some reason.
+" Use default map of <c-/> for that.
+" nmap gcc :action CommentByLineComment<cr>
