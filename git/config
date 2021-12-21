@@ -1,0 +1,194 @@
+# User's `git` configuration file
+[user]
+	name = Austin Traver
+	email = austintraver@gmail.com
+	# signingKey = "0xFF0BB055"
+[core]
+	editor = nvim
+	# hooksPath = .hooks
+	tabwidth = 4
+	ignoreCase = false
+    # Instruct git to convert CRLF to LF on commit,
+    # but not to do perform the conversion the other way around
+	autocrlf = input
+	# sshCommand = ssh -i ~/.ssh/id_rsa
+[commit]
+	gpgsign = true
+	status = true
+	verbose = true
+[grep]
+    # lineNumber = true
+    # column = true
+    # patternType = extended
+[gpg]
+	# program = gpg
+	format = openpgp
+[credential]
+	# helper = /usr/local/share/gcm-core/git-credential-manager-core
+	# helper = osxkeychain
+[merge]
+	ff = true
+	# Show conflicts and file changes
+	verbosity = 2
+	tool = vscode
+	guitool = ideamerge
+	conflictstyle = merge
+    defaultToUpstream = true
+    # conflictstyle = diff3
+	# verifySignatures = true
+[mergetool]
+	prompt = true
+	keepbackup = false
+	trustexitcode = true
+[mergetool "neomerge"]
+	confirm = true
+	cmd = nvim -d $LOCAL $REMOTE $MERGED -c '$wincmd w' -c 'wincmd J'
+[mergetool "ideamerge"]
+	confirm = true
+	cmd = idea merge $(cd $(dirname "$LOCAL") && pwd)/$(basename "$LOCAL") $(cd $(dirname "$REMOTE") && pwd)/$(basename "$REMOTE") $(cd $(dirname "$BASE") && pwd)/$(basename "$BASE") $(cd $(dirname "$MERGED") && pwd)/$(basename "$MERGED") nosplash
+[rerere]
+	enabled = 1
+[diff]
+	tool = vscode
+	noprefix = true
+    renames = true
+	# Use 3 lines of context before-after a change in `diff`
+	context = 3
+	submodule = diff
+	guitool = ideadiff
+    # ignoreSubmodules = true
+    colorMoved = true
+[difftool]
+	prompt = false
+[difftool "neodiff"]
+	cmd = nvim -d $LOCAL $REMOTE
+[guitool "ideadiff"]
+	cmd = idea diff $(cd $(dirname "$LOCAL") && pwd)/$(basename "$LOCAL") $(cd $(dirname "$REMOTE") && pwd)/$(basename "$REMOTE") nosplash
+[hub]
+	protocol = ssh
+	host = github.com
+[gui]
+	commitMsgWidth = 72
+[alias]
+	stage = add
+	revise = commit --amend -a -C HEAD
+	ignored = ls-files --others --ignored --directory --exclude-standard
+	graph = log --graph
+    aa = add --all .
+	amend = commit --amend
+	b = branch
+	ce = commit --allow-empty
+	cme = commit --allow-empty -m
+	ci = commit
+	cm = commit -m
+	co = checkout
+	d = diff
+	dc = diff --cached
+	dh1 = diff -w HEAD~1 HEAD
+	ds = diff --stat=160,120
+	dw = diff -w
+	dwc = diff -w --cached
+	fa = fetch --all --prune
+	ff = pull --ff-only --prune
+	lg = log --graph --date-order -C -M --pretty=format:\"<%Cred%h%Creset> %ad [%C(yellow)%an%Creset] %Cgreen%d%Creset %s\" --all --date=short
+	new = log origin/master.. --reverse -C -M --pretty=format:\"<%Cred%h%Creset> %ad [%C(yellow)%an%Creset] %Cgreen%d%Creset %s\" --all --date=short
+	noff = merge --no-ff
+	pf = push --force
+	po = push -u origin
+	pom = push origin master
+	prn = remote prune
+	prno = remote prune origin
+	recent = for-each-ref --sort=-committerdate --count=10 --format=‘%(refname:short)’ refs/heads/
+	rb = rebase
+	rba = rebase --abort
+	rbc = rebase --continue
+	rbi = rebase -i
+	rbim = rebase -i origin/master
+	rbm = rebase origin/master
+	s = status
+	scrub = !git clean -xfd && git reset --hard
+	st = status
+	unstage = restore --staged
+	# Reference: https://github.com/brauliobo/gitconfig/blob/master/configs/.gitconfig
+	# git attribute GIT_COMMITTER_NAME "old name" "new name"
+	attribute = "!f() { VAR=$1; OLD=$2; NEW=$3; shift 3; git filter-branch --env-filter \"if [[ \\\"$`echo $VAR`\\\" = '$OLD' ]]; then export $VAR='$NEW'; fi\" $@; }; f "
+	# Reference: https://help.github.com/articles/remove-sensitive-data
+	purge = "!f() { git filter-branch -f --index-filter \"git rm --cached --ignore-unmatch $1\" --prune-empty --tag-name-filter cat -- --all; }; f"
+
+[advice]
+	# detachedhead = false
+[push]
+	# Require a refspec to establish good habits
+	# default = nothing
+	recurseSubmodules = on-demand
+[pull]
+	ff = only
+	# fetch from up to 8 remotes at a time
+	jobs = 8
+[status]
+        branch = false
+        short = true
+	submoduleSummary = true
+        showUntrackedFiles = normal
+        # showStash = true
+[color]
+	ui = always
+	pager = yes
+[blame]
+	date = iso-local
+[log]
+	date = iso-local
+	follow = true
+	# showSignature = true
+[format]
+	pretty = "%x1b[1;37m(%cs) %x1b[0;3;33m%h %x1b[0;34m[%an]%x1b[0m: %x1b[4;3m%s%n%+b"
+[web]
+	browser = firedev
+[browser "firedev"]
+	# path = /Applications/Firefox.app
+	cmd = open -a \"/Applications/Firefox.app\"
+[help]
+	# format = man
+	format = web
+	htmlpath = https://git-scm.com/docs
+[gc]
+	pruneExpire = now
+	reflogExpire = now
+[fetch]
+	recurseSubmodules = on-demand
+	parallel = 0
+[color "status"]
+	branch = "#89c4ff"
+[init]
+	# defaultBranch = master
+	defaultBranch = main
+	# templateDir = .files/git/template
+[clone]
+	defaultRemoteName = origin
+[checkout]
+	#Specifies the maximal number of fetch operations to be run in parallel at a time
+	# A value of 0 will give some reasonable default. If unset, it defaults to 1.
+	defaultRemote = origin
+[filter "lfs"]
+	process = git-lfs filter-process
+	required = true
+	clean = git-lfs clean -- %f
+	smudge = git-lfs smudge -- %f
+[credential "https://dev.azure.com"]
+	useHttpPath = true
+[submodule]
+	# Specifies if commands recurse into submodules by default
+	recurse = false
+	# Specifies how many submodules are fetched/cloned at the same time. A
+	# positive integer allows up to that number of submodules fetched in
+	# parallel. A value of 0 will give some reasonable default. If unset,
+	# it defaults to 1.
+	fetchJobs = 0
+[interactive]
+        # Allows one-letter input, removing the need to press enter
+        # when responding to a prompt.
+        singleKey = true
+[mergetool "vscode"]
+	cmd = code --wait $MERGED
+[difftool "vscode"]
+	cmd = code --wait --diff $LOCAL $REMOTE

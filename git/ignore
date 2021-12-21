@@ -1,0 +1,97 @@
+#  _
+# (_) __ _ _ __   ___  _ __ ___
+# | |/ _` | '_ \ / _ \| '__/ _ \
+# | | (_| | | | | (_) | | |  __/
+# |_|\__, |_| |_|\___/|_|  \___|
+#    |___/
+# ------------------------------
+
+# Environment files
+*.env
+
+# One random vim file
+.netrwhist
+
+# files ending in .orig
+*.orig
+
+*/doc/tags
+
+# The configstore directory
+/configstore/
+
+# General
+.DS_Store
+.CFUserTextEncoding
+
+# macOS llvm debug symbols
+*.dSYM
+
+# C/C++ object files
+*.o
+
+# C/C++ executable files
+a.out
+
+# Python files
+__pycache__/
+.ipynb_checkpoints/
+
+# Visual Studio
+.vscode/
+
+# File-based project format
+*.iws
+
+# IntelliJ
+out/
+
+# Python virtual environment
+.venv/
+
+# Google Workspace link files
+*.gdoc
+*.gsheet
+*.gslides
+*.gform
+*.gsite
+*.gshortcut
+*.drivedownload
+
+# Hyperlink files on macOS
+*.webloc
+
+# Custom icons for macOS files/folders
+Icon
+
+# CMake
+cmake-build-*/
+
+# File-based project format
+*.iws
+
+# IntelliJ
+out/
+
+ scriptnode_modules/
+
+# Android project file information
+local.properties
+
+
+.idea/*.iml
+.idea/.name
+.idea/aws.xml
+.idea/deployment.xml
+.idea/dictionaries
+.idea/go.imports.xml
+.idea/jsLibraryMappings.xml
+.idea/misc.xml
+.idea/modules.xml
+.idea/shelf
+.idea/usage-statistics.xml
+.idea/vcs.xml
+.idea/workspace.xml
+.idea/dataSources.xml
+.idea/sqldialects.xml
+/.idea/
