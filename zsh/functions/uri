@@ -1,0 +1,8 @@
+#autoload
+
+# Transform the input into a completely percent-encoded URI
+
+print ${1} \
+	| xxd -p \
+	| tr -d '\n' \
+	| sed 's/../%&/g' 

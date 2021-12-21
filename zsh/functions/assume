@@ -1,0 +1,48 @@
+#autoload
+
+[[ $(which aws) ]] || {
+	print "${0}: missing required dependency 'aws'" >&2
+	return 1
+}
+
+(( ${#} == 1 )) || {
+	print "usage: ${0} AWS_PROFILE" >&2
+	return 1
+}
+
+typeset assume_cache=${XDG_CACHE_HOME:=~/.cache}/assume
+typeset profiles_cache=${assume_cache}/profiles
+typeset credentials_cache=${assume_cache}/credentials
+
+[[ -d ${profiles_cache:h} ]] || mkdir -p -v ${profiles_cache:h}
+touch ${profiles_cache}
+typeset -a profiles=($(<${profiles_cache}))
+
+# If the user entered a profile that is not found to be present in the cached
+# list of profiles
+if ! (( ${profiles[(I)${1}]} )); then 
+	aws configure list-profiles > ${profiles_cache}
+	profiles=($(<${profiles_cache}))
+	# If the user entered a profile that is still not found, exit with an error
+	if ! (( ${profiles[(I)${1}]} )); then
+		print "${0}: unable to find profile '${1}'" >&2
+		return 1
+	fi
+fi
+
+typeset mfa_serial=$(aws configure get mfa_serial --profile ${1})
+typeset role_arn=$(aws configure get role_arn --profile ${1})
+typeset role_session_name="${mfa_serial##*/}@${1}"
+
+read -r AWS_ACCESS_KEY_ID AWS_SECRET_ACCESS_KEY AWS_SESSION_TOKEN <<< $(
+	aws sts assume-role \
+		--role-arn ${role_arn} \
+		--role-session-name ${role_session_name} \
+		--output 'text' \
+		--query 'Credentials.[AccessKeyId,SecretAccessKey,SessionToken]' \
+		--profile ${1} \
+)
+
+AWS_PROFILE=${1}
+
+export AWS_{PROFILE,ACCESS_KEY_ID,SECRET_ACCESS_KEY,SESSION_TOKEN}

@@ -1,0 +1,35 @@
+#autoload
+
+setopt LOCAL_OPTIONS
+setopt WARN_NESTED_VAR
+setopt WARN_CREATE_GLOBAL
+setopt ERR_RETURN
+
+# Convert Markdown into a best-effort reinterpretation 
+# in the format of the troff typesetting language
+
+typeset -a opts=(
+    --from=gfm+emoji+pipe_tables+raw_html+strikeout+task_lists+autolink_bare_uris
+    --to=man
+    --columns=80
+    --fail-if-warnings
+    --eol='lf'
+    --standalone
+)
+
+if (( ${ARGC} == 0 )); then
+	echo "md2man - usage: \`md2man FILE ...\`" >&2
+	return 1
+fi
+
+if (( ${ARGC} == 1 )); then
+	pandoc ${opts} < ${1} >&1
+	return
+fi
+
+typeset file
+for file in ${argv}; do
+  pandoc ${opts} \
+    < ${file} \
+	> ${file:r}.1
+done

@@ -1,0 +1,13 @@
+#autoload
+
+(( ${+commands[nvim]} )) || {
+	print 'Error: please install nvim' >&2
+	return 1
+}
+
+# Pretty print via Python, then pipe the JSON output directly into nvim
+command nvim \
+		-c 'set ft=json' \
+		-c 'set buftype=nofile' \
+		-c 'silent %s_    _  _ge' \
+		-c 'let @/ = ""' -

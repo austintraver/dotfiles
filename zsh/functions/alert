@@ -1,0 +1,4 @@
+#autoload
+
+# Play a sound I like
+afplay /System/Library/PrivateFrameworks/ScreenReader.framework/Versions/A/Resources/Sounds/Alert.aiff

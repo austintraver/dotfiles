@@ -1,0 +1,9 @@
+#autoload
+iconset=${1%%.*}.iconset
+mkdir -v ${iconset}
+for ((s=16; s<=512; s*=2)); do
+		sips -z ${s} ${s} ${1} -o ${iconset}/icon_${s}x${s}.png
+		sips -z ${s} ${s} ${1} -o ${iconset}/icon_${s}x${s}@2x.png
+done
+iconutil -c icns ${iconset}
+rm -R ${iconset}

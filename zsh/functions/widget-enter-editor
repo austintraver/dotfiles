@@ -1,0 +1,13 @@
+#autoload
+# Add a keybinding to edit a command in vi-mode
+if (( ${#jobtexts:#^nvim} )); then
+	fg %nvim
+	# zle redisplay
+	print '\E[5A'
+	zle zle-line-init
+	# zle line-init
+else
+	BUFFER="nvim +:; print '\E[4A'"
+	CURSOR=${#BUFFER}
+	zle accept-line
+fi

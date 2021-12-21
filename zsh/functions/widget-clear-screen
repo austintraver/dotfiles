@@ -1,0 +1,6 @@
+#autoload
+# Create a custom clear-scrollback function, mirroring that of CMD-K
+
+print -n '\Ec\E[3J'
+zle reset-prompt
+zle-keymap-select

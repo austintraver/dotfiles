@@ -1,0 +1,41 @@
+#autoload
+
+# First, run the `man` command the way it would have run
+command man ${@}
+return $?
+
+# TODO: Make this function work again
+
+typeset URL='https://manpages.ubuntu.com/manpages'
+URL+='/focal/en'
+
+# On the other hand, if the manpage was not found on this computer
+# search if it can be found on the web
+if (( $? != 16 )) {
+	return
+}
+
+typeset page
+if (( ${#} == 2 )) {
+	page="${2}.${1:t:r}"
+}
+if (( ${#} == 1 )) && [[ ${1} =~ ^([A-Za-z_])+(\.[0-9])?$ ]]  {
+	page=${MATCH}
+	[[ ${page} == ${page:r} ]] && { page+=".1" }
+}
+
+# But the user specified a valid filename for a manpath
+
+# if [[ ${#} == 1 ]] && [[ ${1} =~ \.?[0-9]$ ]] {
+# 	print ${MATCH}
+# }
+# if [[ ${1} =~ ^([A-Za-z_])+(\.[0-9])?$ ]] {
+# 	page=${MATCH}
+# 	if [[ ${page} =~ (\.[0-9])$ ]] || { 
+# 		page+=".1" 
+# 	}
+# } elif [[ ${1} =~ ^[1-9]$ ]] && [[ ${2} =~ [A-Za-z_]+ ]] {
+# 	page=${2:t:r}.${1[-1]}
+# }
+# print -- ${page}
+print "try visiting ${URL}/man${page:e}/${page:r}.${page:e}"

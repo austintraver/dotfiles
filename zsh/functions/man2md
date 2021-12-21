@@ -1,0 +1,41 @@
+#autoload
+
+setopt LOCAL_OPTIONS
+setopt WARN_NESTED_VAR
+setopt WARN_CREATE_GLOBAL
+setopt ERR_RETURN
+
+# The loop following converts the manpages into a form of Markdown compatible
+# with Hugo's "Goldmark", which is used to render the markdown in a web format
+# further down the line
+typeset -a opts=(
+    --from=man
+    --to=gfm+emoji+pipe_tables+raw_html+strikeout+task_lists+autolink_bare_uris
+    --markdown-headings=atx
+    --eol='lf'
+    --reference-links
+    --reference-location=block
+    --standalone
+    --no-highlight
+    --columns=80
+    --fail-if-warnings
+    --toc-depth=1
+#    --table-of-contents
+)
+
+if (( ${ARGC} == 0 )); then
+	echo "man2md - usage: \`man2md FILE ...\`" >&2
+	return 1
+fi
+
+if (( ${ARGC} == 1 )); then
+	pandoc ${opts} < ${1} >&1
+	return
+fi
+
+typeset file
+for file in ${argv}; do
+pandoc ${opts} \
+	< ${file} \
+	> ${file:r}.md
+done

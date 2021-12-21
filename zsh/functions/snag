@@ -1,0 +1,18 @@
+#autoload
+
+# format='bestvideo[ext=mp4]+bestaudio[ext=m4a]/best[ext=mp4]/best'
+
+# outdir="${XDG_DATA_HOME}/ydl/videos/%(title)s-%(id)s.%(ext)s"
+# [[ ! -d ${outdir} ]] && mkdir -v -p ${outdir}
+# youtube-dl \
+# 	-f ${format} \
+# 	-o ${outdir} \
+# 	--extract-audio \
+# 	--audio-quality 9 \
+# 	${@}
+
+# # --no-progress
+
+
+print "This was a waste of time...\n\tjust use 'youtube-dl -x URL'" >&2
+return 1

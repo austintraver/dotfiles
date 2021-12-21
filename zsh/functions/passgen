@@ -1,0 +1,6 @@
+#autoload
+
+typeset -a charset=({a..f} {0..9})
+typeset password
+
+password=

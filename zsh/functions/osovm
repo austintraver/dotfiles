@@ -1,0 +1,10 @@
+#autoload
+
+if [[ ${1} == '350' ]]; then
+	VBoxHeadless -s 'CSCI 350' &!
+elif [[ ${1} == '353' ]]; then
+	VBoxHeadless -s 'CSCI 353' &!
+else
+	print 'osovm -- usage: `osovm 353`'
+fi
+

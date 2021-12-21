@@ -1,0 +1,29 @@
+#autoload
+
+flags=(
+	'--human-readable'
+	'--color=auto'
+	'--group-directories-first'
+	'--ignore=.DS_Store'
+	'--ignore=.CFUserTextEncoding'
+	'--ignore=.hushlogin'
+	'--ignore=.'
+	'--ignore=..'
+	'--ignore=__pycache__'
+	'--time-style=long-iso'
+	'--human-readable'
+)
+
+# Remain functional if GNU coreutils has not been installed on macOS
+if [[ $(uname) == 'Darwin' ]]; then
+	if (( ! ${+commands[gls]} )); then
+		=ls ${@}
+	# Don't use BSD `ls` if we have GNU `ls`
+	else
+		=gls ${flags} ${@}
+	fi
+	return
+fi
+
+# Call `ls` and pray if user is on any other OS
+=ls ${flags} ${@}

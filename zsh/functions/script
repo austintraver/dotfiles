@@ -1,0 +1,8 @@
+#autoload
+
+# Remove the SGR escape sequences from the command prompt
+prompt='%m %n %1~ %# '
+
+prompt2='> '
+
+=script $@

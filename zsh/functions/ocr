@@ -1,0 +1,34 @@
+#autoload
+
+# Ensure the image path resolves to a file that can be read from
+setopt badpattern
+setopt nonullglob
+setopt extendedglob
+setopt bareglobqual
+setopt nocaseglob
+
+# Ensure `gcloud` has already been installed
+if ! [[ $(whence gcloud) ]]; then
+	print "${0} - missing \`gcloud\`" >&2
+	return 1
+fi
+
+# Reference: https://cloud.google.com/sdk/gcloud/reference/ml/vision/detect-text
+typeset format='value(responses[0].textAnnotations[0].description)'
+
+# Use the Google Cloud Vision API to perform OCR.
+if (( ${#} == 0 )); then
+	# If a filepath is not explicitly provided, default to a sensible location 
+	gcloud ml vision detect-text \
+		--format ${format} \
+		${HOME}/Downloads/*(om[1])
+elif (( ${#} == 1 )); then
+	gcloud ml vision detect-text \
+		--format ${format} \
+		${1}
+else
+	# Fail if the user provides more than one argument
+	print "${0} - usage: \`${0} IMAGE_FILE\`" >&2
+	return 1
+fi
+

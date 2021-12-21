@@ -1,0 +1,5 @@
+#autoload
+# # Delete the char ahead, but only if there is one
+if (( ${CURSOR} != ${#BUFFER} )) {
+	zle delete-char
+}

@@ -1,0 +1,29 @@
+#autoload
+
+shopt -s nocasematch
+if (( ! ${+commands[ffmpeg]} )) {
+	>&2 print -- "${0}: error - please install ffmpeg"
+	return 1
+}
+if (( ! ${+commands[magick]} )) {
+	>&2 print -- "${0}: error - please install magick"
+	return 1
+}
+if (( ${#} != 1 )) {
+	>&2 print -- "${0}: usage - \`${0} file.mov\`"
+	return 1
+}
+if [[ ! -f ${1} ]] {
+	>&2 print -- "${0}: error - file <${1}> not found"
+	return 1
+}
+if [[ ${1:e} != 'mov' ]] {
+	>&2 print -- "${0}: error - invalid file <${1}>, please supply a MOV file"
+	return 1
+}
+
+SCALE=320
+FRAMERATE=10
+
+ffmpeg -i ${1} -vf scale=$SCALE:-1 -r ${FRAMERATE} ${TMPDIR}/ffout%3d.png
+convert -delay 8 -loop 0 ${TMPDIR}/ffout*.png ${1:r}.gif

@@ -1,0 +1,26 @@
+#autoload
+
+local ifile ofile
+if (( ${#} == 0 )); then
+	ifile=${HOME}/Downloads/*(om[1])
+	ofile=${ifile:r}.webp
+elif (( ${#} == 1 )); then
+	ifile=${1}
+	ofile=${ifile:r}.webp
+elif (( ${#} == 2 )); then
+	ifile=${1}
+	ofile=${2}
+fi
+
+typeset -a options=(
+	-noalpha
+	-hint 'photo'
+	-jpeg_like
+	-m 6
+	-q 90
+	-alpha_filter 'best'
+	-metadata 'all'
+	-mt
+)
+
+cwebp ${options} -o ${ofile} -- ${ifile}

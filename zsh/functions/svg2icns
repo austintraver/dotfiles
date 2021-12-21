@@ -1,0 +1,19 @@
+#autoload
+
+# Converts .svg image to a .icns icon
+
+# Usage: `svg2icns picture.svg`
+svg2icns() {
+	iconset=${1%%.*}.iconset
+	mkdir ${iconset}
+	pngicon="${iconset}/icon_512x512@2x.png"
+	convert -background none -resize '1024x1024' ${1} ${pngicon}
+	for ((s=16; s<=512; s*=2)); {
+		sips --debug -z ${s} ${s} ${pngicon} -o "${iconset}/icon_${s}x${s}.png"
+	}
+	for ((s=32; s<=512; s*=2)); {
+		cp -v "${iconset}/icon_${s}x${x}.png" "${iconset}/icon_$((s/2))x$((s/2))@2x.png"
+	}
+
+	iconutil -c icns ${iconset}
+}

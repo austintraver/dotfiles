@@ -1,0 +1,26 @@
+#autoload
+
+if (( ${#} == 0 )) {
+	set -- $(curl https://checkip.amazonaws.com) || {
+		>&2 print -- "${0}: error - unable to retrieve IP" >&2
+		return 1
+	}
+}
+
+cidr="${1}/32"
+
+# Whitelist the specified ip for SSH access
+aws ec2 \
+    authorize-security-group-ingress \
+    --group-name 'aws_security_group' \
+    --protocol tcp \
+    --port 22 \
+    --cidr ${cidr}
+
+if (( ${?} != 0 )); then
+	>&2 print -- "${0}: error - unable to whitelist CIDR ${cidr}"
+	return 1
+fi
+
+print -- "${0}: IP address CIDR ${cidr} successfully whitelisted"
+return 0

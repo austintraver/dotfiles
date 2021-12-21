@@ -1,0 +1,13 @@
+#autoload
+
+if (( ${+builtins[${1}]} )); then
+	command nvim \
+		-c "Man zshbuiltins" \
+		-c 'wincmd o' \
+		"+/^       \\<${1}\\>" \
+		-c "let @/ = ''"
+else
+	command bash -c "help ${@}"
+fi
+
+return

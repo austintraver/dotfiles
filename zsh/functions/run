@@ -1,0 +1,39 @@
+#autoload
+
+# The `run` command can only run one file
+if (( ${#} != 1 )) {
+	print 'Usage: `run <file.ext> <arg1> <arg2> ...`' >&2
+	return 1
+}
+
+case ${1} {
+	*.c)
+		clang ${1} -o ${1%\.*} && ${1%\.*}(:a) ${@:2} && rm ${1%\.*}(:a)
+		;;
+
+	*.cpp | *.cxx)
+		clang++ ${1} -o ${1%\.*} && ${1%\.*}(:a) ${@:2} && rm ${1%\.*}(:a)
+		;;
+
+	*.sh | *.zsh)
+		zsh ${1}(:a) ${@:2}
+		;;
+
+	*.java)
+		java ${1}(:a) ${@:2}
+		;;
+
+	*.py)
+		python ${1}(:a) ${@:2}
+		;;
+
+	*.js)
+		node ${1}(:a) ${@:2}
+		;;
+	
+	*.rb)
+		ruby ${1}(:a) ${@:2}
+		;;
+
+}
+return 0

@@ -1,0 +1,18 @@
+#autoload
+
+# Confirm that the file is reachable before getting started
+if [[ ! -e ${1} ]] {
+  print "octo: file not found '${1}'" >&2
+  return 1
+}
+
+# Use BSD stat on macOS
+if [[ $(uname) == 'Darwin' ]]; then
+	stat() { '/usr/bin/stat' ${@} }
+	stat -f '%Lp' ${1}
+# Otherwise use GNU stat on Linux
+elif [[ $(uname) == 'Linux' ]]; then
+	stat -c '%a' ${1}
+fi
+
+return

@@ -1,0 +1,11 @@
+#autoload
+
+# __      ____ _ 
+# \ \ /\ / / _` |
+#  \ V  V / (_| |
+#   \_/\_/ \__,_|
+# ===============
+
+# Wolfram Alpha, brought to a command line near you!
+
+wolframscript -code "WolframAlpha[\"${@}\", \"ShortAnswer\"]" 

@@ -1,0 +1,27 @@
+#autoload
+
+# Got tired of finding this snippet over and over again
+# https://helpful.wiki/macos#convert-svg-to-png
+
+# This is not good enough, background is not transparent
+# qlmanage -ts 4096 -o . ${1}
+
+# This is not good enough, it doesn't anti-alias the elliptical curves
+# https://imagemagick.org/script/command-line-options.php#resize
+# magick convert -resize '4096x4096' -background 'none' ${1} ${2}
+
+if (( ${#} == 0 )) {
+	>&2 print 'svg2png: usage - `svg2png ifile.svg [ofile.png] [WIDTH] [HEIGHT]`'
+	return 1
+}
+
+ifile="${1}"
+ofile="${2:-${1:r}.png}"
+dimensions=${3:-4096}
+
+rsvg-convert \
+	${ifile} \
+	--output ${ofile} \
+	--width ${dimensions} \
+	--keep-aspect-ratio \
+	--format 'png'

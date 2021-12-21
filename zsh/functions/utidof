@@ -1,0 +1,19 @@
+#autoload
+
+# Get the "uniform type identifier" a file extension
+if [[ $# -eq 0 ]]; then
+	print "Usage:  \`utidof jpg\`" >&2
+	# Output: "public.jpeg"
+	return 1
+fi
+
+duti -e $1 &> /dev/null
+if [[ $? -eq 2 ]]; then
+	print "Error: no uniform type identifier found for extension \"$1\"" >&2
+	return 1
+fi
+
+typeset id=($(duti -e $1))
+print ${id[2]}
+
+return 0

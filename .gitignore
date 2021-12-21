@@ -25,3 +25,9 @@
 /NuGet/
 /gh/hosts.yml
 /fzf-tab/
+/azure/
+
+# Archives
+*.tgz
+*.zip
+*.tar.gz

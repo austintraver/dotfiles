@@ -1,0 +1,41 @@
+#autoload
+
+set -x
+typeset query_string="family=${font_family}:${(j<,>)font_weights}"
+
+typeset font_family=${1/ /+}
+
+# Specify the standard font sizes (roman + bold/italic)
+typeset font_weights=({4,7}00{,b,i,bi})
+# typeset font_weights=({1..9}00{,b,i,bi})
+# ^ this is how you'd get all available font sizes
+
+
+typeset base_url='https://fonts.googleapis.com/css'
+typeset query_string="family=${font_family}:${(j<,>)font_weights}"
+typeset endpoint="${base_url}?${query_string}"
+typeset fonts=($(curl -s ${endpoint} | grep -o 'https://.*\.ttf' ))
+typeset names=(${(f)"$(curl -s ${endpoint} | grep '^  src' | sed "s/^.*src: local('\([^']\+\)').*$/\1/")"})
+
+# # Exit gracefully if no valid font files were found
+# if (( ${#fonts} == 0 )); then
+# 	print "error: no results found for font family ${1}" >&2
+# 	return 1
+# fi
+
+# # Exit gracefully if the directory we already downloaded this font
+# if [[ -d ${1} ]]; then
+# 	print "error: directory ${1} already exists" >&2
+# 	return 1
+# fi
+
+# Download all of the available font files and store them in a new directory
+mkdir -v ${1}
+pushd ${1}
+for ((i=1;i<=${#fonts};i+=1)); do
+	print -- /usr/bin/curl -s ${fonts[$i]} -o "${names[$i]}.ttf"
+done
+popd
+print "the following font files have been saved to ${1:A}:"
+print -l -- ${fonts:t}
+return 0

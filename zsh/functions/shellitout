@@ -1,0 +1,47 @@
+#autoload
+
+# Quickly launch the testing server for the wiki
+
+(( ${+commands[hugo]} )) || {
+	print "error - please install hugo." >&2
+	return 1
+}
+
+typeset ZSHFYI=~/Developer/zshfyi
+typeset PORT=1336
+
+typeset URL="http://${HOST}.local:${PORT}"
+
+# Clear any existing traffic on this port coming from `hugo`
+typeset same_port=($(lsof -ti :${PORT}))
+typeset same_name=($(pgrep 'hugo'))
+kill ${same_port:*same_name} 2>/dev/null
+
+pushd ${ZSHFYI}
+
+# Immediately disown the server program
+&> /dev/null hugo server \
+	--baseURL ${URL} \
+	--bind '0.0.0.0' \
+	--port ${PORT} \
+	--gc \
+	--navigateToChanged \
+	--cleanDestinationDir \
+	--noHTTPCache \
+	&!
+
+# Wait until we successfully get a response from the page before launching
+while (( $(curl ${URL} -- &> /dev/null)$? == 7 )) {
+	sleep 0.1
+}
+
+open -a 'Firefox Developer Edition' "http://localhost:${PORT}"
+
+# tag="${HOME}/Documents/misc/runitback.m4a"
+# if [[ -r ${tag} ]] {
+# 	afplay ${tag}
+# }
+
+popd
+
+return 0

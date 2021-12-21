@@ -1,0 +1,47 @@
+#autoload
+
+# Quickly launch the testing server for the wiki
+
+(( ${+commands[hugo]} )) || {
+	print "error - please install hugo." >&2
+	return 1
+}
+
+typeset NOTES=~/.notes
+typeset PORT=1313
+
+typeset URL="http://localhost:${PORT}"
+
+# Clear any existing traffic on this port coming from `hugo`
+typeset same_port=($(lsof -ti :${PORT}))
+typeset same_name=($(pgrep 'hugo'))
+2> /dev/null kill ${same_port:*same_name}
+
+pushd ${NOTES}
+
+# Immediately disown the server program
+&> /dev/null hugo server \
+	--baseURL ${URL} \
+	--bind '0.0.0.0' \
+	--port ${PORT} \
+	--gc \
+	--navigateToChanged \
+	--cleanDestinationDir \
+	--noHTTPCache \
+	&!
+
+# Wait until we successfully get a response from the page before launching
+while (( $(curl ${URL} -- &> /dev/null)$? == 7 )) {
+	sleep 0.1
+}
+
+open ${URL}
+
+# tag="${HOME}/Documents/misc/runitback.m4a"
+# if [[ -r ${tag} ]] {
+# 	afplay ${tag}
+# }
+
+popd
+
+return 0

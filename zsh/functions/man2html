@@ -1,0 +1,39 @@
+#autoload
+
+setopt LOCAL_OPTIONS
+setopt WARN_NESTED_VAR
+setopt WARN_CREATE_GLOBAL
+setopt ERR_RETURN
+
+# Convert manpages formatted in the troff typesetting language
+# into a best-effort reinterpretation in HTML format
+
+typeset opts=(
+    --from=man
+    --to=html5-auto_identifiers
+    --section-divs
+    --eol='lf'
+    --self-contained
+    --no-highlight
+    --columns=80
+    --fail-if-warnings
+    --html-q-tags
+#   --css=./style.css
+#   --table-of-contents
+)
+if (( ${ARGC} == 0 )); then
+	echo "man2html - usage: \`man2html FILE ...\`" >&2
+	return 1
+fi
+
+if (( ${ARGC} == 1 )); then
+	pandoc ${opts} < ${1} >&1
+	return
+fi
+
+typeset file
+for file in ${argv}; do
+pandoc ${opts} \
+	< ${file} \
+	> ${file:r}.html
+done

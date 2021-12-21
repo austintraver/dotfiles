@@ -1,0 +1,13 @@
+#autoload
+
+if [[ ! -f ${1:A} ]] {
+	print "Error: file ${1:A} not found" >&2
+	return 1
+}
+
+curl -X 'POST' https://fax.twilio.com/v1/Faxes \
+	--data-urlencode "From=${TWILIO_PHONE_NUMBER}" \
+	--data-urlencode "To=+14082806611" \
+	--data-urlencode "MediaUrl=file://${1:A}" \
+	--user "${TWILIO_ACCOUNT_SID}:20ff5175349882b929a14e8df1ddcdeb"
+

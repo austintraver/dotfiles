@@ -1,0 +1,16 @@
+#autoload
+
+# Get the "bundle id" of the application
+if [[ $# -eq 0 ]]; then
+	print -P "%F{3}Usage%f: \`bundleidof Safari\`" >&2
+	# Output: `com.apple.Safari`
+	return 1
+fi
+
+osascript -e "id of app \"${1}\"" 2> /dev/null || {
+	# If there is an error in the previous command, app not found
+	print -P "%F{1}Error%f:Unable to find bundle ID for application \"${1}\"" >&2
+	return 1
+}
+
+return 0

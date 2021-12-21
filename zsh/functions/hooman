@@ -1,0 +1,25 @@
+#autoload 
+
+if (( ${#} > 1 )) {
+	print 'error: invalid number of arguments.' >&2
+	print "expected 1 argument, received ${#}" >&2
+	return 1
+}
+
+# Check that the manpage exists
+gman -w ${@} > /dev/null || return $?
+
+style_path="file://${0:A:h:h}/share/style.css"
+file=$(mktemp --suffix='.html')
+
+# Save the manpage in HTML formatting to the temporary file
+gman -Thtml ${@} > ${file} 2> /dev/null
+
+# Add a line just below <head> that includes a stylesheet
+gsed -i ${file} \
+	-e "7i<link rel=\"stylesheet\" href=\"${style_path}\">" \
+	-e '/^<a href="#[^>]*>.*<br>$/d'
+# The line above ^ removes some unnecessary links at the top of the page
+
+open -a 'Safari' ${file}
+return 0

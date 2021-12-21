@@ -1,0 +1,15 @@
+#autoload
+
+# Utility function for creating an archive
+
+# The `archive` command can only archive one directory
+if (( ${#} != 1 )) || [[ ! -d ${1} ]] {
+	print 'Usage: `archive <dir>`' >&2
+	return 1
+}
+
+tar \
+	--gzip \
+	--dir ${1:A:h} \
+	--create ${1:A:t} \
+	--file ${1:A:t}.tgz

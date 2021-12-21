@@ -1,0 +1,27 @@
+#autoload
+
+# Install `brew` if it is missing
+if ! [[ $(whence brew) ]]; then
+	curl \
+		-fsSL \
+		https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh \
+	| bash -
+fi
+
+# Install `go` if it is missing
+if ! [[ $(whence go) ]]; then
+	brew install go
+fi
+
+# Install `scribe` if it is missing
+if ! [[ $(whence scribe) ]]; then
+	typeset -gx GOPRIVATE="github.com/austintraver/*"
+	go get -v github.com/austintraver/scribe@latest
+fi
+
+typeset dir=""
+eval dir=$(defaults read com.apple.screencapture 'location')
+ file=$(defaults read com.apple.screencapture 'name')
+typeset ext=$(defaults read com.apple.screencapture 'type')
+
+scribe ${dir}/${file}*.${ext}(.om[1])

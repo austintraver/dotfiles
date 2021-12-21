@@ -1,0 +1,8 @@
+#autoload
+typeset config=${DOTFILES}/caniuse.json
+autoload yaml2json
+
+# Install `caniuse` if the user doesn't yet have it
+[[ $(whence caniuse) ]] || { npm install -g caniuse-cmd; }
+
+npx caniuse-cmd --config ${config} ${@}
