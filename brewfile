@@ -7,13 +7,19 @@
 #  ========================================
 
 tap 'github/gh'
+
 tap 'mongodb/brew'
+
 tap 'twilio/brew'
 brew 'twilio'
-tap 'teamookla/speedtest'
 
 # Ookla Speedtest
+tap 'teamookla/speedtest'
 brew 'speedtest'
+
+# Espanso
+tap 'federico-terzi/espanso'
+brew 'espanso'
 
 # tap 'jmespath/jmespath'
 # brew 'jmespath/jmespath/jp'
@@ -143,12 +149,21 @@ brew 'jrnl'
 # mail CLI
 brew 'himalaya'
 
+# image/video manipulation
+brew 'webp'
+brew 'libavif'
+brew 'librsvg'
+brew 'imagemagick'
+brew 'ffmpeg'
+
 # Packages from beloved Rustaceans
 brew 'rust'
-brew 'rg'
-brew 'the_silver_searcher'
+brew 'ripgrep'
 brew 'exa'
 brew 'fd'
+brew 'bat'
+brew 'himalaya'
+brew 'the_silver_searcher'
 # ----------------
 
 # cask 'basictex'

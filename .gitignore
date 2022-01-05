@@ -31,3 +31,6 @@
 *.tgz
 *.zip
 *.tar.gz
+
+/espanso/
+/bin/

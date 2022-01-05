@@ -2,8 +2,8 @@
 # clear
 
 function prompt {
-    if (Test-Path variable:/PSDebugContext) { 
-        Return '[DBG]: ' 
+    if (Test-Path variable:/PSDebugContext) {
+        Return '[DBG]: '
     }
     if ($NestedPromptLevel -ge 1)
     {
@@ -39,7 +39,7 @@ Set-PSReadLineOption -EditMode vi
 # > `Find-Module Az.Tools.Predictor -AllowPrerelease`
 # https://devblogs.microsoft.com/powershell/announcing-psreadline-2-1-with-predictive-intellisense/
 
-# Surround the command line with assistive predictions, 
+# Surround the command line with assistive predictions,
 # unless this instance of PowerShell is a non-interactive command
 if (!([bool]([Environment]::GetCommandLineArgs() -Contains '-Command'))) {
     Set-PSReadLineOption -PredictionViewStyle ListView
@@ -156,10 +156,15 @@ Set-PSReadLineKeyHandler -Chord Ctrl+Shift+RightArrow -Function SelectNextWord -
 # Incompatible with command history suggestion list-view plugin
 # Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
 
-. $(Join-Path "~/.config" "powershell" "completion" "gh.ps1")
-. $(Join-Path "~/.config" "powershell" "completion" "hugo.ps1")
-. $(Join-Path "~/.config" "powershell" "completion" "cobra.ps1")
-Import-Module DockerCompletion
+# Add command completion for `gh`
+. $(Join-Path $env:XDG_CONFIG_HOME "powershell" "completion" "gh.ps1")
+# Add command completion for `hugo`
+. $(Join-Path $env:XDG_CONFIG_HOME "powershell" "completion" "hugo.ps1")
+# Add command completion for `cobra`
+. $(Join-Path $env:XDG_CONFIG_HOME "powershell" "completion" "cobra.ps1")
+
+# Install-Module -Name DockerCompletion
+Import-Module -Name DockerCompletion
 
 # Clear the screen as well as the scrollback buffer
 Set-PSReadLineKeyHandler -Chord Ctrl+l -ScriptBlock {

@@ -208,7 +208,7 @@ set path+=${XDG_CONFIG_HOME}/zsh/functions
 set path+=${XDG_CONFIG_HOME}/zsh
 
 " Add all the files in the wiki to the path
-set path+=~/.docs/content
+set path+=~/Developer/docs/content
 
 " Add the path to my coding directory
 set path+=~/Developer
@@ -333,6 +333,26 @@ nnoremap <C-w>v <CMD>vnew<Return>
 " Allow maximizing width faster
 nnoremap <C-w><C-\> <CMD>wincmd <Bar><Return>
 
+" Add familiar keybindings
+inoremap <C-A> <Home>
+inoremap <C-E> <End>
+
+inoremap <M-B> <C-Left>
+inoremap <M-F> <C-Right>
+
+cnoremap <C-B> <Left>
+cnoremap <C-F> <Right>
+
+cnoremap <M-B> <C-Left>
+cnoremap <M-F> <C-Right>
+
+cnoremap <C-A> <Home>
+cnoremap <C-E> <End>
+
+" Add <CTRL-K> to both insert mode and command-line mode
+inoremap <C-K> <C-O>d$
+cnoremap <C-K> <C-\>e(strpart(getcmdline(),0,getcmdpos()-1))<Return>
+
 " Format the roff typesetting language using the GNU groff syntax
 let b:nroff_is_groff = 1
 
@@ -346,8 +366,9 @@ let g:is_bash = 1
 " let g:go_def_mode='gopls'
 " let g:go_info_mode='gopls'
 
-" Add hard wrapping to manpages
-let g:man_hardwrap = 1
+" Set whether manpages are rendered with
+" soft-wraps (0) or hard-wraps (1)
+let g:man_hardwrap = 0
 
 " Enable syntax highlighting for markdown fenced code blocks
 " for the following languages
@@ -430,6 +451,13 @@ let g:netrw_list_hide = join(
 
 " Assign directory to save the .netrwbook and .netrwhist files
 let g:netrw_home = stdpath("data") . '/'
+
+" Configure which filetypes to enable GitHub Copilot for
+let g:copilot_filetypes = {
+    \ '*': v:true,
+    \ 'markdown': v:true,
+    \ 'help': v:false,
+    \ }
 
 " Whether to enable telescope preview when picking a mailbox with the
 " telescope provider.

@@ -2,14 +2,14 @@
 [user]
 	name = Austin Traver
 	email = austintraver@gmail.com
-	# signingKey = "0xFF0BB055"
+	signingKey = "0xF0B6CFC698A112DD"
 [core]
 	editor = nvim
 	# hooksPath = .hooks
 	tabwidth = 4
 	ignoreCase = false
-    # Instruct git to convert CRLF to LF on commit,
-    # but not to do perform the conversion the other way around
+	# Instruct git to convert CRLF to LF on commit,
+	# but not to do perform the conversion the other way around
 	autocrlf = input
 	# sshCommand = ssh -i ~/.ssh/id_rsa
 [commit]
@@ -17,9 +17,9 @@
 	status = true
 	verbose = true
 [grep]
-    # lineNumber = true
-    # column = true
-    # patternType = extended
+	# lineNumber = true
+	# column = true
+	# patternType = extended
 [gpg]
 	# program = gpg
 	format = openpgp
@@ -33,8 +33,8 @@
 	tool = vscode
 	guitool = ideamerge
 	conflictstyle = merge
-    defaultToUpstream = true
-    # conflictstyle = diff3
+	defaultToUpstream = true
+	# conflictstyle = diff3
 	# verifySignatures = true
 [mergetool]
 	prompt = true
@@ -51,13 +51,13 @@
 [diff]
 	tool = vscode
 	noprefix = true
-    renames = true
+	renames = true
 	# Use 3 lines of context before-after a change in `diff`
 	context = 3
 	submodule = diff
 	guitool = ideadiff
-    # ignoreSubmodules = true
-    colorMoved = true
+	# ignoreSubmodules = true
+	colorMoved = true
 [difftool]
 	prompt = false
 [difftool "neodiff"]
@@ -74,7 +74,7 @@
 	revise = commit --amend -a -C HEAD
 	ignored = ls-files --others --ignored --directory --exclude-standard
 	graph = log --graph
-    aa = add --all .
+	aa = add --all .
 	amend = commit --amend
 	b = branch
 	ce = commit --allow-empty
@@ -126,11 +126,11 @@
 	# fetch from up to 8 remotes at a time
 	jobs = 8
 [status]
-        branch = false
-        short = true
+	branch = false
+	short = true
 	submoduleSummary = true
-        showUntrackedFiles = normal
-        # showStash = true
+	showUntrackedFiles = normal
+	# showStash = true
 [color]
 	ui = always
 	pager = yes
@@ -185,9 +185,9 @@
 	# it defaults to 1.
 	fetchJobs = 0
 [interactive]
-        # Allows one-letter input, removing the need to press enter
-        # when responding to a prompt.
-        singleKey = true
+	# Allows one-letter input, removing the need to press enter
+	# when responding to a prompt.
+	singleKey = true
 [mergetool "vscode"]
 	cmd = code --wait $MERGED
 [difftool "vscode"]

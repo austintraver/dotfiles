@@ -85,6 +85,8 @@ if [[ ${OSTYPE} =~ 'darwin' ]]; then
 
 
 	path=(
+		~/.local/bin
+		${XDG_CONFIG_HOME}/bin
 		${HOMEBREW_PREFIX}/bin
 		${HOMEBREW_PREFIX}/sbin
 		${HOMEBREW_PREFIX}/opt/**/*/libexec/gnubin(N)
@@ -137,27 +139,43 @@ if [[ ${OSTYPE} =~ 'darwin' ]]; then
 		mkdir -v -p "${XDG_CACHE_HOME}/brew"
 	fi
 
-	if [[ -e ${HOMEBREW_PREFIX}/opt/python ]]; then
-		path=(
-			${HOMEBREW_PREFIX}/opt/python/libexec/bin
-			${path}
-		)
-	fi
 
-	if [[ -e ${HOMEBREW_PREFIX}/opt/man-db ]]; then
-		path=(
-			${HOMEBREW_PREFIX}/opt/man-db/libexec/bin
-			${path}
-		)
-	fi
+	() {
+		local pkg
 
-	if [[ -e ${HOMEBREW_PREFIX}/opt/lsof ]]; then
-		path=(
-			${HOMEBREW_PREFIX}/opt/lsof/bin
-			${path}
+		# Add homebrew binaries within the 'libexec' directory
+		# to the PATH
+		foreach pkg (
+			'python'
+			'python@3.9'
+			'python@3.10'
+			'man-db'
 		)
-	fi
+			if [[ -e ${HOMEBREW_PREFIX}/opt/${pkg} ]]; then
+				path=(
+					${HOMEBREW_PREFIX}/opt/${pkg}/libexec/bin(/N)
+					${path}
+				)
+			fi
+		end
 
+		# Add homebrew binaries outside of any 'libexec' directory
+		# to the PATH
+		foreach pkg (
+			'lsof'
+			'curl'
+			'rust'
+			'node@16'
+			'node@14'
+		)
+			if [[ -e ${HOMEBREW_PREFIX}/opt/${pkg} ]]; then
+				path=(
+					${HOMEBREW_PREFIX}/opt/${pkg}/bin(/N)
+					${path}
+				)
+			fi
+		end
+	} 
 fi
 
 
@@ -661,8 +679,7 @@ autoload +X bashcompinit && bashcompinit
 # Add autosuggestion features to the shell
 # provided that the autosuggest module can be located
 () {
-	local script
-	script="${XDG_CONFIG_HOME}/zsh/autosuggest.sh"
+	local script="${XDG_CONFIG_HOME}/zsh/autosuggest.sh"
 	if [[ -r ${script} ]]; then
 		source ${script}
 	fi
@@ -686,8 +703,7 @@ autoload +X bashcompinit && bashcompinit
 
 # If `yq` is found, generate a file which contains its command completion
 [[ $(whence yq) ]] && () {
-	local file
-	file="${XDG_CONFIG_HOME}/zsh/functions/_yq"
+	local file="${XDG_CONFIG_HOME}/zsh/functions/_yq"
 	if [[ ! -e ${file} ]]; then
 		yq shell-completion --variation=zsh > ${file}
 	fi
@@ -1001,8 +1017,10 @@ autoload -Uz chpwd_recent_dirs cdr add-zsh-hook
 }
 
 
-# If `nvim` is installed
+# If NeoVim is installed, use `vi` as an alias for `nvim`.
 if [[ $(whence nvim) ]]; then
+	# Open manpages using NeoVim's `:Man!` command
+	export MANPAGER='nvim +Man!'
 	# Have `vi` refer to `nvim`
 	alias vi='nvim'
 	autoload +X compdef
@@ -1012,8 +1030,6 @@ if [[ $(whence nvim) ]]; then
 	if (( ${COLUMNS} >= 80 )); then
 		export MANWIDTH=80
 	fi
-	# open manpages using `nvim`
-	MANPAGER='nvim +Man!'
 else
 	# Have `vi` refer to `vim`
 	alias vi='vim'
@@ -1110,10 +1126,20 @@ zstyle ':fzf-tab:*' default-color $'\033[38;5;255m'
 
 # Set the CHROME_EXECUTABLE environment variable to the Chrome binary,
 # which, if memory serves, is used by the `puppeteer` framework.
+# Additionally, set the BROWSER environment variable to `firefox`
+# but onl. if the `firefox` binary is found on this machine.
 () {
 	export CHROME_EXECUTABLE="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-	if [[ ! -x ${CHROME_EXECUTABLE} ]]; then
+	if [[ -x ${CHROME_EXECUTABLE} ]]; then
+		path+=(${BROWSER:h})
+	else
 		unset CHROME_EXECUTABLE
+	fi
+	export BROWSER='/Applications/Firefox.app/Contents/MacOS/firefox'
+	if [[ -x ${BROWSER} ]]; then
+		path+=(${BROWSER:h})
+	else
+		unset BROWSER
 	fi
 }
 
