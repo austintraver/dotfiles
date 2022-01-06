@@ -49,6 +49,10 @@ export \
 	done
 }
 
+if [[ ! -e "${XDG_CACHE_HOME}/zsh" ]]; then
+	mkdir -v -p "${XDG_CACHE_HOME}/zsh"
+fi
+
 # These next two commands work to remove the
 # ~/.zcompcache file from appearing
 zstyle ':completion::complete:*' use-cache on
@@ -695,12 +699,6 @@ autoload +X bashcompinit && bashcompinit
 	source $(whence -p az)/../../etc/bash_completion.d/az
 }
 
-# If `gcloud` is found, generate its command completion
-[[ $(whence gcloud) ]] && () {
-	source $(whence -p gcloud)/../../path.zsh.inc
-	source $(whence -p gcloud)/../../completion.zsh.inc
-}
-
 # If `yq` is found, generate a file which contains its command completion
 [[ $(whence yq) ]] && () {
 	local file="${XDG_CONFIG_HOME}/zsh/functions/_yq"
@@ -1083,27 +1081,31 @@ zstyle ':fzf-tab:*' default-color $'\033[38;5;255m'
 # Initialize the fuzzy finder utilities, if they are found
 () {
 	local fzf fzftab
+	if [[ -e "${HOMEBREW_PREFIX}/opt/fzf" ]]; then
+		fzf="${HOMEBREW_PREFIX}/opt/fzf"
+	elif [[ -e ~/.fzf ]]; then
+		fzf=~/.fzf
+	else
+		return
+	fi
 	typeset -T FZF_DEFAULT_OPTS fzf_default_opts
 	export FZF_DEFAULT_COMMAND
 
-	fzf="${HOMEBREW_PREFIX}/opt/fzf"
-	if [[ -e ${fzf} ]]; then
-		source ${fzf}/shell/completion.zsh
-		source ${fzf}/shell/key-bindings.zsh
-		FZF_DEFAULT_COMMAND="fd --type f"
-		fzf_default_opts=(
-			--no-mouse
-			--border=sharp
-			--height=30%
-			--min-height=15
-			--margin=2
-			# --layout=reverse
-		)
-		path=(
-			${fzf}/bin
-			${path}
-		)
-	fi
+	source ${fzf}/shell/completion.zsh
+	source ${fzf}/shell/key-bindings.zsh
+	FZF_DEFAULT_COMMAND="fd --type f"
+	fzf_default_opts=(
+		--no-mouse
+		--border=sharp
+		--height=30%
+		--min-height=15
+		--margin=2
+		# --layout=reverse
+	)
+	path=(
+		${fzf}/bin
+		${path}
+	)
 
 	fzftab="${HOME}/.fzf-tab/fzf-tab.zsh"
 	if [[ -e ${fzftab} ]]; then
