@@ -42,25 +42,32 @@ Set-PSReadLineOption -EditMode vi
 # Surround the command line with assistive predictions,
 # unless this instance of PowerShell is a non-interactive command
 if (!([bool]([Environment]::GetCommandLineArgs() -Contains '-Command'))) {
-    Set-PSReadLineOption -PredictionViewStyle ListView
-    Set-PSReadLineOption -PredictionSource HistoryAndPlugin
-    # Set-PSReadLineOption -PredictionSource History
+    Set-PSReadLineOption -PredictionSource History
+    # ---
+    # The statement below will not work until the release of PSReadLine version 2.2.0
+    # https://docs.microsoft.com/en-us/powershell/module/psreadline/set-psreadlineoption?view=powershell-7.2
+    # Set-PSReadLineOption -PredictionSource HistoryAndPlugin
+    # Set-PSReadLineOption -PredictionViewStyle ListView
 }
 
 Set-PSReadLineOption -Colors @{
-    Command                  = 'Blue'
-    Number                   = 'Yellow'
-    Member                   = 'Red'
+    Command                  = 'White'
+    Number                   = 'Red'
+    Member                   = 'Yellow'
     Operator                 = 'White'
-    Type                     = 'Blue'
+    Type                     = 'Green'
     Variable                 = 'Red'
     Parameter                = 'Cyan'
     ContinuationPrompt       = 'White'
     Default                  = 'White'
-    String                   = 'Green'
+    String                   = 'Blue'
     Keyword                  = 'Magenta'
-    InlinePrediction         = 'DarkGray'
-    ListPrediction           = 'DarkGray'
+    InlinePrediction         = 'Gray'
+    Comment                  = 'DarkGray'
+    # Selection                = 'Green'
+    # The statement below will not work until the release of PSReadLine version 2.2.0
+    # https://docs.microsoft.com/en-us/powershell/module/psreadline/set-psreadlineoption?view=powershell-7.2
+    # ListPrediction           = 'DarkGray'
     # ListPredictionSelection  = 'Red'
 }
 
@@ -156,12 +163,7 @@ Set-PSReadLineKeyHandler -Chord Ctrl+Shift+RightArrow -Function SelectNextWord -
 # Incompatible with command history suggestion list-view plugin
 # Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
 
-# Add command completion for `gh`
-. $(Join-Path $env:XDG_CONFIG_HOME "powershell" "completion" "gh.ps1")
-# Add command completion for `hugo`
-. $(Join-Path $env:XDG_CONFIG_HOME "powershell" "completion" "hugo.ps1")
-# Add command completion for `cobra`
-. $(Join-Path $env:XDG_CONFIG_HOME "powershell" "completion" "cobra.ps1")
+Get-ChildItem $(Join-Path $env:XDG_CONFIG_HOME "powershell" "completion") | ForEach-Object { . $_ }
 
 # Install-Module -Name DockerCompletion
 Import-Module -Name DockerCompletion
