@@ -163,7 +163,7 @@ Set-PSReadLineKeyHandler -Chord Ctrl+Shift+RightArrow -Function SelectNextWord -
 # Incompatible with command history suggestion list-view plugin
 # Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
 
-Get-ChildItem $(Join-Path $env:XDG_CONFIG_HOME "powershell" "completion") | ForEach-Object { . $_ }
+Get-ChildItem $(Join-Path $PSScriptRoot "completion") | ForEach-Object { . $_ }
 
 # Install-Module -Name DockerCompletion
 Import-Module -Name DockerCompletion
