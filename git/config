@@ -2,7 +2,7 @@
 [user]
 	name = Austin Traver
 	email = austintraver@gmail.com
-	signingKey = "0xF0B6CFC698A112DD"
+	signingKey = "ACC1924B4D9B63DC26DECA2AF0B6CFC698A112DD"
 [core]
 	editor = nvim
 	# hooksPath = .hooks
