@@ -467,7 +467,7 @@ let g:himalaya_telescope_preview_enabled = 1
 let g:himalaya_mailbox_picker = 'telescope'
 
 " Add support for fzf plugin
-set runtimepath+=$XDG_CONFIG_HOME/fzf
+set runtimepath+=~/.fzf
 
 command! -bang -nargs=* Rg
 \ call fzf#vim#grep(

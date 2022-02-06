@@ -8,70 +8,19 @@ function prompt {
     if ($NestedPromptLevel -ge 1) {
         Return '>> '
     }
-    Return @(
-        "`e[2;37m[$((Get-Date).ToString('T'))]`e[0m"
-        "`e[1;33m$($env:USERNAME.ToLower())`e[0m"
+    return @(
+        "`e[1;38;5;8m[$((Get-Date).ToString('T'))]`e[0m"
+        "`e[0;38;5;3m$([Environment]::UserName.ToLower())`e[0m"
         '@'
-        "`e[1;34m$($env:COMPUTERNAME.ToLower())`e[0m"
-        "`e[3;35m" + $(Get-Location | Split-Path -Leaf) + "/`e[0m"
-        "`e[1;31m=>`e[0m" + ' '
+        "`e[1;38;5;4m$([Environment]::ComputerName.ToLower())`e[0m"
+        "`e[1;38;5;5m$([System.IO.Path]::GetDirectoryName())`e[0m"
+        "`e[1;38;5;1m=>`e[0m "
     ) -join ' '
 }
 
 Set-Alias -Name vi -Value nvim
 
-Set-PSReadLineOption -EditMode vi
-
-# Currently a beta feature, but it works! Install by running this command:
-# > `Install-Module -AllowPrerelease PSReadLine -RequiredVersion 2.2.0-beta1`
-# There's also one for Azure specifically
-# > `Find-Module Az.Tools.Predictor -AllowPrerelease`
-# https://devblogs.microsoft.com/powershell/announcing-psreadline-2-1-with-predictive-intellisense/
-
-# Surround the command line with assistive predictions,
-# unless this instance of PowerShell is a non-interactive command
-if (!([bool]([Environment]::GetCommandLineArgs() -Contains '-Command'))) {
-    Set-PSReadLineOption -PredictionSource History
-    # ---
-    # The statement below will not work until the release of PSReadLine version 2.2.0
-    # https://docs.microsoft.com/en-us/powershell/module/psreadline/set-psreadlineoption?view=powershell-7.2
-    # Set-PSReadLineOption -PredictionSource HistoryAndPlugin
-    # Set-PSReadLineOption -PredictionViewStyle ListView
-}
-
-Set-PSReadLineOption -Colors @{
-    Command            = 'White'
-    Number             = 'Red'
-    Member             = 'Yellow'
-    Operator           = 'White'
-    Type               = 'Green'
-    Variable           = 'Red'
-    Parameter          = 'Cyan'
-    ContinuationPrompt = 'White'
-    Default            = 'White'
-    String             = 'Blue'
-    Keyword            = 'Magenta'
-    InlinePrediction   = 'Gray'
-    Comment            = 'DarkGray'
-    # Selection                = 'Green'
-    # The statement below will not work until the release of PSReadLine version 2.2.0
-    # https://docs.microsoft.com/en-us/powershell/module/psreadline/set-psreadlineoption?view=powershell-7.2
-    # ListPrediction           = 'DarkGray'
-    # ListPredictionSelection  = 'Red'
-}
-
-# Alter the appearance of the cursor whenever the current Vi mode
-# switches to/from Command/Insert mode.
-function OnViModeChange {
-    if ($args[0] -eq 'Command') {
-        # Set the cursor to a blinking block.
-        Write-Host -NoNewline "`e[1 q"
-    } else {
-        # Set the cursor to a blinking line.
-        Write-Host -NoNewline "`e[5 q"
-    }
-}
-Set-PSReadLineOption -ViModeIndicator Script -ViModeChangeHandler $Function:OnViModeChange
+Set-PSReadLineOption -EditMode Vi
 
 Set-PSReadLineKeyHandler -Chord 'Ctrl+a' -Function BeginningOfLine -ViMode Insert
 Set-PSReadLineKeyHandler -Chord 'Ctrl+Shift+a' -Function SelectBackwardsLine -ViMode Insert
@@ -109,7 +58,6 @@ Set-PSReadLineKeyHandler -Chord 'Ctrl+c' -Function CopyOrCancelLine -ViMode Comm
 Set-PSReadLineKeyHandler -Chord 'Ctrl+x' -Function Cut -ViMode Insert
 Set-PSReadLineKeyHandler -Chord 'Ctrl+x' -Function Cut -ViMode Command
 
-Set-PSReadLineKeyHandler -Chord 'Ctrl+]' -Function ViCommandMode -ViMode Insert
 Set-PSReadLineKeyHandler -Chord 'Ctrl+[' -Function ViCommandMode -ViMode Insert
 
 Set-PSReadLineKeyHandler -Chord 'Ctrl+Shift+z' -Function Redo -ViMode Insert
@@ -146,35 +94,130 @@ Set-PSReadLineKeyHandler -Chord 'Ctrl+Shift+RightArrow' -Function SelectNextWord
 # Set-PSReadLineKeyHandler -Chord 'Ctrl+p' -Function PreviousHistory -ViMode Insert
 # Set-PSReadLineKeyHandler -Chord 'Ctrl+n' -Function NextHistory -ViMode Insert
 
-# Set-PSReadLineKeyHandler -Chord "Ctrl+p" -Function HistorySearchBackward -ViMode Insert
-# Set-PSReadLineKeyHandler -Chord "Ctrl+n" -Function HistorySearchForward -ViMode Insert
-
 # Incompatible with command history suggestion list-view plugin
 # Set-PSReadlineKeyHandler -Chord Tab -Function MenuComplete
 
-Enable-PsFzfAliases
+Set-PSReadLineKeyHandler -Chord "Ctrl+p" -Function HistorySearchBackward -ViMode Insert
+Set-PSReadLineKeyHandler -Chord "Ctrl+n" -Function HistorySearchForward -ViMode Insert
 
-Set-PSReadLineKeyHandler -Chord 'Ctrl+s' -ScriptBlock { Invoke-FuzzySetLocation } -ViMode Insert
-Set-PSReadLineKeyHandler -Chord 'Ctrl+s' -ScriptBlock { Invoke-FuzzySetLocation } -ViMode Command
+# https://docs.microsoft.com/en-us/powershell/module/psreadline/set-psreadlineoption?view=powershell-7.2#example-6--use-vimodechangehandler-to-display-vi-mode-changes
+# Alter the appearance of the cursor whenever the current Vi mode
+# switches to/from Command/Insert mode.
+function OnViModeChange {
+    if ($args[0] -eq 'Command') {
+        # Set the cursor to a blinking block.
+        Write-Host -NoNewline "`e[1 q"
+    } else {
+        # Set the cursor to a blinking line.
+        Write-Host -NoNewline "`e[5 q"
+    }
+}
+Set-PSReadLineOption `
+    -ViModeChangeHandler $Function:OnViModeChange `
+    -ViModeIndicator Script `
 
-Set-PSReadLineKeyHandler -Chord 'Ctrl+r' -ScriptBlock { Invoke-FuzzyHistory } -ViMode Insert
-Set-PSReadLineKeyHandler -Chord 'Ctrl+r' -ScriptBlock { Invoke-FuzzyHistory } -ViMode Command
+Set-PSReadLineOption `
+    -HistorySearchCaseSensitive:$False `
+    -HistorySearchCursorMovesToEnd:$True `
+    -HistoryNoDuplicates:$True `
+    -MaximumHistoryCount 32767 `
+    -ShowToolTips:$True `
 
-Set-PSReadLineKeyHandler -Chord 'Ctrl+q' -ScriptBlock { Invoke-FuzzyKillProcess } -ViMode Insert
-Set-PSReadLineKeyHandler -Chord 'Ctrl+q' -ScriptBlock { Invoke-FuzzyKillProcess } -ViMode Command
+# https://docs.microsoft.com/en-us/powershell/module/psreadline/set-psreadlineoption?view=powershell-7.2#example-4--set-multiple-color-options
+Set-PSReadLineOption -Colors @{
+    ContinuationPrompt = "`e[0;38;5;15m"
+    Emphasis           = "`e[1;38;5;15m"
+    Error              = "`e[3;38;5;1m"
+    Selection          = "`e[0;38;5;15;48;5;8m"
+    Default            = "`e[0;38;5;15m"
+    Comment            = "`e[0;38;5;8m"
+    Keyword            = "`e[0;38;5;5m"
+    String             = "`e[0;38;5;6m"
+    Operator           = "`e[1;38;5;15m"
+    Variable           = "`e[0;38;5;3m"
+    Command            = "`e[1;38;5;2m"
+    Parameter          = "`e[0;38;5;5m"
+    Type               = "`e[0;38;5;4m"
+    Number             = "`e[0;38;5;15m"
+    Member             = "`e[0;38;5;1m"
+    InlinePrediction   = "`e[0;38;5;7m"
+}
 
-# replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
-# Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+s' -PSReadlineChordReverseHistory 'Ctrl+r'
+# Ensure that the PSGallery repository is trusted.
+if (!((Get-PSRepository -Name PSGallery).InstallationPolicy.Equals('Trusted'))) {
+    Set-PSRepository -Name PSGallery -InstallationPolicy Trusted 
+}
 
-Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion } -ViMode Insert
-Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion } -ViMode Command
-Set-PsFzfOption -TabExpansion
+# Ensure that the current PSReadLine is version 2.2.0 or higher
+if ($PSVersionTable.PSVersion.Major -ge 7 -and $PSVersionTable.PSVersion.Minor -lt 2) {
+     Update-Module -Name PSReadLine -AllowPrerelease -Force -Confirm
+ }
+
+# Disabled until a suggestion system is implemented, hopefully GitHub Copilot
+# Ensure that the PowerShell subsystem plugin model is enabled
+if (!$(Get-ExperimentalFeature -Name PSSubsystemPluginModel).Enabled) { 
+    Enable-ExperimentalFeature PSSubsystemPluginModel
+}
+
+try {
+    # This section will not work until the release of PSReadLine version 2.2.0
+    # Remove-Module -Name Az.Tools.Predictor -AllowPrerelease
+    # Uninstall-Module -Name Az.Tools.Predictor -AllVersions
+    # Get-EventSubscriber -Force -SourceIdentifier PowerShell.OnIdle
+    Set-PSReadLineOption -PredictionViewStyle ListView
+    Set-PSReadLineOption -PredictionSource History
+} catch [System.Management.Automation.CommandNotFoundException] {
+    # https://techcommunity.microsoft.com/t5/azure-tools-blog/announcing-az-predictor/ba-p/1873104
+    # Install-Module -Name Az.Accounts -AllowPrerelease -Confirm        
+    # Install-Module -Name Az.Tools.Predictor -AllowPrerelease -Confirm
+    #    if (!(Get-PSSubsystem -Kind CommandPredictor).IsRegistered) {
+    #        Write-Warning "Module 'Az.Tools.Predictor' is not installed."
+    # }
+}
+
+
+# https://devblogs.microsoft.com/powershell/announcing-psreadline-2-1-with-predictive-intellisense/
+# This statement will not work until the release of PSReadLine version 2.2.0
+Set-PSReadLineOption -Colors @{
+    ListPrediction = "`e[38;5;7m"
+    ListPredictionSelected = "`e[38;5;7;48;5;8m"
+}
+
+try {
+    Import-Module -Name PSFzf
+    Enable-PsFzfAliases
+
+    Set-PSReadLineKeyHandler -Chord 'Ctrl+s' -ScriptBlock { Invoke-FuzzySetLocation } -ViMode Insert
+    Set-PSReadLineKeyHandler -Chord 'Ctrl+s' -ScriptBlock { Invoke-FuzzySetLocation } -ViMode Command
+
+    Set-PSReadLineKeyHandler -Chord 'Ctrl+r' -ScriptBlock { Invoke-FuzzyHistory } -ViMode Insert
+    Set-PSReadLineKeyHandler -Chord 'Ctrl+r' -ScriptBlock { Invoke-FuzzyHistory } -ViMode Command
+
+    Set-PSReadLineKeyHandler -Chord 'Ctrl+q' -ScriptBlock { Invoke-FuzzyKillProcess } -ViMode Insert
+    Set-PSReadLineKeyHandler -Chord 'Ctrl+q' -ScriptBlock { Invoke-FuzzyKillProcess } -ViMode Command
+
+    Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion } -ViMode Insert
+    Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion } -ViMode Command
+    Set-PsFzfOption -TabExpansion
+
+    Set-PSReadLineKeyHandler -Chord 'Ctrl+]' -Function ViCommandMode -ViMode Insert
+
+    # replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
+    # Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+s' -PSReadlineChordReverseHistory 'Ctrl+r'
+
+} catch [System.Management.Automation.CommandNotFoundException] {
+    Install-Module -Name PSFzf -Confirm
+}
+
+try { 
+    Import-Module -Name DockerCompletion 
+} catch {
+    Install-Module -Name DockerCompletion -Confirm
+}
 
 # Load completion scripts saved in a dedicated completions subdirectory.
-Get-ChildItem $(Join-Path $PSScriptRoot 'completion') | ForEach-Object { . $_ }
-
-# Install-Module -Name DockerCompletion
-Import-Module -Name DockerCompletion
+# Get-ChildItem $(Join-Path $PSScriptRoot 'completion') | ForEach-Object { . $_ }
+Get-ChildItem $([System.IO.Path]::Join($PSScriptRoot, 'completion')) | ForEach-Object { Measure-Command { . $_ } }
 
 # Clear the screen as well as the scrollback buffer
 Set-PSReadLineKeyHandler -Chord Ctrl+l -ScriptBlock {

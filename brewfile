@@ -6,45 +6,83 @@
 # | |_.__/|_|  \___| \_/\_/ |_| |_|_|\___| |
 #  ========================================
 
+# ================
+# Random Tools
+# ================
+
+# journal CLI
+brew 'jrnl'
+
+# mail CLI
+brew 'himalaya'
+
+# image/video manipulation
+brew 'webp'
+brew 'libavif'
+brew 'librsvg'
+brew 'imagemagick'
+brew 'ffmpeg'
+
+# Packages from beloved Rustaceans
+brew 'rust'
+brew 'ripgrep'
+brew 'exa'
+brew 'fd'
+brew 'bat'
+brew 'himalaya'
+brew 'the_silver_searcher'
+# ----------------
+
+
+# GitHub CLI
 tap 'github/gh'
+brew 'gh'
 
 tap 'mongodb/brew'
-
-tap 'twilio/brew'
-brew 'twilio'
 
 # Ookla Speedtest
 tap 'teamookla/speedtest'
 brew 'speedtest'
 
-# Espanso
+# Espanso (Text Expander)
 tap 'federico-terzi/espanso'
 brew 'espanso'
+
+# Yippy (Clipboard Manager)
+cask 'yippy'
 
 # tap 'jmespath/jmespath'
 # brew 'jmespath/jmespath/jp'
 
 # https://github.com/microsoft/git-credential-manager-core
+#
+# =================
+# Microsoft Tools
+# =================
 tap 'microsoft/git'
 cask 'microsoft/git/git-credential-manager-core'
-brew 'azure-cli' # Microsoft
-# tap 'stripe/stripe-cli'
-# brew 'stripe'
+brew 'azure-cli'
 tap 'powershell/tap'
 brew 'powershell'
-brew 'riscv'
-brew 'twilio'
+
+# Stripe CLI
+# tap 'stripe/stripe-cli'
+# brew 'stripe'
+
+# RISC-V
+# tap 'riscv-software-src/riscv'
+# brew 'riscv-tools'
 
 # https://dart.dev/get-dart
-tap 'dart-lang/dart'
-brew 'dart'
+# tap 'dart-lang/dart'
+# brew 'dart'
+# cask 'flutter'
 
 # A man-db installation without the 'g' prefix
-tap 'alhadis/troff'
-brew 'alhadis/troff/man-db'
+# tap 'alhadis/troff'
+# brew 'alhadis/troff/man-db'
 # --------------------
 
-cask 'flutter'
 
 # GNU Programs
 # ============
@@ -139,39 +177,17 @@ cask 'tor-browser'
 cask 'google-chrome'
 # -------------------
 
-# ================
-# Random Tools
-# ================
-
-# journal CLI
-brew 'jrnl'
-
-# mail CLI
-brew 'himalaya'
-
-# image/video manipulation
-brew 'webp'
-brew 'libavif'
-brew 'librsvg'
-brew 'imagemagick'
-brew 'ffmpeg'
-
-# Packages from beloved Rustaceans
-brew 'rust'
-brew 'ripgrep'
-brew 'exa'
-brew 'fd'
-brew 'bat'
-brew 'himalaya'
-brew 'the_silver_searcher'
-# ----------------
-
 # cask 'basictex'
 # cask 'texshop'
 # ==================
 # cask 'virtualbox'
 # cask 'virtualbox-extension-pack'
 # ==================
+#
+# Twilio CLI
+# tap 'twilio/brew'
+# brew 'twilio'
+
 
 # Use my tap!
 # Warning: My tap is not maintained very rigorously.

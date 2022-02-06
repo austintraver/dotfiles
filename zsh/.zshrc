@@ -1156,4 +1156,32 @@ octo() {
 	builtin printf '%o\n' $(( permissions & 0777 ))
 }
 
+if [[ -e /Applications/VMware\ Fusion.app ]]; then
+	path+=(/Applications/VMware\ Fusion.app/Contents/Library{,/vkd/bin})
+
+	alias -g 350.vmx="/Users/austin/.vm/CSCI\ 350.vmwarevm/CSCI\ 350.vmx"
+	350vm() { 
+		print "not working :(" >&2
+		return 1
+		vmrun start 350.vmx nogui
+		ssh 350 || ssh 350
+	}
+
+	alias -g 353.vmx="/Users/austin/.vm/CSCI\ 353.vmwarevm/CSCI\ 353.vmx"
+	353vm() { 
+		print "not working :(" >&2
+		return 1
+		vmrun start 353.vmx nogui
+		ssh 353 || ssh 353
+	}
+fi
+
+if [[ -e /Applications/VirtualBox.app ]]; then
+	cs551() {
+		VBoxHeadless -s cs551-vm
+		ssh cs551
+	}
+fi
+
 # zprof
+

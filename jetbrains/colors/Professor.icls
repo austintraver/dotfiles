@@ -3,7 +3,7 @@
     <property name="created">2021-08-01T00:08:08</property>
     <property name="ide">idea</property>
     <property name="ideVersion">2021.2.0.0</property>
-    <property name="modified">2022-01-05T00:19:59</property>
+    <property name="modified">2022-01-05T06:33:40</property>
     <property name="originalScheme">_@user_Professor copy</property>
   </metaInfo>
   <colors>
@@ -377,6 +377,11 @@
         <option name="FOREGROUND" value="b3ffcc" />
       </value>
     </option>
+    <option name="DEFAULT_GLOBAL_VARIABLE">
+      <value>
+        <option name="FOREGROUND" value="ffdd99" />
+      </value>
+    </option>
     <option name="DEFAULT_HIGHLIGHTED_REFERENCE">
       <value>
         <option name="EFFECT_COLOR" value="ffffff" />
@@ -594,12 +599,12 @@
     </option>
     <option name="GO_PACKAGE_EXPORTED_VARIABLE">
       <value>
-        <option name="FOREGROUND" value="b3ffcc" />
+        <option name="FOREGROUND" value="ffdd99" />
       </value>
     </option>
     <option name="GO_PACKAGE_LOCAL_VARIABLE">
       <value>
-        <option name="FOREGROUND" value="b3ffcc" />
+        <option name="FOREGROUND" value="ffdd99" />
       </value>
     </option>
     <option name="GO_SCOPE_VARIABLE">
@@ -648,7 +653,7 @@
     </option>
     <option name="HTML_TAG_NAME">
       <value>
-        <option name="FOREGROUND" value="ffdd99" />
+        <option name="FOREGROUND" value="b3cbff" />
       </value>
     </option>
     <option name="HYPERLINK_ATTRIBUTES">
@@ -24903,11 +24908,6 @@
         <option name="EFFECT_TYPE" value="5" />
       </value>
     </option>
-    <option name="OC.LOCAL_VARIABLE">
-      <value>
-        <option name="FOREGROUND" value="ffffff" />
-      </value>
-    </option>
     <option name="OC.MACRONAME">
       <value>
         <option name="FOREGROUND" value="afafff" />
@@ -24937,7 +24937,7 @@
     </option>
     <option name="OC.SELFSUPERTHIS">
       <value>
-        <option name="FOREGROUND" value="89c4ff" />
+        <option name="FOREGROUND" value="ff7f95" />
       </value>
     </option>
     <option name="OC.STRUCT_FIELD">
@@ -24947,22 +24947,22 @@
     </option>
     <option name="OC.STRUCT_LIKE">
       <value>
-        <option name="FOREGROUND" value="70e09b" />
+        <option name="FOREGROUND" value="99b9ff" />
       </value>
     </option>
     <option name="OC.TEMPLATE_TYPE">
       <value>
-        <option name="FOREGROUND" value="70e09b" />
+        <option name="FOREGROUND" value="99b9ff" />
       </value>
     </option>
     <option name="OC.TEMPLATE_VALUE">
       <value>
-        <option name="FOREGROUND" value="ffdd99" />
+        <option name="FOREGROUND" value="f9ffb3" />
       </value>
     </option>
     <option name="OC.TYPEDEF">
       <value>
-        <option name="FOREGROUND" value="70e09b" />
+        <option name="FOREGROUND" value="99b9ff" />
       </value>
     </option>
     <option name="PROPERTIES.INVALID_STRING_ESCAPE" baseAttributes="DEFAULT_INVALID_STRING_ESCAPE" />

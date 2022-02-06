@@ -157,6 +157,6 @@ fi
 
 [[ -r ~/.cargo/env ]] && source ~/.cargo/env
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+# export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
 
 [[ -e "/usr/local/opt/oracle/lib/python3.9/site-packages/oci_cli/bin/oci_autocomplete.sh" ]] && source "/usr/local/opt/oracle/lib/python3.9/site-packages/oci_cli/bin/oci_autocomplete.sh"
