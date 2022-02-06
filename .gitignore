@@ -35,3 +35,9 @@
 /espanso/
 /bin/
 /wslu/
+
+# Ignore auto-generated IntelliJ idea color profiles
+_@user_*.icls
+
+/asciinema
+/wireshark
