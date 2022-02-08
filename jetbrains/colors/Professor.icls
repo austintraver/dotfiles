@@ -1,10 +1,10 @@
 <scheme name="Professor" version="142" parent_scheme="Darcula">
   <metaInfo>
-    <property name="created">2021-08-01T00:08:08</property>
+    <property name="created">2022-02-01T09:22:44</property>
     <property name="ide">idea</property>
-    <property name="ideVersion">2021.2.0.0</property>
-    <property name="modified">2022-01-05T00:19:59</property>
-    <property name="originalScheme">_@user_Professor copy</property>
+    <property name="ideVersion">2021.3.2.0.0</property>
+    <property name="modified">2022-02-03T21:49:45</property>
+    <property name="originalScheme">Professor</property>
   </metaInfo>
   <colors>
     <option name="ADDED_LINES_COLOR" value="70e09b" />
@@ -377,6 +377,11 @@
         <option name="FOREGROUND" value="b3ffcc" />
       </value>
     </option>
+    <option name="DEFAULT_GLOBAL_VARIABLE">
+      <value>
+        <option name="FOREGROUND" value="ffdd99" />
+      </value>
+    </option>
     <option name="DEFAULT_HIGHLIGHTED_REFERENCE">
       <value>
         <option name="EFFECT_COLOR" value="ffffff" />
@@ -594,12 +599,12 @@
     </option>
     <option name="GO_PACKAGE_EXPORTED_VARIABLE">
       <value>
-        <option name="FOREGROUND" value="b3ffcc" />
+        <option name="FOREGROUND" value="ffdd99" />
       </value>
     </option>
     <option name="GO_PACKAGE_LOCAL_VARIABLE">
       <value>
-        <option name="FOREGROUND" value="b3ffcc" />
+        <option name="FOREGROUND" value="ffdd99" />
       </value>
     </option>
     <option name="GO_SCOPE_VARIABLE">
@@ -648,7 +653,7 @@
     </option>
     <option name="HTML_TAG_NAME">
       <value>
-        <option name="FOREGROUND" value="ffdd99" />
+        <option name="FOREGROUND" value="b3cbff" />
       </value>
     </option>
     <option name="HYPERLINK_ATTRIBUTES">
@@ -24903,11 +24908,6 @@
         <option name="EFFECT_TYPE" value="5" />
       </value>
     </option>
-    <option name="OC.LOCAL_VARIABLE">
-      <value>
-        <option name="FOREGROUND" value="ffffff" />
-      </value>
-    </option>
     <option name="OC.MACRONAME">
       <value>
         <option name="FOREGROUND" value="afafff" />
@@ -24937,7 +24937,7 @@
     </option>
     <option name="OC.SELFSUPERTHIS">
       <value>
-        <option name="FOREGROUND" value="89c4ff" />
+        <option name="FOREGROUND" value="ff7f95" />
       </value>
     </option>
     <option name="OC.STRUCT_FIELD">
@@ -24947,22 +24947,42 @@
     </option>
     <option name="OC.STRUCT_LIKE">
       <value>
-        <option name="FOREGROUND" value="70e09b" />
+        <option name="FOREGROUND" value="99b9ff" />
       </value>
     </option>
     <option name="OC.TEMPLATE_TYPE">
       <value>
-        <option name="FOREGROUND" value="70e09b" />
+        <option name="FOREGROUND" value="99b9ff" />
       </value>
     </option>
     <option name="OC.TEMPLATE_VALUE">
       <value>
-        <option name="FOREGROUND" value="ffdd99" />
+        <option name="FOREGROUND" value="f9ffb3" />
       </value>
     </option>
     <option name="OC.TYPEDEF">
       <value>
-        <option name="FOREGROUND" value="70e09b" />
+        <option name="FOREGROUND" value="99b9ff" />
+      </value>
+    </option>
+    <option name="POWER_SHELL_COMMAND_NAME">
+      <value>
+        <option name="FOREGROUND" value="b3ffcc" />
+      </value>
+    </option>
+    <option name="POWER_SHELL_COMMAND_PARAMETER">
+      <value>
+        <option name="FOREGROUND" value="f9ffb3" />
+      </value>
+    </option>
+    <option name="POWER_SHELL_LABEL_NAME">
+      <value>
+        <option name="FOREGROUND" value="c9b3ff" />
+      </value>
+    </option>
+    <option name="POWER_SHELL_PROPERTY_REF_NAME">
+      <value>
+        <option name="FOREGROUND" value="ffd3b3" />
       </value>
     </option>
     <option name="PROPERTIES.INVALID_STRING_ESCAPE" baseAttributes="DEFAULT_INVALID_STRING_ESCAPE" />
@@ -25198,14 +25218,25 @@
         <option name="EFFECT_TYPE" value="5" />
       </value>
     </option>
+    <option name="org.rust.CRATE">
+      <value>
+        <option name="FOREGROUND" value="bcfff9" />
+      </value>
+    </option>
+    <option name="org.rust.DOC_CODE">
+      <value>
+        <option name="FOREGROUND" value="ffe9b3" />
+      </value>
+    </option>
     <option name="org.rust.DOC_EMPHASIS">
       <value>
-        <option name="FOREGROUND" value="afafff" />
-        <option name="FONT_TYPE" value="3" />
+        <option name="FOREGROUND" value="b3ffcc" />
+        <option name="FONT_TYPE" value="2" />
       </value>
     </option>
     <option name="org.rust.DOC_HEADING">
       <value>
+        <option name="FOREGROUND" value="b3cbff" />
         <option name="FONT_TYPE" value="1" />
         <option name="EFFECT_TYPE" value="1" />
       </value>
@@ -25224,20 +25255,43 @@
         <option name="FONT_TYPE" value="1" />
       </value>
     </option>
+    <option name="org.rust.FUNCTION_CALL" baseAttributes="DEFAULT_FUNCTION_CALL" />
+    <option name="org.rust.GENERATED_ITEM">
+      <value>
+        <option name="FOREGROUND" value="ffb3d3" />
+      </value>
+    </option>
     <option name="org.rust.LIFETIME">
       <value>
-        <option name="FOREGROUND" value="bcfff9" />
+        <option name="FOREGROUND" value="b3cbff" />
         <option name="FONT_TYPE" value="2" />
       </value>
     </option>
     <option name="org.rust.MACRO">
       <value>
-        <option name="FOREGROUND" value="89c4ff" />
+        <option name="FOREGROUND" value="bdeeff" />
+      </value>
+    </option>
+    <option name="org.rust.METHOD_CALL" baseAttributes="DEFAULT_FUNCTION_CALL" />
+    <option name="org.rust.MUT_PARAMETER">
+      <value>
+        <option name="FOREGROUND" value="f9ffb3" />
+        <option name="EFFECT_TYPE" value="1" />
       </value>
     </option>
     <option name="org.rust.TYPE_PARAMETER">
       <value>
         <option name="FOREGROUND" value="ffdd99" />
+      </value>
+    </option>
+    <option name="org.rust.UNSAFE_CODE">
+      <value>
+        <option name="EFFECT_TYPE" value="5" />
+      </value>
+    </option>
+    <option name="org.rust.VARIABLE">
+      <value>
+        <option name="FOREGROUND" value="ffccff" />
       </value>
     </option>
   </attributes>

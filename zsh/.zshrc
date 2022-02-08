@@ -18,7 +18,8 @@ zmodload -Fa 'zsh/stat'
 zmodload -Fa 'zsh/files'
 zmodload -Fa 'zsh/complete'
 zmodload -Fa 'zsh/complist'
-zmodload -Fa 'zsh/datetime'
+
+zmodload 'zsh/datetime'
 
 # zmodload zsh/zprof
 
@@ -59,6 +60,8 @@ zstyle ':completion:*:*:*:*:*' menu selection
 # Permit case-insensitive completion, but only in direction (upper -> lower)
 zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
 zstyle ':completion:*' verbose yes
+# https://learning.oreilly.com/library/view/learning-shell-scripting/9781783282937/ch05s02.html#ch05lvl2sec49
+zstyle ':completion:*' squeeze-slashes true
 # zstyle ':completion:*' recent-dirs-insert always
 # zstyle ':chpwd:*' recent-dirs-default true
 zstyle ':completion:*:default' menu select=1
@@ -85,11 +88,6 @@ if [[ ${OSTYPE} =~ 'darwin' ]]; then
 
 
 	path=(
-		~/.local/bin
-		${XDG_CONFIG_HOME}/bin
-		${HOMEBREW_PREFIX}/bin
-		${HOMEBREW_PREFIX}/sbin
-		${HOMEBREW_PREFIX}/opt/**/*/libexec/gnubin(N)
 		/usr/local/bin
 		/usr/local/sbin
 		/usr/bin
@@ -116,7 +114,7 @@ if [[ ${OSTYPE} =~ 'darwin' ]]; then
 	)
 
 	# Request that Homebrew be installed, and exit
-	if [[ ! $(whence brew) ]]; then
+	if [[ ! -e '/usr/local/bin/brew' ]] && [[ ! -e '/opt/homebrew/bin/brew' ]]; then
 		print "Please install Homebrew: https://brew.sh" >&2
 		return 1
 	fi
@@ -127,11 +125,11 @@ if [[ ${OSTYPE} =~ 'darwin' ]]; then
 		HOMEBREW_REPOSITORY \
 		HOMEBREW_SHELLENV_PREFIX \
 		HOMEBREW_NO_ENV_HINTS=1 \
-		HOMEBREW_INSTALL_FROM_API=1 \
 		HOMEBREW_NO_COMPAT=1 \
 		HOMEBREW_UPDATE_REPORT_ONLY_INSTALLED=1 \
 		HOMEBREW_DISPLAY_INSTALL_TIMES=1 \
 		HOMEBREW_NO_INSTALL_CLEANUP=1 \
+		HOMEBREW_BUNDLE_NO_LOCK=1 \
 		# HOMEBREW_NO_AUTO_UPDATE \
 
 	local brew_cache_dir="${XDG_CACHE_HOME}/brew"
@@ -139,43 +137,61 @@ if [[ ${OSTYPE} =~ 'darwin' ]]; then
 		mkdir -v -p "${XDG_CACHE_HOME}/brew"
 	fi
 
+	# Add Java Virtual Machine installations to PATH
+	path=(/Library/Java/JavaVirtualMachines/*/Contents/Home/bin(N) ${path})
 
-	() {
-		local pkg
 
-		# Add homebrew binaries within the 'libexec' directory
-		# to the PATH
-		foreach pkg (
-			'python'
-			'python@3.9'
-			'python@3.10'
-			'man-db'
-		)
-			if [[ -e ${HOMEBREW_PREFIX}/opt/${pkg} ]]; then
-				path=(
-					${HOMEBREW_PREFIX}/opt/${pkg}/libexec/bin(/N)
-					${path}
-				)
-			fi
-		end
+	local pkg=(python{,@3.{8..10}} 'man-db' )
 
-		# Add homebrew binaries outside of any 'libexec' directory
-		# to the PATH
-		foreach pkg (
-			'lsof'
-			'curl'
-			'rust'
-			'node@16'
-			'node@14'
-		)
-			if [[ -e ${HOMEBREW_PREFIX}/opt/${pkg} ]]; then
-				path=(
-					${HOMEBREW_PREFIX}/opt/${pkg}/bin(/N)
-					${path}
-				)
-			fi
-		end
-	} 
+	# Add homebrew binaries within the 'libexec' directory
+	# to the PATH
+	foreach pkg (
+		'python@3.8'
+		'python@3.9'
+		'python@3.10'
+		'python'
+		'man-db'
+	)
+		if [[ -e ${HOMEBREW_PREFIX}/opt/${pkg} ]]; then
+			path=(
+				${HOMEBREW_PREFIX}/opt/${pkg}/libexec/bin(/N)
+				${path}
+			)
+		fi
+	end
+	# Add homebrew binaries outside of any 'libexec' directory
+	# to the PATH
+	foreach pkg (
+		'lsof'
+		'curl'
+		'rust'
+		'ruby'
+		'node@16'
+		'node@14'
+		'openssl@3'
+	)
+		if [[ -e ${HOMEBREW_PREFIX}/opt/${pkg} ]]; then
+			path=(
+				${HOMEBREW_PREFIX}/opt/${pkg}/bin(/N)
+				${path}
+			)
+		fi
+	end
+
+	path=(
+		~/.local/bin
+		${XDG_CONFIG_HOME}/bin
+		${HOMEBREW_PREFIX}/bin
+		${HOMEBREW_PREFIX}/sbin
+		${HOMEBREW_PREFIX}/opt/**/*/libexec/gnubin(N)
+		${HOMEBREW_PREFIX}/lib/ruby/gems/3.0.0/bin(N)
+		${path}
+	)
+
+	fpath=(
+		${HOMEBREW_PREFIX}/opt/*/share/zsh/site-functions(/N)
+		${fpath}
+	)
 fi
 
 
@@ -509,6 +525,7 @@ export \
 	SQLITE_HISTORY="${XDG_STATE_HOME}/sqlite/history" \
 	NODE_REPL_HISTORY="${XDG_STATE_HOME}/node/history" \
 	WGETRC="${XDG_CONFIG_HOME}/wgetrc" \
+	GH_CONFIG_DIR="${XDG_CONFIG_HOME}/gh" \
 	MAVEN_REPOSITORY="${HOME}/.maven" \
 
 () {
@@ -613,6 +630,7 @@ typeset -U \
 fpath=(
  	${XDG_CONFIG_HOME}/zsh/functions(/NF)
  	${XDG_DATA_HOME}/zsh/site-functions(/NF)
+ 	${fpath}
  	/usr/share/zsh/functions(/NF)
  	/usr/share/zsh/site-functions(/NF)
  	/usr/share/zsh/5.8/functions(/NF)
@@ -621,7 +639,6 @@ fpath=(
  	/usr/local/share/zsh/site-functions(/NF)
  	/usr/local/share/zsh/5.8/functions(/NF)
  	/usr/local/share/zsh/5.8/site-functions(/NF)
- 	${fpath}
 )
 
 # fignore() An array containing the suffixes of files to be
@@ -656,6 +673,9 @@ fignore+=(
 	fi
 }
 
+# Initialize module to provide compatibility for bash-based completion functions
+autoload +X bashcompinit && bashcompinit
+
 () {
 	# Skip this function if we are the root user.
 	if (( ${UID} == 0 )); then
@@ -671,10 +691,8 @@ fignore+=(
 	# -i: silently ignore all insecure files and directories
 	autoload +X compinit
 	compinit
+	# compinit -d ~/.zcompdump
 }
-
-# Initialize module to provide compatibility for bash-based completion functions
-autoload +X bashcompinit && bashcompinit
 
 # Add autosuggestion features to the shell
 # provided that the autosuggest module can be located
@@ -697,8 +715,9 @@ autoload +X bashcompinit && bashcompinit
 
 # If `gcloud` is found, generate its command completion
 [[ $(whence gcloud) ]] && () {
-	source $(whence -p gcloud)/../../path.zsh.inc
-	source $(whence -p gcloud)/../../completion.zsh.inc
+	local binary=$(whence -p gcloud)
+	source ${binary:A}/../../path.zsh.inc
+	source ${binary:A}/../../completion.zsh.inc
 }
 
 # If `yq` is found, generate a file which contains its command completion
@@ -1068,15 +1087,33 @@ fi
 
 # disable sort when completing `git checkout`
 zstyle ':completion:*:git-checkout:*' sort false
-# set descriptions format to enable group support
-zstyle ':completion:*:descriptions' format '[%d]'
 # set list-colors to enable filename colorizing
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+# https://github.com/Aloxaf/fzf-tab/wiki/Configuration#group-colors
 zstyle ':fzf-tab:*' switch-group ',' '.'
 # preview directory's content with exa when completing cd
 zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
 # set the default color of completion text (white)
-zstyle ':fzf-tab:*' default-color $'\033[38;5;255m'
+zstyle ':fzf-tab:*' default-color $'\033[38;5;3m'
+zstyle ':fzf-tab:*' prefix '·'
+zstyle ':fzf-tab:*' single-group prefix header
+# set descriptions format to enable group support
+zstyle ':completion:*:descriptions' format '[%d]'
+zstyle ':fzf-tab:*' show-group full
+zstyle ':fzf-tab:*' continuous-trigger '/'
+
+# Use fd (https://github.com/sharkdp/fd) instead of the default find
+# command for listing path candidates.
+# - The first argument to the function ($1) is the base path to start traversal
+# - See the source code (completion.{bash,zsh}) for the details.
+_fzf_compgen_path() {
+  fd --hidden --follow --exclude ".git" . "$1"
+}
+
+# Use fd to generate the list for directory completion
+_fzf_compgen_dir() {
+  fd --type d --hidden --follow --exclude ".git" . "$1"
+}
 
 # source ~/.fzf.zsh
 
@@ -1104,7 +1141,6 @@ zstyle ':fzf-tab:*' default-color $'\033[38;5;255m'
 			${path}
 		)
 	fi
-
 	fzftab="${HOME}/.fzf-tab/fzf-tab.zsh"
 	if [[ -e ${fzftab} ]]; then
 		source ${fzftab}
@@ -1124,6 +1160,13 @@ zstyle ':fzf-tab:*' default-color $'\033[38;5;255m'
 	fi
 }
 
+() {
+	# If the GitHub CLI is installed, disable notifications.
+	if [[ $(whence gh) ]]; then
+		export GH_NO_UPDATE_NOTIFIER=1
+	fi
+}
+
 # Set the CHROME_EXECUTABLE environment variable to the Chrome binary,
 # which, if memory serves, is used by the `puppeteer` framework.
 # Additionally, set the BROWSER environment variable to `firefox`
@@ -1135,12 +1178,12 @@ zstyle ':fzf-tab:*' default-color $'\033[38;5;255m'
 	else
 		unset CHROME_EXECUTABLE
 	fi
-	export BROWSER='/Applications/Firefox.app/Contents/MacOS/firefox'
-	if [[ -x ${BROWSER} ]]; then
-		path+=(${BROWSER:h})
-	else
-		unset BROWSER
-	fi
+	# export BROWSER='/Applications/Firefox.app/Contents/MacOS/firefox'
+	# if [[ -x ${BROWSER} ]]; then
+	# 	path+=(${BROWSER:h})
+	# else
+	# 	unset BROWSER
+	# fi
 }
 
 # Add a utility command to print the octal permission code for a given file.
@@ -1154,4 +1197,19 @@ octo() {
 	builtin printf '%o\n' $(( permissions & 0777 ))
 }
 
-# zprof
+[[ -e ~/.env ]] && source ~/.env
+
+if [[ -e ${HOMEBREW_PREFIX}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin ]]; then
+	source ${HOMEBREW_PREFIX}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
+	path=(${HOMEBREW_PREFIX}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin ${path})
+fi
+
+if [[ -e "${HOME}/.local/opt/google-cloud-sdk" ]]; then
+	typeset -Ua path=(
+		"${HOME}/.local/opt/google-cloud-sdk/bin"
+		${path}
+	)
+	. "${HOME}/.local/opt/google-cloud-sdk/completion.zsh.inc"
+fi
+
+path=(~/Library/Python/*/bin(N) ${path})

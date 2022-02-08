@@ -267,6 +267,9 @@ endfunction
 " Create a command :F[ile] to copy to the clipboard
 command! File call File()
 
+" Set the key leader to <\>
+" let g:mapleader = '\\'
+
 " Create convenient window navigation commands
 nnoremap <Leader><Left> <CMD>wincmd h<CR>
 nnoremap <Leader><Down> <CMD>wincmd j<CR>
@@ -275,7 +278,6 @@ nnoremap <Leader><Right> <CMD>wincmd l<CR>
 
 " Create convenient way to insert today's date
 nnoremap <silent> <Leader>d "=strftime('%Y-%m-%d')<C-M>p
-
 
 " Create a command to call the SyntaxAttribute function
 command! -nargs=? -complete=highlight SyntaxAttribute call syntaxattribute#SyntaxAttribute()
@@ -286,12 +288,13 @@ command! ColorTest runtime syntax/colortest.vim
 " Keybindings
 " ===========
 
+" Register keybindings for Alt+<Letter> combinations.
 " for i in range(97,122)
 "   let char = nr2char(i)
 "   exec "map <Esc>" . char . " <M-" . char . ">"
 "   exec "map! <Esc>" . char . " <M-" . char . ">"
 " endfor
-"
+
 set mouse=a
 " map <ScrollWheelUp> <C-Y>
 " map <S-ScrollWheelUp> <C-U>
@@ -359,13 +362,6 @@ let b:nroff_is_groff = 1
 " Format any `sh` code as `bash` code
 let g:is_bash = 1
 
-" let g:go_debug = [
-"         \ 'gopls'
-"         \ ]
-
-" let g:go_def_mode='gopls'
-" let g:go_info_mode='gopls'
-
 " Set whether manpages are rendered with
 " soft-wraps (0) or hard-wraps (1)
 let g:man_hardwrap = 0
@@ -384,6 +380,10 @@ let g:markdown_fenced_languages = [
 
 " Limit syntax highlighting to a maximum number of consecutive lines
 let g:markdown_minlines = 1000
+
+" -----------------------------------------------------------------------------
+" Configure the 'netrw' utility
+" =============================
 
 " Disable the directory banner
 let g:netrw_banner = 0
@@ -452,22 +452,97 @@ let g:netrw_list_hide = join(
 " Assign directory to save the .netrwbook and .netrwhist files
 let g:netrw_home = stdpath("data") . '/'
 
+
+" Set up the 'vim-plug' tool.
+call plug#begin('~/.vim/plugged')
+
+
+" -----------------------------------------------------------------------------
+" Set up the 'vim-easy-align' plugin.
+" <https://github.com/junegunn/vim-easy-align>
+" ==========================================
+Plug 'junegunn/vim-easy-align'
+" -----------------------------------------------------------------------------
+" -----------------------------------------------------------------------------
+" Set up the 'vim-commentary' plugin.
+" <https://github.com/tpope/vim-commentary>
+" =======================================
+Plug 'tpope/vim-commentary'
+" -----------------------------------------------------------------------------
+" -----------------------------------------------------------------------------
+" Set up the 'vim-surround' plugin.
+" <https://github.com/tpope/vim-surround>
+" =====================================
+Plug 'tpope/vim-surround'
+" -----------------------------------------------------------------------------
+" -----------------------------------------------------------------------------
+" Set up the 'vim-speeddating' plugin.
+" <https://github.com/tpope/vim-speeddating>
+" ==========================================
+Plug 'tpope/vim-speeddating'
+" -----------------------------------------------------------------------------
+" -----------------------------------------------------------------------------
+" Set up the 'vim-repeat' plugin.
+" <https://github.com/tpope/vim-repeat>
+" ==========================================
+Plug 'tpope/vim-repeat'
+" -----------------------------------------------------------------------------
+" -----------------------------------------------------------------------------
+" Configure the GitHub Copilot plugin
+" <https://github.com/github/copilot.vim>
+" =====================================
+Plug 'github/copilot.vim'
 " Configure which filetypes to enable GitHub Copilot for
 let g:copilot_filetypes = {
     \ '*': v:true,
     \ 'markdown': v:true,
     \ 'help': v:false,
     \ }
-
-" Whether to enable telescope preview when picking a mailbox with the
-" telescope provider.
+" -----------------------------------------------------------------------------
+" -----------------------------------------------------------------------------
+" Configure the Go Language plugin
+" <https://github.com/fatih/vim-go>
+" =================================
+Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
+" let g:go_debug = [ 'gopls' ]
+" let g:go_def_mode='gopls'
+" let g:go_info_mode='gopls'
+" -----------------------------------------------------------------------------
+" -----------------------------------------------------------------------------
+" Configure the 'plenary' plugin
+" <https://github.com/nvim-lua/plenary.nvim>
+" ==========================================
+Plug 'nvim-lua/plenary.nvim'
+" -----------------------------------------------------------------------------
+" -----------------------------------------------------------------------------
+" Configure the Himalaya plugin
+" <https://github.com/soywod/himalaya>
+" ====================================
+Plug 'soywod/himalaya', {'rtp': 'vim'}
+" Use telescope to preview mailboxes while making a selection.
 let g:himalaya_telescope_preview_enabled = 1
-
 " Defines the provider used for picking mailboxes:
 let g:himalaya_mailbox_picker = 'telescope'
-
+" -----------------------------------------------------------------------------
+" Configure the 'telescope' plugin
+" <https://github.com/nvim-telescope/telescope.nvim>
+" ==================================================
+Plug 'nvim-lua/plenary.nvim'
+Plug 'nvim-telescope/telescope.nvim'
+" -----------------------------------------------------------------------------
+" Configure the 'tree-sitter' plugin
+" <https://github.com/nvim-treesitter/nvim-treesitter>
+" ====================================================
+Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
+" -----------------------------------------------------------------------------
+" -----------------------------------------------------------------------------
 " Add support for fzf plugin
-set runtimepath+=$XDG_CONFIG_HOME/fzf
+" <https://github.com/junegunn/fzf.vim>
+" =====================================
+set runtimepath+=$HOME/.fzf
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
+" -----------------------------------------------------------------------------
 
 command! -bang -nargs=* Rg
 \ call fzf#vim#grep(
@@ -483,6 +558,10 @@ function! RipgrepFzf(query, fullscreen)
 endfunction
 
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+
+" Initialize plugin system
+call plug#end()
+" ------------------------------------------------------------------------------
 
 " Setting the background must come *before* setting the colorscheme
 " and the `set background=dark` command must be present in *both*

@@ -118,40 +118,25 @@ nnoremap U <C-r>
 
 vnoremap > >gv
 vnoremap < <gv
-" ------------------------------------------------------------------------------
-" Set handlers
-sethandler <C-a> a:ide
-sethandler <C-b> a:ide
-sethandler <C-c> a:ide
-sethandler <C-d> a:ide
-sethandler <C-e> a:ide
-sethandler <C-f> a:ide
-sethandler <C-g> a:ide
-sethandler <C-h> a:ide
-sethandler <C-i> a:ide
-sethandler <C-j> a:ide
-sethandler <C-k> a:ide
-sethandler <C-l> a:ide
-sethandler <C-m> a:ide
-sethandler <C-n> a:ide
-sethandler <C-o> a:ide
-sethandler <C-p> a:ide
-sethandler <C-q> a:ide
-sethandler <C-r> a:ide
-sethandler <C-s> a:ide
-sethandler <C-t> a:ide
-sethandler <C-u> a:ide
-sethandler <C-v> a:ide
-sethandler <C-w> a:ide
-sethandler <C-x> a:ide
-sethandler <C-y> a:ide
-sethandler <C-z> a:ide
-sethandler <C-[> a:vim
+" --------------------------------------------------------------------
+" <https://github.com/JetBrains/ideavim/blob/master/doc/sethandler.md>
+" Designate a handler for each key combinations.
+" ====================================================================
+" Default to designating the IDE as the handler for all key combinations.
+sethandler a:ide
 sethandler <C-]> a:ide
 sethandler <C-\> a:ide
 sethandler <C-2> a:ide
 sethandler <C-S-2> a:ide
 sethandler <C-S-6> a:ide
+
+" Designate IdeaVim as the handler for particular key/mode combinations.
+sethandler <C-a> a:vim
+sethandler <C-c> a:vim
+sethandler <C-[> a:vim
+sethandler <C-v> a:ide
+sethandler <C-r> n:vim
+sethandler <C-w> n:vim
 
 " ------------------------------------------------------------------------------
 " EditorBackspace
@@ -373,3 +358,68 @@ sethandler <C-S-6> a:ide
 " Won't work in visual mode (with vmap) for some reason.
 " Use default map of <c-/> for that.
 " nmap gcc :action CommentByLineComment<cr>
+
+" -----------------------------------------------------------------------------
+sethandler <c-j> a:vim
+sethandler <c-k> a:vim
+nnoremap <c-z> :action ToggleDistractionFreeMode<CR>
+nnoremap <c-t> :action ActivateTerminalToolWindow<CR>
+nnoremap <leader>t :action Terminal.OpenInTerminal<CR>
+nnoremap <c-\> :action SplitVertically<CR>
+nnoremap <c--> :action SplitHorizontally<CR>
+nnoremap <c-=> :action Unsplit<CR>
+nnoremap <c-m> :action MoveEditorToOppositeTabGroup<CR>
+nnoremap <c-h> <c-w>h
+nnoremap <c-l> <c-w>l
+nnoremap <c-j> <c-w>j
+nnoremap <c-k> <c-w>k
+nnoremap <TAB> :action PreviousTab<CR>
+nnoremap <s-TAB> :action NextTab<CR>
+nnoremap <Leader>en :action EditSourceInNewWindow<CR>
+nnoremap <Leader>n :action NextWindow<CR>
+nnoremap <Leader>q :action CloseContent<CR>
+nnoremap <Leader>qa :action CloseAllEditors<CR>
+vnoremap < <gv
+vnoremap > >gv
+nnoremap [[ :action MethodUp<CR>
+nnoremap ]] :action MethodDown<CR>
+nnoremap zc :action CollapseRegion<CR>
+nnoremap zo :action ExpandRegion<CR>
+nnoremap <leader>zc :action CollapseAllRegions<CR>
+nnoremap <leader>zo :action ExpandAllRegions<CR>
+nnoremap <leader>c :action CommentByLineComment<CR>
+nnoremap <leader>r :action Refactorings.QuickListPopupAction<CR>
+nnoremap <Leader>=  :action ReformatCode<CR>
+nnoremap <leader>o :action OptimizeImports<CR>
+nnoremap <c-r> :action RecentFiles<CR>
+nnoremap <leader>l :action RecentLocations<CR>
+nnoremap <leader>h  :action LocalHistory.ShowHistory<CR>
+nnoremap ge :action GotoNextError<CR>
+nnoremap gE :action GotoPreviousError<CR>
+nnoremap <c-/> :action FindInPath<CR>
+nnoremap <c-a> :action GotoAction<CR>
+nnoremap <c-f> :action GotoFile<CR>
+nnoremap <leader>u :action FindUsages<CR>
+nnoremap <leader>s :action GotoRelated<CR>
+nnoremap <leader>h :action CallHierarchy<CR>
+nnoremap <leader>b :action ShowNavBar<CR>
+nnoremap <c-s> :action FileStructurePopup<CR>
+nnoremap <c-o> :action GotoSymbol<CR>
+nnoremap gc :action GotoClass<CR>
+nnoremap gi :action GotoImplementation<CR>
+nnoremap gd :action GotToDeclaration<CR>
+nnoremap gp :action GotToSuperMethod<CR>
+nnoremap gt :action GotoTest<CR>
+nnoremap gb :action Back<CR>
+nnoremap gf :action Forward<CR>
+nnoremap <c-p> :action JumpToLastWindow<CR>
+nnoremap <c-x> :action HideAllWindows<CR>
+nnoremap ,r :action ContextRun<CR>
+nnoremap ,c :action RunClass<CR>
+nnoremap ,f :action ChooseRunConfiguration<CR>
+nnoremap ,t :action ActivateRunToolWindow<CR>
+nnoremap ,u :action Rerun<CR>
+nnoremap ,f :action RerunFailedTests<CR>
+nnoremap ,b :action ToggleLineBreakpoint<CR>
+nnoremap ,d :action ContextDebug<CR>
+nnoremap ,n :action ActivateDebugToolWindow<CR>

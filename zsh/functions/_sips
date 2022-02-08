@@ -1,0 +1,45 @@
+#compdef _sips sips
+
+function _sips {
+        _arguments -S \
+        '(-g --getProperty)'{-g,--getProperty}'[output the property value for key to stdout]':'key': \
+		'(-X --extractTag)'{-X,--extractTag}'[write a profile tag element to tagFile.]':'tag::tagFile:_files' \
+		--verify'[verify any profile problems and log output to stdout.]': \
+		'(-x --extractProfile)'{-x,--extractProfile}'[get the embedded profile from image and write it to profile.]':'profile' \
+		'(-1 --oneLine)'{-1,--oneLine}'[output for each file on a single line with tab delimiter]' \
+		'(-s --setProperty)'{-s,--setProperty}'[set a property value for key to value.]':'key::value' \
+		'(-d --deleteProperty)'{-d,--deleteProperty}'[remove a property value for key.]':'key' \
+		--deleteTag'[remove the tag element from a profile.]':'tag' \
+		--copyTag'[copy the srcTag element of a profile to dstTag.]':'srcTag::dstTag' \
+		--loadTag'[set the tag element of a profile to the contents of tagFile.]':'tag::tagFile' \
+		--repair'[repair any profile problems and log output to stdout.]' \
+		'(-s --setProperty)'{-s,--setProperty}'[set a property value for key to value.]':'key::value' \
+		'(-d --deleteProperty)'{-d,--deleteProperty}'[remove a property value for key.]':'key' \
+		'(-e --embedProfile)'{-e,--embedProfile}'[embed profile in image.]':'profile' \
+		'(-E --embedProfileIfNone)'{-E,--embedProfileIfNone}'[embed profile in image only if image does not have a profile.]':'profile' \
+		'(-m --matchTo)'{-m,--matchTo}'[color match image to profile.]':'profile' \
+		'(-M --matchToWithIntent)'{-M,--matchToWithIntent}'[color match image to profile with intent]':'profile::intent:(perceptual relative saturation absolute)' \
+		--deleteColorManagementProperties'[delete color management properties in TIFF, PNG, and EXIF dictionaries.]' \
+		'(-r --rotate)'{-r,--rotate}:'degreesCW' \
+		'(-f --flip)'{-f,--flip}':::(horizontal vertical)' \
+		'(-c --cropToHeightWidth)'{-c,--cropToHeightWidth}'[crop image to fit specified size.]':'pixelsH::pixelsW' \
+		--cropOffset'[crop offset from top left corner.]':'offsetY::offsetH' \
+		'(-p --padToHeightWidth)'{-p,--padToHeightWidth}'[pad image with pixels to fit specified size.]':'pixelsH::pixelsW' \
+		--padColor'[use this color when padding. e.g."FFFFFF" for white.]':'hexcolor' \
+		'(-z --resampleHeightWidth)'{-z,--resampleHeightWidth}'[resample image at specified size. image apsect ratio may be altered.]':'pixelsH::pixelsW' \
+		--resampleWidth'[resample image to specified width.]':'pixelsW' \
+		--resampleHeight'[resample image to specified height.]':'pixelsH' \
+		'(-Z --resampleHeightWidthMax)'{-Z,--resampleHeightWidthMax}'[resample image so height and width are not greater than specified size.]':'pixelsWH' \
+		'(-i --addIcon)'{-i,--addIcon}'[add a finder icon to image file.]' \
+		--optimizeColorForSharing'[optimize color for sharing.]' \
+		'(-o --out)'{-o,--out}'[output file]':'file:_files' \
+		'(-j --js)'{-j,--js}'[execute javaScript file]':'file' \
+		--debug'[enable debugging output]' \
+		'(-h --help)'{-h,--help}'[show help]' \
+		'(-H --helpProperties)'{-H,--helpProperties}'[show help for properties]' \
+		--man'[generate man pages]' \
+		'(-v --version)'{-v,--version}'[show the version]' \
+		--formats'[show the read/write formats]' \
+		'*:file:_files'
+
+}

@@ -427,6 +427,7 @@
   <action id="GotoUrlAction" />
   <action id="Graph.RouteEdges" />
   <action id="GuiDesigner.ShrinkSelection" />
+  <action id="Help.KeymapReference" />
   <action id="HelpMenu">
     <keyboard-shortcut first-keystroke="ctrl alt h" />
   </action>

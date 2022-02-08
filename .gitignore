@@ -34,3 +34,11 @@
 
 /espanso/
 /bin/
+/letsencrypt
+mozilla/vpn.moz
+wireshark/recent
+wireshark/recent_common
+jgit/config
+ddclient/ddclient.conf
+jetbrains/colors/_@user_Default.icls
+.gitignore

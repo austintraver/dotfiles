@@ -1,8 +1,9 @@
 # User's `git` configuration file
 [user]
-	name = Austin Traver
-	email = austintraver@gmail.com
-	signingKey = "0xF0B6CFC698A112DD"
+	name = "Austin Traver"
+	email = "austintraver@gmail.com"
+	signingKey = "0x98A112DD"
+	# signingKey = ~/.ssh/id_rsa
 [core]
 	editor = nvim
 	# hooksPath = .hooks
@@ -23,6 +24,9 @@
 [gpg]
 	# program = gpg
 	format = openpgp
+	# format = ssh
+# [gpg "ssh"]
+# 	defaultKeyCommand = "ssh-add -L" 
 [credential]
 	# helper = /usr/local/share/gcm-core/git-credential-manager-core
 	# helper = osxkeychain
@@ -150,6 +154,8 @@
 [help]
 	# format = man
 	format = web
+        # autocorrect = prompt
+        autocorrect = immediate
 	htmlpath = https://git-scm.com/docs
 [gc]
 	pruneExpire = now
@@ -157,6 +163,7 @@
 [fetch]
 	recurseSubmodules = on-demand
 	parallel = 0
+	prune = true
 [color "status"]
 	branch = "#89c4ff"
 [init]
