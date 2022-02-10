@@ -1,21 +1,15 @@
 # Dismiss the welcome message
 # clear
 
-function prompt {
-    if (Test-Path variable:/PSDebugContext) {
-        Return '[DBG]: '
-    }
-    if ($NestedPromptLevel -ge 1) {
-        Return '>> '
-    }
+function prompt { 
     return @(
         "`e[1;38;5;8m[$((Get-Date).ToString('T'))]`e[0m"
         "`e[0;38;5;3m$([Environment]::UserName.ToLower())`e[0m"
-        '@'
-        "`e[1;38;5;4m$([Environment]::ComputerName.ToLower())`e[0m"
-        "`e[1;38;5;5m$([System.IO.Path]::GetDirectoryName())`e[0m"
+        "@"
+        "`e[1;38;5;4m$([Environment]::MachineName.ToLower())`e[0m"
+        "`e[1;38;5;5m$($PWD.Path)`e[0m"
         "`e[1;38;5;1m=>`e[0m "
-    ) -join ' '
+    ) -join ' ' 
 }
 
 Set-Alias -Name vi -Value nvim
@@ -144,37 +138,37 @@ Set-PSReadLineOption -Colors @{
 }
 
 # Ensure that the PSGallery repository is trusted.
-if (!((Get-PSRepository -Name PSGallery).InstallationPolicy.Equals('Trusted'))) {
-    Set-PSRepository -Name PSGallery -InstallationPolicy Trusted 
-}
+# if (!((Get-PSRepository -Name PSGallery).InstallationPolicy.Equals('Trusted'))) {
+#     Set-PSRepository -Name PSGallery -InstallationPolicy Trusted 
+# }
 
 # Ensure that the current PSReadLine is version 2.2.0 or higher
-if ($PSVersionTable.PSVersion.Major -ge 7 -and $PSVersionTable.PSVersion.Minor -lt 2) {
-     Update-Module -Name PSReadLine -AllowPrerelease -Force -Confirm
- }
+# if ($PSVersionTable.PSVersion.Major -ge 7 -and $PSVersionTable.PSVersion.Minor -lt 2) {
+#      Update-Module -Name PSReadLine -AllowPrerelease -Force -Confirm
+#  }
 
 # Disabled until a suggestion system is implemented, hopefully GitHub Copilot
 # Ensure that the PowerShell subsystem plugin model is enabled
-if (!$(Get-ExperimentalFeature -Name PSSubsystemPluginModel).Enabled) { 
-    Enable-ExperimentalFeature PSSubsystemPluginModel
-}
+# if (!$(Get-ExperimentalFeature -Name PSSubsystemPluginModel).Enabled) { 
+#     Enable-ExperimentalFeature PSSubsystemPluginModel
+# }
 
-try {
+# try {
     # This section will not work until the release of PSReadLine version 2.2.0
     # Remove-Module -Name Az.Tools.Predictor -AllowPrerelease
     # Uninstall-Module -Name Az.Tools.Predictor -AllVersions
     # Get-EventSubscriber -Force -SourceIdentifier PowerShell.OnIdle
-    Set-PSReadLineOption -PredictionViewStyle ListView
-    Set-PSReadLineOption -PredictionSource History
-} catch [System.Management.Automation.CommandNotFoundException] {
+# } catch [System.Management.Automation.CommandNotFoundException] {
     # https://techcommunity.microsoft.com/t5/azure-tools-blog/announcing-az-predictor/ba-p/1873104
     # Install-Module -Name Az.Accounts -AllowPrerelease -Confirm        
     # Install-Module -Name Az.Tools.Predictor -AllowPrerelease -Confirm
     #    if (!(Get-PSSubsystem -Kind CommandPredictor).IsRegistered) {
     #        Write-Warning "Module 'Az.Tools.Predictor' is not installed."
     # }
-}
+# }
 
+Set-PSReadLineOption -PredictionViewStyle ListView
+Set-PSReadLineOption -PredictionSource History
 
 # https://devblogs.microsoft.com/powershell/announcing-psreadline-2-1-with-predictive-intellisense/
 # This statement will not work until the release of PSReadLine version 2.2.0
@@ -184,8 +178,8 @@ Set-PSReadLineOption -Colors @{
 }
 
 try {
-    Import-Module -Name PSFzf
-    Enable-PsFzfAliases
+    # Import-Module -Name PSFzf
+    # Enable-PsFzfAliases
 
     Set-PSReadLineKeyHandler -Chord 'Ctrl+s' -ScriptBlock { Invoke-FuzzySetLocation } -ViMode Insert
     Set-PSReadLineKeyHandler -Chord 'Ctrl+s' -ScriptBlock { Invoke-FuzzySetLocation } -ViMode Command
@@ -202,22 +196,24 @@ try {
 
     Set-PSReadLineKeyHandler -Chord 'Ctrl+]' -Function ViCommandMode -ViMode Insert
 
+    # ${Env:FZF_DEFAULT_COMMAND} = "bat --style=numbers --color=always --line-range :500 {}"
+
     # replace 'Ctrl+t' and 'Ctrl+r' with your preferred bindings:
-    # Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+s' -PSReadlineChordReverseHistory 'Ctrl+r'
+    Set-PsFzfOption -PSReadlineChordProvider 'Ctrl+s' -PSReadlineChordReverseHistory 'Ctrl+r'
 
 } catch [System.Management.Automation.CommandNotFoundException] {
     Install-Module -Name PSFzf -Confirm
 }
 
-try { 
-    Import-Module -Name DockerCompletion 
-} catch {
-    Install-Module -Name DockerCompletion -Confirm
-}
+# try { 
+#     Import-Module -Name DockerCompletion 
+# } catch {
+#     Install-Module -Name DockerCompletion -Confirm
+# }
 
 # Load completion scripts saved in a dedicated completions subdirectory.
 # Get-ChildItem $(Join-Path $PSScriptRoot 'completion') | ForEach-Object { . $_ }
-Get-ChildItem $([System.IO.Path]::Join($PSScriptRoot, 'completion')) | ForEach-Object { Measure-Command { . $_ } }
+# Get-ChildItem $([System.IO.Path]::Join($PSScriptRoot, 'completion')) | ForEach-Object { . $_ }
 
 # Clear the screen as well as the scrollback buffer
 Set-PSReadLineKeyHandler -Chord Ctrl+l -ScriptBlock {

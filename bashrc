@@ -1,4 +1,9 @@
-# Exit if we haven't configured for this OS yet
+# Exit if PowerShell is being sourced.
+if (( __PWSH_LOGIN_CHECKED == 1 )); then
+	return
+fi
+
+# Exit if we haven't configured for this OS yet.
 if [[ ! $(uname) =~ (Darwin|Linux) ]]; then
   echo "non-Unix system detected: skipping .bashrc" >&2
   exit 1

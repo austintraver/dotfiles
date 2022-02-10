@@ -1080,37 +1080,37 @@ zstyle ':fzf-tab:*' default-color $'\033[38;5;255m'
 
 # Initialize the fuzzy finder utilities, if they are found
 () {
-	local fzf fzftab
-	if [[ -e "${HOMEBREW_PREFIX}/opt/fzf" ]]; then
-		fzf="${HOMEBREW_PREFIX}/opt/fzf"
-	elif [[ -e ~/.fzf ]]; then
-		fzf=~/.fzf
-	else
-		return
-	fi
-	typeset -T FZF_DEFAULT_OPTS fzf_default_opts
-	export FZF_DEFAULT_COMMAND
+	# local fzf fzftab
+	# if [[ -e "${HOMEBREW_PREFIX}/opt/fzf" ]]; then
+	# 	fzf="${HOMEBREW_PREFIX}/opt/fzf"
+	# elif [[ -e ~/.fzf ]]; then
+	# 	fzf=~/.fzf
+	# else
+	# 	return
+	# fi
+	# typeset -T FZF_DEFAULT_OPTS fzf_default_opts
+	# export FZF_DEFAULT_COMMAND
 
-	source ${fzf}/shell/completion.zsh
-	source ${fzf}/shell/key-bindings.zsh
-	FZF_DEFAULT_COMMAND="fd --type f"
-	fzf_default_opts=(
-		--no-mouse
-		--border=sharp
-		--height=30%
-		--min-height=15
-		--margin=2
-		# --layout=reverse
-	)
-	path=(
-		${fzf}/bin
-		${path}
-	)
+	# source ${fzf}/shell/completion.zsh
+	# source ${fzf}/shell/key-bindings.zsh
+	# FZF_DEFAULT_COMMAND="fd --type f"
+	# fzf_default_opts=(
+	# 	--no-mouse
+	# 	--border=sharp
+	# 	--height=50%
+	# 	--min-height=15
+	# 	--margin=2
+	# 	--layout=reverse
+	# )
+	# path=(
+	# 	${fzf}/bin
+	# 	${path}
+	# )
 
-	fzftab="${HOME}/.fzf-tab/fzf-tab.zsh"
-	if [[ -e ${fzftab} ]]; then
-		source ${fzftab}
-	fi
+	# fzftab="${HOME}/.fzf-tab/fzf-tab.zsh"
+	# if [[ -e ${fzftab} ]]; then
+	# 	source ${fzftab}
+	# fi
 }
 
 
