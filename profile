@@ -6,6 +6,11 @@
 # |_|
 # ==============================
 
+# Exit if PowerShell is being sourced.
+if (( __PWSH_LOGIN_CHECKED == 1 )); then
+	return
+fi
+
 # Don't source ~/.bashrc if running `sh`
 [[ $0 == 'sh' ]] && return 0
 

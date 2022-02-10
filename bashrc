@@ -1,4 +1,9 @@
-# Exit if we haven't configured for this OS yet
+# Exit if PowerShell is being sourced.
+if (( __PWSH_LOGIN_CHECKED == 1 )); then
+	return
+fi
+
+# Exit if we haven't configured for this OS yet.
 if [[ ! $(uname) =~ (Darwin|Linux) ]]; then
   echo "non-Unix system detected: skipping .bashrc" >&2
   exit 1
@@ -157,6 +162,6 @@ fi
 
 [[ -r ~/.cargo/env ]] && source ~/.cargo/env
 
-export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
+# export PATH="/usr/local/bin:/usr/bin:/bin:/usr/local/sbin:/usr/sbin:/sbin"
 
 [[ -e "/usr/local/opt/oracle/lib/python3.9/site-packages/oci_cli/bin/oci_autocomplete.sh" ]] && source "/usr/local/opt/oracle/lib/python3.9/site-packages/oci_cli/bin/oci_autocomplete.sh"

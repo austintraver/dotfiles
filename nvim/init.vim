@@ -1,7 +1,7 @@
-"             _                    
-"  _ ____   _(_)_ __ ___  _ __ ___ 
+"             _
+"  _ ____   _(_)_ __ ___  _ __ ___
 " | '_ \ \ / / | '_ ` _ \| '__/ __|
-" | | | \ V /| | | | | | | | | (__ 
+" | | | \ V /| | | | | | | | | (__
 " |_| |_|\_/ |_|_| |_| |_|_|  \___|
 " =================================
 
@@ -102,14 +102,14 @@ set winminwidth=20
 " Set preview window to take up at least 40 rows
 set previewheight=40
 
-" Realign shift operations performed by '>>' and '<<' 
+" Realign shift operations performed by '>>' and '<<'
 " such that they always create in an indentation
 " which is a multiple of the current value of 'shiftwidth'
 set shiftround
 
 " Determine the number of spaces to use for each stop of audoindent
-" during shift operations performed by '>>' and '<<'. 
-" If 'shiftwidth' is set to 0, the number of columns shifted is 
+" during shift operations performed by '>>' and '<<'.
+" If 'shiftwidth' is set to 0, the number of columns shifted is
 " equal to that of the `tabstop` variable
 set shiftwidth=0
 
@@ -129,7 +129,7 @@ set expandtab
 set softtabstop=-1
 
 " When on, a <Tab> in front of a line inserts blanks according to 'shiftwidth'.
-" Note that 'tabstop' and 'softtabstop' is used in other places. 
+" Note that 'tabstop' and 'softtabstop' is used in other places.
 set smarttab
 
 " Enable smart auto-indenting when starting a new line
@@ -155,7 +155,7 @@ set shiftround
 " Allow the cursor to move anywhere in visual block mode
 set virtualedit=block
 
-" Prevent vi from adding a newline at the end of the file 
+" Prevent vi from adding a newline at the end of the file
 " whenever one is found to be missing during a :write
 set nofixendofline
 
@@ -218,7 +218,7 @@ set path+=~/Documents
 let g:html_use_encoding = "UTF-8"
 
 " Do not include line numbers in the :TOhtml file
-let g:html_number_lines = 0    
+let g:html_number_lines = 0
 
 " Have :RustPlay copy the url to the pasteboard
 " TODO provide a value specific to the operating system currently running
@@ -370,10 +370,10 @@ let g:man_hardwrap = 0
 " for the following languages
 let g:markdown_fenced_languages = [
       \ 'sql', 'c', 'cpp', 'java', 'javascript', 'js=javascript', 'go', 'xml',
-      \ 'python', 'py=python', 'ruby', 'rb=ruby', 'css', 'html', 'json', 'less', 
+      \ 'python', 'py=python', 'ruby', 'rb=ruby', 'css', 'html', 'json', 'less',
       \ 'make', 'perl', 'php', 'vim', 'yaml', 'yml=yaml', 'sass', 'scss',
-      \ 'zsh', 'shell=zsh', 'sh=zsh', 'bash=sh', 'sql' , 'txt=text', 
-      \ 'tex', 'sed', 'awk', 'groff', 'wl', 'scpt=applescript', 
+      \ 'zsh', 'shell=zsh', 'sh=zsh', 'bash=sh', 'sql' , 'txt=text',
+      \ 'tex', 'sed', 'awk', 'groff', 'wl', 'scpt=applescript',
       \ 'cypher', 'cyp=cypher', 'make', 'cmake', 'liquid', 'gitconfig', 'conf',
       \ 'ini=dosini', 'dosini', 'ps1', 'powershell=ps1', 'pwsh=ps1'
       \ ]

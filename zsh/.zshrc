@@ -50,6 +50,10 @@ export \
 	done
 }
 
+if [[ ! -e "${XDG_CACHE_HOME}/zsh" ]]; then
+	mkdir -v -p "${XDG_CACHE_HOME}/zsh"
+fi
+
 # These next two commands work to remove the
 # ~/.zcompcache file from appearing
 zstyle ':completion::complete:*' use-cache on
@@ -713,13 +717,6 @@ autoload +X bashcompinit && bashcompinit
 	source $(whence -p az)/../../etc/bash_completion.d/az
 }
 
-# If `gcloud` is found, generate its command completion
-[[ $(whence gcloud) ]] && () {
-	local binary=$(whence -p gcloud)
-	source ${binary:A}/../../path.zsh.inc
-	source ${binary:A}/../../completion.zsh.inc
-}
-
 # If `yq` is found, generate a file which contains its command completion
 [[ $(whence yq) ]] && () {
 	local file="${XDG_CONFIG_HOME}/zsh/functions/_yq"
@@ -1119,34 +1116,29 @@ _fzf_compgen_dir() {
 
 # Initialize the fuzzy finder utilities, if they are found
 () {
-	local fzf fzftab
-	typeset -T FZF_DEFAULT_OPTS fzf_default_opts
-	export FZF_DEFAULT_COMMAND
-
-	fzf="${HOMEBREW_PREFIX}/opt/fzf"
-	if [[ -e ${fzf} ]]; then
-		source ${fzf}/shell/completion.zsh
-		source ${fzf}/shell/key-bindings.zsh
-		FZF_DEFAULT_COMMAND="fd --type f"
-		fzf_default_opts=(
-			--no-mouse
-			--border=sharp
-			--height=30%
-			--min-height=15
-			--margin=2
-			# --layout=reverse
-		)
-		path=(
-			${fzf}/bin
-			${path}
-		)
-	fi
-	fzftab="${HOME}/.fzf-tab/fzf-tab.zsh"
-	if [[ -e ${fzftab} ]]; then
-		source ${fzftab}
-	fi
+	[[ -e ~/.local/opt/fzf ]] || {
+		print "warning: 'fzf' not found" >&2
+		return
+	}
+	[[ -e ~/.local/opt/fzf-tab ]] || {
+		print "warning: 'fzf-tab' not found" >&2
+		return
+	}
+	export -T FZF_DEFAULT_OPTS fzf_default_opts ' '
+	fzf_default_opts=(
+		--no-mouse
+		--border=sharp
+		--height=50%
+		--min-height=15
+		--margin=2
+		--layout=reverse
+	)
+	# export FZF_DEFAULT_COMMAND="fd --type f"
+	source ~/.local/opt/fzf/shell/completion.zsh
+	source ~/.local/opt/fzf/shell/key-bindings.zsh
+	path=(~/.local/opt/fzf/bin(N) ${path})
+	source ~/.local/opt/fzf-tab/fzf-tab.zsh
 }
-
 
 # Load RVM into a shell session, doing so from within a function.
 () {
@@ -1172,18 +1164,12 @@ _fzf_compgen_dir() {
 # Additionally, set the BROWSER environment variable to `firefox`
 # but onl. if the `firefox` binary is found on this machine.
 () {
-	export CHROME_EXECUTABLE="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-	if [[ -x ${CHROME_EXECUTABLE} ]]; then
-		path+=(${BROWSER:h})
-	else
-		unset CHROME_EXECUTABLE
-	fi
-	# export BROWSER='/Applications/Firefox.app/Contents/MacOS/firefox'
-	# if [[ -x ${BROWSER} ]]; then
-	# 	path+=(${BROWSER:h})
-	# else
-	# 	unset BROWSER
-	# fi
+	[[ "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" ]] && {
+		export CHROME_EXECUTABLE="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
+	}
+	[[ "/Applications/Firefox.app/Contents/MacOS/firefox" ]] && {
+		export BROWSER="firefox"
+	}
 }
 
 # Add a utility command to print the octal permission code for a given file.
@@ -1199,17 +1185,40 @@ octo() {
 
 [[ -e ~/.env ]] && source ~/.env
 
-if [[ -e ${HOMEBREW_PREFIX}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin ]]; then
-	source ${HOMEBREW_PREFIX}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/completion.zsh.inc
-	path=(${HOMEBREW_PREFIX}/Caskroom/google-cloud-sdk/latest/google-cloud-sdk/bin ${path})
-fi
-
-if [[ -e "${HOME}/.local/opt/google-cloud-sdk" ]]; then
-	typeset -Ua path=(
-		"${HOME}/.local/opt/google-cloud-sdk/bin"
-		${path}
-	)
-	. "${HOME}/.local/opt/google-cloud-sdk/completion.zsh.inc"
-fi
-
 path=(~/Library/Python/*/bin(N) ${path})
+
+if [[ -e ~/.local/opt/google-cloud-sdk ]]; then
+	path=( ~/.local/opt/google-cloud-sdk/bin ${path})
+	source ~/.local/opt/google-cloud-sdk/completion.zsh.inc
+else
+	print "warning: 'google-cloud-sdk' not found" >&2
+fi
+
+# if [[ -e /Applications/VMware\ Fusion.app ]]; then
+# 	path+=(/Applications/VMware\ Fusion.app/Contents/Library{,/vkd/bin})
+#
+# 	alias -g 350.vmx="/Users/austin/.vm/CSCI\ 350.vmwarevm/CSCI\ 350.vmx"
+# 	350vm() {
+# 		print "not working :(" >&2
+# 		return 1
+# 		vmrun start 350.vmx nogui
+# 		ssh 350 || ssh 350
+# 	}
+#
+# 	alias -g 353.vmx="/Users/austin/.vm/CSCI\ 353.vmwarevm/CSCI\ 353.vmx"
+# 	353vm() {
+# 		print "not working :(" >&2
+# 		return 1
+# 		vmrun start 353.vmx nogui
+# 		ssh 353 || ssh 353
+# 	}
+# fi
+#
+# if [[ -e /Applications/VirtualBox.app ]]; then
+# 	cs551() {
+# 		VBoxHeadless -s cs551-vm
+# 		ssh cs551
+# 	}
+# fi
+
+# zprof
