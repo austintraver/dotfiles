@@ -904,22 +904,24 @@ bindkey -a '^L' widget-clear-screen
 
 # =============================================================================
 
-function zle-line-pre-redraw() {
-	# local user host symbol dir shell
-	# user="%F{3}%n%f"
-	# host="%F{6}%M%f"
-	# symbol="%F{5}>%f"
+# function zle-line-pre-redraw() {
+# 	# local user host symbol dir shell
+# 	# user="%F{3}%n%f"
+# 	# host="%F{6}%M%f"
+# 	# symbol="%F{5}>%f"
 
-	prompt="[%F{1}${HISTNO}%f] %U%F{4}%1~%f%u %F{7}%D{%F %T}%f %B%(!.#.->)%b "
-}
-zle -N zle-line-pre-redraw
+# 	prompt="[%F{1}${HISTNO}%f] %U%F{4}%1~%f%u %F{7}%D{%F %T}%f %B%(!.#.->)%b "
+# }
+# zle -N zle-line-pre-redraw
 
-# Initialize the prompt
-prompt="[%F{1}${HISTCMD}%f] %U%F{4}%1~%f%u %F{7}%D{%F %T}%f %B%(!.#.->)%b "
+# # Initialize the prompt
+# prompt="[%F{1}${HISTCMD}%f] %U%F{4}%1~%f%u %F{7}%D{%F %T}%f %B%(!.#.->)%b "
 
-# Send a control code to the console, which changes the appearance of the cursor
-# to a vertical line.
-print -n $'\x1b[5 q'
+# # Send a control code to the console, which changes the appearance of the cursor
+# # to a vertical line.
+# print -n $'\x1b[5 q'
+
+prompt="|> "
 
 
 function fuzzy-search-history() {
@@ -1102,7 +1104,9 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # https://github.com/Aloxaf/fzf-tab/wiki/Configuration#group-colors
 zstyle ':fzf-tab:*' switch-group ',' '.'
 # preview directory's content with exa when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+[[ $(whence exa) ]] && {
+	zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+}
 # set the default color of completion text (white)
 zstyle ':fzf-tab:*' default-color $'\033[38;5;3m'
 zstyle ':fzf-tab:*' prefix '·'
@@ -1112,17 +1116,20 @@ zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':fzf-tab:*' show-group full
 zstyle ':fzf-tab:*' continuous-trigger '/'
 
-# Use fd (https://github.com/sharkdp/fd) instead of the default find
-# command for listing path candidates.
-# - The first argument to the function ($1) is the base path to start traversal
-# - See the source code (completion.{bash,zsh}) for the details.
-_fzf_compgen_path() {
-  fd --hidden --follow --exclude ".git" . "$1"
-}
 
-# Use fd to generate the list for directory completion
-_fzf_compgen_dir() {
-  fd --type d --hidden --follow --exclude ".git" . "$1"
+[[ $(whence fd) ]] && {
+	# Use fd (https://github.com/sharkdp/fd) instead of the default find
+	# command for listing path candidates.
+	# - The first argument to the function ($1) is the base path to start traversal
+	# - See the source code (completion.{bash,zsh}) for the details.
+	_fzf_compgen_path() {
+		fd --hidden --follow --exclude ".git" . "$1"
+	}
+
+	# Use fd to generate the list for directory completion
+	_fzf_compgen_dir() {
+		fd --type d --hidden --follow --exclude ".git" . "$1"
+	}
 }
 
 # source ~/.fzf.zsh

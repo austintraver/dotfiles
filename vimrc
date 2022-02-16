@@ -8,12 +8,12 @@ set hlsearch
 set backspace=indent,eol,start
 
 " Set directories for meta-data stored by vim
-set directory=$XDG_DATA_HOME/vim/swap//
-set backupdir=$XDG_DATA_HOME/vim/backup//
-set undodir=$XDG_DATA_HOME/vim/undo//
-set viminfofile=$XDG_DATA_HOME/vim/viminfo
+" set directory=$XDG_DATA_HOME/vim/swap//
+" set backupdir=$XDG_DATA_HOME/vim/backup//
+" set undodir=$XDG_DATA_HOME/vim/undo//
+" set viminfofile=$XDG_DATA_HOME/vim/viminfo
 
-let &runtimepath.=','.join(split(expand($XDG_CONFIG_HOME ."/vim{,/after}"),'\n'), ',')
+" let &runtimepath.=','.join(split(expand($XDG_CONFIG_HOME ."/vim{,/after}"),'\n'), ',')
 
 " Assign directory to save the .netrwbook and .netrwhist files
-let g:netrw_home = expand("$XDG_CACHE_HOME/vim/netrw")
+" let g:netrw_home = expand("$XDG_CACHE_HOME/vim/netrw")

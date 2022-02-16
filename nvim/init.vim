@@ -392,7 +392,7 @@ let g:netrw_banner = 0
 let g:netrw_liststyle = 1
 
 " Silence output for `netrw` calls to `scp` and `ssh` commands
-let g:netrw_silent=1
+" let g:netrw_silent=1
 
 " Open previews in vertical split, anchored to the bottom-right
 let g:netrw_preview = 1
@@ -401,7 +401,7 @@ let g:netrw_preview = 1
 let g:netrw_winsize = 90
 
 " Prevent netrw from using a seperate window to display errors
-let g:netrw_use_errorwindow = 0
+let g:netrw_use_errorwindow = 2
 
 " Sort entries by time, descending
 let g:netrw_sort_by = 'name'
@@ -450,8 +450,9 @@ let g:netrw_list_hide = join(
       \ ',')
 
 " Assign directory to save the .netrwbook and .netrwhist files
-let g:netrw_home = stdpath("data") . '/'
+" let g:netrw_home = stdpath("data") . '/'
 
+let g:netrw_cygwin = 1
 
 " Set up the 'vim-plug' tool.
 call plug#begin('~/.vim/plugged')
