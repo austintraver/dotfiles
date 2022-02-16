@@ -213,7 +213,7 @@ try {
 
 # Load completion scripts saved in a dedicated completions subdirectory.
 # Get-ChildItem $(Join-Path $PSScriptRoot 'completion') | ForEach-Object { . $_ }
-# Get-ChildItem $([System.IO.Path]::Join($PSScriptRoot, 'completion')) | ForEach-Object { . $_ }
+Get-ChildItem $([System.IO.Path]::Join($PSScriptRoot, 'completion')) | ForEach-Object { . $_ }
 
 # Clear the screen as well as the scrollback buffer
 Set-PSReadLineKeyHandler -Chord Ctrl+l -ScriptBlock {
