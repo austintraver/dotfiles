@@ -112,7 +112,7 @@ function OnViModeChange {
 #     -ViModeIndicator Script `
 #     -ViModeChangeHandler $Function:OnViModeChange `
 
-Set-PSReadLineOption -ViModeIndicator Nnoe
+Set-PSReadLineOption -ViModeIndicator None
 
 Set-PSReadLineOption `
     -HistorySearchCaseSensitive:$False `
