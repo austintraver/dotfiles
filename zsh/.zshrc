@@ -891,22 +891,24 @@ bindkey -a '^L' widget-clear-screen
 
 # =============================================================================
 
-function zle-line-pre-redraw() {
-	# local user host symbol dir shell
-	# user="%F{3}%n%f"
-	# host="%F{6}%M%f"
-	# symbol="%F{5}>%f"
+# function zle-line-pre-redraw() {
+# 	# local user host symbol dir shell
+# 	# user="%F{3}%n%f"
+# 	# host="%F{6}%M%f"
+# 	# symbol="%F{5}>%f"
 
-	prompt="[%F{1}${HISTNO}%f] %U%F{4}%1~%f%u %F{7}%D{%F %T}%f %B%(!.#.->)%b "
-}
-zle -N zle-line-pre-redraw
+# 	prompt="[%F{1}${HISTNO}%f] %U%F{4}%1~%f%u %F{7}%D{%F %T}%f %B%(!.#.->)%b "
+# }
+# zle -N zle-line-pre-redraw
 
-# Initialize the prompt
-prompt="[%F{1}${HISTCMD}%f] %U%F{4}%1~%f%u %F{7}%D{%F %T}%f %B%(!.#.->)%b "
+# # Initialize the prompt
+# prompt="[%F{1}${HISTCMD}%f] %U%F{4}%1~%f%u %F{7}%D{%F %T}%f %B%(!.#.->)%b "
 
-# Send a control code to the console, which changes the appearance of the cursor
-# to a vertical line.
-print -n $'\x1b[5 q'
+# # Send a control code to the console, which changes the appearance of the cursor
+# # to a vertical line.
+# print -n $'\x1b[5 q'
+
+prompt=" |> "
 
 
 function fuzzy-search-history() {

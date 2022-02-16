@@ -1,15 +1,15 @@
 # Dismiss the welcome message
 # clear
 
-function prompt { 
+function prompt {
     return @(
-        "`e[1;38;5;8m[$((Get-Date).ToString('T'))]`e[0m"
-        "`e[0;38;5;3m$([Environment]::UserName.ToLower())`e[0m"
-        "@"
-        "`e[1;38;5;4m$([Environment]::MachineName.ToLower())`e[0m"
-        "`e[1;38;5;5m$($PWD.Path)`e[0m"
+        # "`e[1;38;5;8m[$((Get-Date).ToString('T'))]`e[0m"
+        # "`e[0;38;5;3m$([Environment]::UserName.ToLower())`e[0m"
+        # "@"
+        # "`e[1;38;5;4m$([Environment]::MachineName.ToLower())`e[0m"
+        # "`e[1;38;5;5m$(Split-Path -Leaf $PWD)`e[0m"
         "`e[1;38;5;1m=>`e[0m "
-    ) -join ' ' 
+    ) -join ' '
 }
 
 Set-Alias -Name vi -Value nvim
@@ -53,6 +53,7 @@ Set-PSReadLineKeyHandler -Chord 'Ctrl+x' -Function Cut -ViMode Insert
 Set-PSReadLineKeyHandler -Chord 'Ctrl+x' -Function Cut -ViMode Command
 
 Set-PSReadLineKeyHandler -Chord 'Ctrl+[' -Function ViCommandMode -ViMode Insert
+Set-PSReadLineKeyHandler -Chord 'Escape' -Function ViCommandMode -ViMode Insert
 
 Set-PSReadLineKeyHandler -Chord 'Ctrl+Shift+z' -Function Redo -ViMode Insert
 Set-PSReadLineKeyHandler -Chord 'Ctrl+Shift+z' -Function Redo -ViMode Command
@@ -106,9 +107,12 @@ function OnViModeChange {
         Write-Host -NoNewline "`e[5 q"
     }
 }
-Set-PSReadLineOption `
-    -ViModeChangeHandler $Function:OnViModeChange `
-    -ViModeIndicator Script `
+
+# Set-PSReadLineOption `
+#     -ViModeIndicator Script `
+#     -ViModeChangeHandler $Function:OnViModeChange `
+
+Set-PSReadLineOption -ViModeIndicator Nnoe
 
 Set-PSReadLineOption `
     -HistorySearchCaseSensitive:$False `
@@ -139,7 +143,7 @@ Set-PSReadLineOption -Colors @{
 
 # Ensure that the PSGallery repository is trusted.
 # if (!((Get-PSRepository -Name PSGallery).InstallationPolicy.Equals('Trusted'))) {
-#     Set-PSRepository -Name PSGallery -InstallationPolicy Trusted 
+#     Set-PSRepository -Name PSGallery -InstallationPolicy Trusted
 # }
 
 # Ensure that the current PSReadLine is version 2.2.0 or higher
@@ -149,7 +153,7 @@ Set-PSReadLineOption -Colors @{
 
 # Disabled until a suggestion system is implemented, hopefully GitHub Copilot
 # Ensure that the PowerShell subsystem plugin model is enabled
-# if (!$(Get-ExperimentalFeature -Name PSSubsystemPluginModel).Enabled) { 
+# if (!$(Get-ExperimentalFeature -Name PSSubsystemPluginModel).Enabled) {
 #     Enable-ExperimentalFeature PSSubsystemPluginModel
 # }
 
@@ -160,7 +164,7 @@ Set-PSReadLineOption -Colors @{
     # Get-EventSubscriber -Force -SourceIdentifier PowerShell.OnIdle
 # } catch [System.Management.Automation.CommandNotFoundException] {
     # https://techcommunity.microsoft.com/t5/azure-tools-blog/announcing-az-predictor/ba-p/1873104
-    # Install-Module -Name Az.Accounts -AllowPrerelease -Confirm        
+    # Install-Module -Name Az.Accounts -AllowPrerelease -Confirm
     # Install-Module -Name Az.Tools.Predictor -AllowPrerelease -Confirm
     #    if (!(Get-PSSubsystem -Kind CommandPredictor).IsRegistered) {
     #        Write-Warning "Module 'Az.Tools.Predictor' is not installed."
@@ -194,7 +198,7 @@ try {
     Set-PSReadLineKeyHandler -Key Tab -ScriptBlock { Invoke-FzfTabCompletion } -ViMode Command
     Set-PsFzfOption -TabExpansion
 
-    Set-PSReadLineKeyHandler -Chord 'Ctrl+]' -Function ViCommandMode -ViMode Insert
+    # Set-PSReadLineKeyHandler -Chord 'Ctrl+]' -Function ViCommandMode -ViMode Insert
 
     # ${Env:FZF_DEFAULT_COMMAND} = "bat --style=numbers --color=always --line-range :500 {}"
 
@@ -205,8 +209,8 @@ try {
     Install-Module -Name PSFzf -Confirm
 }
 
-# try { 
-#     Import-Module -Name DockerCompletion 
+# try {
+#     Import-Module -Name DockerCompletion
 # } catch {
 #     Install-Module -Name DockerCompletion -Confirm
 # }
