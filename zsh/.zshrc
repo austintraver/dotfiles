@@ -908,7 +908,7 @@ bindkey -a '^L' widget-clear-screen
 # # to a vertical line.
 # print -n $'\x1b[5 q'
 
-prompt=" |> "
+prompt="|> "
 
 
 function fuzzy-search-history() {
