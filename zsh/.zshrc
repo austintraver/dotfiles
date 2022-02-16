@@ -358,7 +358,7 @@ setopt LONG_LIST_JOBS
 # Print a warning message when a global parameter is 
 # created in a function by an assignment or in a math
 # context.
-setopt WARN_CREATE_GLOBAL
+# setopt WARN_CREATE_GLOBAL
 
 # If numeric filenames are matched by a filename generation
 # pattern, sort the filenames numerically rather than
@@ -419,6 +419,13 @@ export \
 typeset \
 	READNULLCMD='less' \
 	NULLCMD='cat' \
+
+path=(~/.cargo/bin(N) ${path})
+if [[ $(whence bat) ]]; then
+	PAGER="bat"
+	READNULLCMD="bat"
+	NULLCMD="bat"
+fi
 
 # Set the language and locale category
 # typeset -Hxg LANG LC_ALL
@@ -1257,5 +1264,3 @@ scour () {
 }
 
 path=(~/sdk/go1.*/bin(N) ${path})
-
-path=(~/.cargo/bin(N) ${path})
