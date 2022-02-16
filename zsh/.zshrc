@@ -1257,3 +1257,5 @@ scour () {
 }
 
 path=(~/sdk/go1.*/bin(N) ${path})
+
+path=(~/.cargo/bin(N) ${path})
