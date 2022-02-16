@@ -1089,7 +1089,9 @@ zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
 # https://github.com/Aloxaf/fzf-tab/wiki/Configuration#group-colors
 zstyle ':fzf-tab:*' switch-group ',' '.'
 # preview directory's content with exa when completing cd
-zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+[[ $(whence exa) ]] && {
+	zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
+}
 # set the default color of completion text (white)
 zstyle ':fzf-tab:*' default-color $'\033[38;5;3m'
 zstyle ':fzf-tab:*' prefix '·'
@@ -1099,17 +1101,20 @@ zstyle ':completion:*:descriptions' format '[%d]'
 zstyle ':fzf-tab:*' show-group full
 zstyle ':fzf-tab:*' continuous-trigger '/'
 
-# Use fd (https://github.com/sharkdp/fd) instead of the default find
-# command for listing path candidates.
-# - The first argument to the function ($1) is the base path to start traversal
-# - See the source code (completion.{bash,zsh}) for the details.
-_fzf_compgen_path() {
-  fd --hidden --follow --exclude ".git" . "$1"
-}
 
-# Use fd to generate the list for directory completion
-_fzf_compgen_dir() {
-  fd --type d --hidden --follow --exclude ".git" . "$1"
+[[ $(whence fd) ]] && {
+	# Use fd (https://github.com/sharkdp/fd) instead of the default find
+	# command for listing path candidates.
+	# - The first argument to the function ($1) is the base path to start traversal
+	# - See the source code (completion.{bash,zsh}) for the details.
+	_fzf_compgen_path() {
+		fd --hidden --follow --exclude ".git" . "$1"
+	}
+
+	# Use fd to generate the list for directory completion
+	_fzf_compgen_dir() {
+		fd --type d --hidden --follow --exclude ".git" . "$1"
+	}
 }
 
 # source ~/.fzf.zsh
