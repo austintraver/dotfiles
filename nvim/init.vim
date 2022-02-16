@@ -536,12 +536,19 @@ Plug 'nvim-telescope/telescope.nvim'
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
 " -----------------------------------------------------------------------------
 " -----------------------------------------------------------------------------
-" Add support for fzf plugin
+" Add support for 'fzf' plugin
 " <https://github.com/junegunn/fzf.vim>
 " =====================================
-set runtimepath+=$HOME/.fzf
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+set runtimepath+=$HOME/.local/opt/fzf
+Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
+" -----------------------------------------------------------------------------
+" -----------------------------------------------------------------------------
+" Add support for 'rust' language.
+" <https://github.com/rust-lang/rust.vim>
+" =======================================
+Plug 'rust-lang/rust.vim'
+let g:rustfmt_autosave = 1
 " -----------------------------------------------------------------------------
 
 command! -bang -nargs=* Rg

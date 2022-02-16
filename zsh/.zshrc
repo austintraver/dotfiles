@@ -355,12 +355,25 @@ setopt INTERACTIVE_COMMENTS
 # List jobs in a verbose format
 setopt LONG_LIST_JOBS
 
+# Print a warning message when a global parameter is 
+# created in a function by an assignment or in a math
+# context.
+setopt WARN_CREATE_GLOBAL
+
+# If numeric filenames are matched by a filename generation
+# pattern, sort the filenames numerically rather than
+# lexicographically.
+setopt NUMERIC_GLOB_SORT
+
 # Send the HUP signal to running jobs when the shell exits.
 setopt NO_HUP
 
 # Report the status of background jobs immediately, rather than waiting until
 # just before printing a prompt.
 setopt NOTIFY
+
+# Disable output flow control via start/stop characters.
+setopt NO_FLOW_CONTROL
 
 # Do not beep during listing completions
 setopt NO_LIST_BEEP
@@ -1125,14 +1138,14 @@ _fzf_compgen_dir() {
 		return
 	}
 	export -T FZF_DEFAULT_OPTS fzf_default_opts ' '
-	fzf_default_opts=(
-		--no-mouse
-		--border=sharp
-		--height=50%
-		--min-height=15
-		--margin=2
-		--layout=reverse
-	)
+	# fzf_default_opts=(
+	# 	--no-mouse
+	# 	--border=sharp
+	# 	--height=80%
+	# 	--min-height=15
+	# 	--margin=1
+	# 	--layout=reverse
+	# )
 	# export FZF_DEFAULT_COMMAND="fd --type f"
 	source ~/.local/opt/fzf/shell/completion.zsh
 	source ~/.local/opt/fzf/shell/key-bindings.zsh
@@ -1222,3 +1235,18 @@ fi
 # fi
 
 # zprof
+
+scour () {
+	local INITIAL_QUERY=""                                              
+	local RG_PREFIX="rg -l --no-heading --color=always --smart-case "
+	FZF_DEFAULT_COMMAND="$RG_PREFIX '$INITIAL_QUERY'" fzf \
+		--bind "change:reload:$RG_PREFIX {q} || true" \
+		--ansi \
+		--disabled \
+		--query "$INITIAL_QUERY" \
+		--height=50% \
+		--layout=reverse \
+		--preview 'bat --style=numbers --color=always {}'
+}
+
+path=(~/sdk/go1.*/bin(N) ${path})
