@@ -412,11 +412,11 @@ typeset \
 	NULLCMD='cat' \
 
 path=(~/.cargo/bin(N) ${path})
-if [[ $(whence bat) ]]; then
-	PAGER="bat"
-	READNULLCMD="bat"
-	NULLCMD="bat"
-fi
+# if [[ $(whence bat) ]]; then
+# 	PAGER="bat"
+# 	READNULLCMD="bat"
+# 	NULLCMD="bat"
+# fi
 
 # Set the language and locale category
 # typeset -Hxg LANG LC_ALL
@@ -1208,8 +1208,8 @@ path=(~/Library/Python/*/bin(N) ${path})
 if [[ -e ~/.local/opt/google-cloud-sdk ]]; then
 	path=( ~/.local/opt/google-cloud-sdk/bin ${path})
 	source ~/.local/opt/google-cloud-sdk/completion.zsh.inc
-else
-	print "warning: 'google-cloud-sdk' not found" >&2
+# else
+	# print "warning: 'google-cloud-sdk' not found" >&2
 fi
 
 # if [[ -e /Applications/VMware\ Fusion.app ]]; then
