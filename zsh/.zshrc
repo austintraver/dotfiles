@@ -421,11 +421,11 @@ typeset \
 	NULLCMD='cat' \
 
 path=(~/.cargo/bin(N) ${path})
-if [[ $(whence bat) ]]; then
-	PAGER="bat"
-	READNULLCMD="bat"
-	NULLCMD="bat"
-fi
+# if [[ $(whence bat) ]]; then
+# 	PAGER="bat"
+# 	READNULLCMD="bat"
+# 	NULLCMD="bat"
+# fi
 
 # Set the language and locale category
 # typeset -Hxg LANG LC_ALL
