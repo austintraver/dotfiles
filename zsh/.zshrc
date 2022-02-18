@@ -156,12 +156,7 @@ if [[ ${OSTYPE} =~ 'darwin' ]]; then
 		'python'
 		'man-db'
 	)
-		if [[ -e ${HOMEBREW_PREFIX}/opt/${pkg} ]]; then
-			path=(
-				${HOMEBREW_PREFIX}/opt/${pkg}/libexec/bin(/N)
-				${path}
-			)
-		fi
+		path=(${HOMEBREW_PREFIX}/opt/${pkg}/libexec/bin(N) ${path})
 	end
 	# Add homebrew binaries outside of any 'libexec' directory
 	# to the PATH
@@ -173,13 +168,9 @@ if [[ ${OSTYPE} =~ 'darwin' ]]; then
 		'node@16'
 		'node@14'
 		'openssl@3'
+		'clang-format'
 	)
-		if [[ -e ${HOMEBREW_PREFIX}/opt/${pkg} ]]; then
-			path=(
-				${HOMEBREW_PREFIX}/opt/${pkg}/bin(/N)
-				${path}
-			)
-		fi
+		path=(${HOMEBREW_PREFIX}/opt/${pkg}/bin(N) ${path})
 	end
 
 	path=(
