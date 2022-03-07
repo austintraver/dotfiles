@@ -47,3 +47,6 @@ _@user_*.icls
 jgit/config
 
 /tool_state
+
+/settings
+/jupyter/migrated

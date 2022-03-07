@@ -9,12 +9,12 @@ email = "austintraver@gmail.com"
 imap-host = "imap.gmail.com"
 imap-port = 993
 imap-login = "austintraver@gmail.com"
-imap-passwd-cmd = ""
+imap-passwd-cmd = "echo ${HIMALAYA_KEY_GMAIL}"
 
 smtp-host = "smtp.gmail.com"
 smtp-port = 465
 smtp-login = "austintraver@gmail.com"
-smtp-passwd-cmd = ""
+smtp-passwd-cmd = "echo ${HIMALAYA_KEY_GMAIL}"
 
 [icloud]
 default = true
@@ -23,9 +23,9 @@ email = "austintraver@icloud.com"
 imap-host = "imap.mail.me.com"
 imap-port = 993
 imap-login = "austintraver@icloud.com"
-imap-passwd-cmd = ""
+imap-passwd-cmd = "echo ${HIMALAYA_KEY_ICLOUD}"
 
 smtp-host = "smtp.mail.me.com"
 smtp-port = 587
 smtp-login = "austintraver@icloud.com"
-smtp-passwd-cmd = ""
+smtp-passwd-cmd = "echo ${HIMALAYA_KEY_ICLOUD}"

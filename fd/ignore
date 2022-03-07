@@ -1,0 +1,8 @@
+.Trash/
+Library/
+Pictures/
+Volumes/
+node_modules/
+.npm/
+.git/
+.cache/
