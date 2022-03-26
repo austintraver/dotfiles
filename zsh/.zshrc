@@ -160,10 +160,11 @@ export -T INFOPATH infopath ':'
 		path=(/Library/Java/JavaVirtualMachines/*/Contents/Home/bin(N) ${path})
 
 
-		local pkg=(python{,@3.{8..10}} 'man-db' )
 
 		# Add homebrew binaries within the 'libexec' directory
 		# to the PATH
+		# local pkg=(python{,@3.{8..10}} 'man-db' )
+		local pkg
 		foreach pkg (
 			'python@3.8'
 			'python@3.9'
@@ -177,6 +178,7 @@ export -T INFOPATH infopath ':'
 		# to the PATH
 		foreach pkg (
 			'gcc'
+			'llvm'
 			'lsof'
 			'curl'
 			'rust'
@@ -195,7 +197,7 @@ export -T INFOPATH infopath ':'
 			${HOMEBREW_PREFIX}/bin
 			${HOMEBREW_PREFIX}/sbin
 			${HOMEBREW_PREFIX}/opt/**/*/libexec/gnubin(N)
-			${HOMEBREW_PREFIX}/lib/ruby/gems/3.0.0/bin(N)
+			${HOMEBREW_PREFIX}/lib/ruby/gems/3.1.0/bin(N)
 			${path}
 		)
 
@@ -487,37 +489,110 @@ typeset -U \
 
 
 typeset -A colors=(
+  # [blue]='38;5;27'
 	[blue]='#005fff'
+  # [cyan]='38;5;159'
 	[cyan]='#afffff'
+  # [green]='38;5;158'
 	[green]='#b3ffcc'
+  # [lime]='38;5;155'
 	[lime]='#afff5f'
+  # [mint]='38;5;49'
 	[mint]='#00ffaf'
+  # [orange]='38;5;215'
 	[orange]='#ffaf5f'
+  # [periwinkle]='38;5;75'
 	[periwinkle]='#5fafff'
+  # [pink]='38;5;213'
 	[pink]='#ff87ff'
+  # [magenta]='38;5;99'
 	[magenta]='#875fff'
+  # [red]='38;5;167'
 	[red]='#d75f5f'
+  # [rose]='38;5;225'
 	[rose]='#ffdfff'
+  # [rust]='38;5;173'
 	[rust]='#d7875f'
+  # [violet]='38;5;147'
 	[violet]='#afafff'
+  # [yellow]='38;5;229'
 	[yellow]='#ffffaf'
+  # [white]='38;5;231'
 	[white]='#ffffff'
+  # [black]='38;5;16'
 	[black]='#000000'
+  # [dgray]='38;5;241'
 	[dgray]='#666666'
+  # [lgray]='38;5;250'
 	[lgray]='#bfbfbf'
 )
 
 typeset -A f=([none]='39')
 typeset -A b=([none]='49')
 
-() {
-    local key
-	for key in ${(k)colors}; do
-		f[$key]=${${${(%)$(print -n -- "%F{${colors[$key]}}")}##*\[}%%m*}
-		b[$key]=${${${(%)$(print -n -- "%K{${colors[$key]}}")}##*\[}%%m*}
-	done
-	print $'\e[0m'
-}
+# [blue]='#005fff'
+f[blue]='38;5;27'
+b[blue]='38;5;27'
+# [cyan]='#afffff'
+f[cyan]='38;5;159'
+b[cyan]='38;5;159'
+# [green]='#b3ffcc'
+f[green]='38;5;158'
+b[green]='38;5;158'
+# [lime]='#afff5f'
+f[lime]='38;5;155'
+b[lime]='38;5;155'
+# [mint]='#00ffaf'
+f[mint]='38;5;49'
+b[mint]='38;5;49'
+# [orange]='#ffaf5f'
+f[orange]='38;5;215'
+b[orange]='38;5;215'
+# [periwinkle]='#5fafff'
+f[periwinkle]='38;5;75'
+b[periwinkle]='38;5;75'
+# [pink]='#ff87ff'
+f[pink]='38;5;213'
+b[pink]='38;5;213'
+# [magenta]='#875fff'
+f[magenta]='38;5;99'
+b[magenta]='38;5;99'
+# [red]='#d75f5f'
+f[red]='38;5;167'
+b[red]='38;5;167'
+# [rose]='#ffdfff'
+f[rose]='38;5;225'
+b[rose]='38;5;225'
+# [rust]='#d7875f'
+f[rust]='38;5;173'
+b[rust]='38;5;173'
+# [violet]='#afafff'
+f[violet]='38;5;147'
+b[violet]='38;5;147'
+# [yellow]='#ffffaf'
+f[yellow]='38;5;229'
+b[yellow]='38;5;229'
+# [white]='#ffffff'
+f[white]='38;5;231'
+b[white]='38;5;231'
+# [black]='#000000'
+f[black]='38;5;16'
+b[black]='38;5;16'
+# [dgray]='#666666'
+f[dgray]='38;5;241'
+b[dgray]='38;5;241'
+# [lgray]='#bfbfbf'
+f[lgray]='38;5;250'
+b[lgray]='38;5;250'
+
+# () {
+#     local key
+# 	for key in ${(k)colors}; do
+# 		f[$key]=${${${(%)$(print -n -- "%F{${colors[$key]}}")}##*\[}%%m*}
+# 		b[$key]=${${${(%)$(print -n -- "%K{${colors[$key]}}")}##*\[}%%m*}
+# 	done
+# 	print $'\e[0m'
+# }
 
 # Configure colors for the `ls`, `zls`, and `tree` commands
 typeset -Tx LS_COLORS ls_colors ':'
@@ -1105,16 +1180,21 @@ fi
 		return
 	}
 
-	source ~/.local/opt/fzf/shell/completion.zsh
-	source ~/.local/opt/fzf/shell/key-bindings.zsh
-	path=(~/.local/opt/fzf/bin(N) ${path})
-	source ~/.local/opt/fzf-tab/fzf-tab.zsh
-
 	export -T FZF_DEFAULT_OPTS fzf_default_opts ' '
 
 	fzf_default_opts=(
 		--ansi
-		--border=rounded
+		--border='rounded'
+		--select-1
+		--color=16
+		# --exit-0
+		# --color='always'
+		# --min-height=20
+		# --min-width=80
+		# --info='default'
+		# --tabstop='2'
+		# --bind='backward-eof:abort,escape:cancel'
+		# --preview-window=':wrap'
 	)
 	
 	export FZF_DEFAULT_COMMAND='fd --type=file --max-depth=8'
@@ -1137,6 +1217,12 @@ fi
 	}
 	zle -N find_text_within_file
 	bindkey '^O' find_text_within_file
+
+	source ~/.local/opt/fzf/shell/completion.zsh
+	source ~/.local/opt/fzf/shell/key-bindings.zsh
+	path=(~/.local/opt/fzf/bin(N) ${path})
+	source ~/.local/opt/fzf-tab/fzf-tab.zsh
+
 }
 
 # Load RVM into a shell session, doing so from within a function.
@@ -1209,6 +1295,8 @@ path+=(/Applications/VMware\ Fusion.app/Contents/Library{,/vkd/bin}(N))
 # fi
 
 path=(~/sdk/go1.*/bin(N) ${path})
+
+path=(/Applications/Espanso.app/Contents/MacOS(N) ${path})
 
 manpath+=(
 	/usr/share/man(N)

@@ -703,7 +703,7 @@ let g:markdown_fenced_languages = [
       \ 'zsh', 'shell=zsh', 'sh=zsh', 'bash=sh', 'sql' , 'txt=text',
       \ 'tex', 'sed', 'awk', 'groff', 'wl', 'scpt=applescript',
       \ 'cypher', 'cyp=cypher', 'make', 'cmake', 'liquid', 'gitconfig', 'conf',
-      \ 'ini=dosini', 'dosini', 'ps1', 'powershell=ps1', 'pwsh=ps1'
+      \ 'ini=dosini', 'dosini', 'ps1', 'powershell=ps1', 'pwsh=ps1', 'rust',
       \ ]
 
 " Limit syntax highlighting to a maximum number of consecutive lines
@@ -900,8 +900,8 @@ Plug 'junegunn/fzf.vim'
 
 let g:fzf_layout = { 
         \ 'window': { 
-                \ 'height': 0.6,
-                \ 'width': 0.6
+                \ 'height': 0.9,
+                \ 'width': 0.9,
         \ }
 \ }
 
