@@ -4,22 +4,18 @@ syntax match vimNotation /\c<\(s-\)\?char-0\?x\?[0-9a-f]\{1,5}>/ contains=vimBra
 
 " Link highlight group highlighting to syntax group highlighting
 highlight! link vimHiGroup vimGroup
-
 highlight! link vimSpecial SpecialChar
-
 highlight! link vimLineComment Comment
-
-" Highlight parentheses in bold-white
 highlight vimParenSep ctermfg=white ctermbg=none cterm=bold
 
-" Highlight the ':highlight' command
-highlight vimHighlight ctermfg=blue ctermbg=none cterm=none
+highlight! link vimHighlight Statement
+highlight vimHiCterm ctermfg=193 ctermbg=none cterm=none
+highlight! link vimHiCtermFgBg vimHiCTerm
 
-" Highlight 'ctermfg=' and 'ctermbg='
-highlight vimHiCtermFgBg ctermfg=cyan ctermbg=none cterm=none
+highlight clear vimOption
+highlight vimOption ctermfg=230
 
-" Highlight 'cterm='
-highlight vimHiCTerm ctermfg=cyan ctermbg=none cterm=none
+highlight! link vimSetSep Operator
 
 " Highlight 'none' in ':highlight' statements
-highlight vimHiAttrib ctermfg=red ctermbg=none cterm=none
+highlight! link vimHiAttrib Boolean

@@ -58,146 +58,155 @@ fi
 # ~/.zcompcache file from appearing
 zstyle ':completion::complete:*' use-cache on
 zstyle ':completion::complete:*' cache-path "${XDG_CACHE_HOME}/zsh/completion"
+# enable sort when completing options of any command
+zstyle ':completion:complete:*:options' sort false
 # This line, specifying recent-dirs-file works to remove the ~/.chpwd-recent-dirs file
 zstyle ':chpwd:*' recent-dirs-file "${XDG_CACHE_HOME}/zsh/directories"
-zstyle ':completion:*:*:*:*:*' menu selection
+# zstyle ':completion:*:*:*:*:*' menu selection
 # Permit case-insensitive completion, but only in direction (upper -> lower)
-zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
-zstyle ':completion:*' verbose yes
+# zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+# zstyle ':completion:*' verbose yes
 # https://learning.oreilly.com/library/view/learning-shell-scripting/9781783282937/ch05s02.html#ch05lvl2sec49
+
+zstyle ':completion:*' \
+	file-patterns \
+		'%p:globbed-files' \
+		'*(-/):directories' \
+		'*:all-files' \
+
 zstyle ':completion:*' squeeze-slashes true
 # zstyle ':completion:*' recent-dirs-insert always
 # zstyle ':chpwd:*' recent-dirs-default true
-zstyle ':completion:*:default' menu select=1
+# zstyle ':completion:*:default' menu select=1
 # zstyle ':completion:history-words:*' list no
 # zstyle ':completion:history-words:*' menu yes
 # zstyle ':completion:history-words:*' remove-all-dups yes
 zstyle ':completion:*:options' description 'yes'
+# set list-colors to enable filename colorizing
 zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
+zstyle ':completion:*' list-grouped true
 # prevent `cd` from selecting the parent directory (e.g.: cd ../<TAB>):
 zstyle ':completion:*:cd:*' ignore-parents parent pwd
+# set descriptions format to enable group support
+zstyle ':completion:*:descriptions' format '[%d]'
+# disable sort when completing `git checkout`
+zstyle ':completion:*:git-checkout:*' sort false
 
 typeset -U path manpath infopath
-typeset -Tx INFOPATH infopath ':'
+export -T INFOPATH infopath ':'
 
-if [[ ${OSTYPE} =~ 'darwin' ]]; then
-	if [[ ${CPUTYPE} == 'x86_64' ]]; then
-		HOMEBREW_PREFIX='/usr/local'
-	elif [[ ${CPUTYPE} == 'arm64' ]]; then
-		HOMEBREW_PREFIX='/opt/homebrew'
-	fi
-	HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar"
-	HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}"
-	HOMEBREW_SHELLENV_PREFIX="${HOMEBREW_PREFIX}"
-
-
-	path=(
-		/usr/local/bin
-		/usr/local/sbin
-		/usr/bin
-		/usr/sbin
-		/bin
-		/sbin
-		${path}
-	)
-
-	manpath=(
-		"${HOMEBREW_PREFIX}/share/man"
-		${manpath}
-	)
-
-	infopath=(
-		"${HOMEBREW_PREFIX}/share/info"
-		${infopath}
-	)
-
-	# Include command completions provided by Homebrew packages
-	fpath=(
-		${HOMEBREW_PREFIX}/share/zsh/site-functions
-		${fpath}
-	)
-
-	# Request that Homebrew be installed, and exit
-	if [[ ! -e '/usr/local/bin/brew' ]] && [[ ! -e '/opt/homebrew/bin/brew' ]]; then
-		print "Please install Homebrew: https://brew.sh" >&2
-		return 1
-	fi
-
-	export \
-		HOMEBREW_PREFIX \
-		HOMEBREW_CELLAR \
-		HOMEBREW_REPOSITORY \
-		HOMEBREW_SHELLENV_PREFIX \
-		HOMEBREW_NO_ENV_HINTS=1 \
-		HOMEBREW_NO_COMPAT=1 \
-		HOMEBREW_UPDATE_REPORT_ONLY_INSTALLED=1 \
-		HOMEBREW_DISPLAY_INSTALL_TIMES=1 \
-		HOMEBREW_NO_INSTALL_CLEANUP=1 \
-		HOMEBREW_BUNDLE_NO_LOCK=1 \
-		# HOMEBREW_NO_AUTO_UPDATE \
-
-	local brew_cache_dir="${XDG_CACHE_HOME}/brew"
-	if [[ ! -d ${brew_cache_dir:P} ]]; then
-		mkdir -v -p "${XDG_CACHE_HOME}/brew"
-	fi
-
-	# Add Java Virtual Machine installations to PATH
-	path=(/Library/Java/JavaVirtualMachines/*/Contents/Home/bin(N) ${path})
-
-
-	local pkg=(python{,@3.{8..10}} 'man-db' )
-
-	# Add homebrew binaries within the 'libexec' directory
-	# to the PATH
-	foreach pkg (
-		'python@3.8'
-		'python@3.9'
-		'python@3.10'
-		'python'
-		'man-db'
-	)
-		if [[ -e ${HOMEBREW_PREFIX}/opt/${pkg} ]]; then
-			path=(
-				${HOMEBREW_PREFIX}/opt/${pkg}/libexec/bin(/N)
-				${path}
-			)
+() {
+	if [[ ${OSTYPE} =~ 'darwin' ]]; then
+		# Request that Homebrew be installed, and exit
+		if [[ ! -e '/usr/local/bin/brew' ]] && [[ ! -e '/opt/homebrew/bin/brew' ]]; then
+			print "Please install Homebrew: https://brew.sh" >&2
+			return 1
 		fi
-	end
-	# Add homebrew binaries outside of any 'libexec' directory
-	# to the PATH
-	foreach pkg (
-		'lsof'
-		'curl'
-		'rust'
-		'ruby'
-		'node@16'
-		'node@14'
-		'openssl@3'
-	)
-		if [[ -e ${HOMEBREW_PREFIX}/opt/${pkg} ]]; then
-			path=(
-				${HOMEBREW_PREFIX}/opt/${pkg}/bin(/N)
-				${path}
-			)
+
+		if [[ ${CPUTYPE} == 'x86_64' ]]; then
+			HOMEBREW_PREFIX='/usr/local'
+		elif [[ ${CPUTYPE} == 'arm64' ]]; then
+			HOMEBREW_PREFIX='/opt/homebrew'
 		fi
-	end
+		HOMEBREW_CELLAR="${HOMEBREW_PREFIX}/Cellar"
+		HOMEBREW_REPOSITORY="${HOMEBREW_PREFIX}"
+		HOMEBREW_SHELLENV_PREFIX="${HOMEBREW_PREFIX}"
 
-	path=(
-		~/.local/bin
-		${XDG_CONFIG_HOME}/bin
-		${HOMEBREW_PREFIX}/bin
-		${HOMEBREW_PREFIX}/sbin
-		${HOMEBREW_PREFIX}/opt/**/*/libexec/gnubin(N)
-		${HOMEBREW_PREFIX}/lib/ruby/gems/3.0.0/bin(N)
-		${path}
-	)
 
-	fpath=(
-		${HOMEBREW_PREFIX}/opt/*/share/zsh/site-functions(/N)
-		${fpath}
-	)
-fi
+		path=(
+			${HOMEBREW_PREFIX}/bin
+			${HOMEBREW_PREFIX}/sbin
+			/usr/local/bin
+			/usr/local/sbin
+			/usr/bin
+			/usr/sbin
+			/bin
+			/sbin
+			${path}
+		)
 
+		manpath=(
+			"${HOMEBREW_PREFIX}/share/man"
+			${manpath}
+		)
+
+		infopath=(
+			"${HOMEBREW_PREFIX}/share/info"
+			${infopath}
+		)
+
+		# Include command completions provided by Homebrew packages
+		fpath=(
+			${HOMEBREW_PREFIX}/share/zsh/site-functions
+			${fpath}
+		)
+
+		export \
+			HOMEBREW_PREFIX \
+			HOMEBREW_CELLAR \
+			HOMEBREW_REPOSITORY \
+			HOMEBREW_SHELLENV_PREFIX \
+			HOMEBREW_NO_ENV_HINTS=1 \
+			HOMEBREW_NO_COMPAT=1 \
+			HOMEBREW_DISPLAY_INSTALL_TIMES=1 \
+			HOMEBREW_NO_INSTALL_CLEANUP=1 \
+			HOMEBREW_BUNDLE_NO_LOCK=1 \
+			# HOMEBREW_NO_AUTO_UPDATE \
+
+		local brew_cache_dir="${XDG_CACHE_HOME}/brew"
+		if [[ ! -d ${brew_cache_dir:P} ]]; then
+			mkdir -v -p "${XDG_CACHE_HOME}/brew"
+		fi
+
+		# Add Java Virtual Machine installations to PATH
+		path=(/Library/Java/JavaVirtualMachines/*/Contents/Home/bin(N) ${path})
+
+
+
+		# Add homebrew binaries within the 'libexec' directory
+		# to the PATH
+		# local pkg=(python{,@3.{8..10}} 'man-db' )
+		local pkg
+		foreach pkg (
+			'python@3.8'
+			'python@3.9'
+			'python@3.10'
+			'python'
+			'man-db'
+		)
+			path=(${HOMEBREW_PREFIX}/opt/${pkg}/libexec/bin(N) ${path})
+		end
+		# Add homebrew binaries outside of any 'libexec' directory
+		# to the PATH
+		foreach pkg (
+			'gcc'
+			'llvm'
+			'lsof'
+			'curl'
+			'rust'
+			'ruby'
+			'node@16'
+			'node@14'
+			'openssl@3'
+			'clang-format'
+		)
+			path=(${HOMEBREW_PREFIX}/opt/${pkg}/bin(N) ${path})
+		end
+
+		path=(
+			~/.local/bin
+			${XDG_CONFIG_HOME}/bin
+			${HOMEBREW_PREFIX}/opt/**/*/libexec/gnubin(N)
+			${HOMEBREW_PREFIX}/lib/ruby/gems/3.1.0/bin(N)
+			${path}
+		)
+
+		fpath=(
+			${HOMEBREW_PREFIX}/opt/*/share/zsh/site-functions(/N)
+			${fpath}
+		)
+	fi
+}
 
 # ==============================================================================
 #                     _     _     _
@@ -225,11 +234,13 @@ let SAVEHIST=100000
 # Number of directories to remember having visited
 let DIRSTACKSIZE=50
 
-# Allow the `!` character to trigger command expansion
-setopt BANG_HIST
+# Enabling this option causes the `!` character to 
+# trigger command expansion
+setopt NO_BANG_HIST
 
-# Execute history expansions immediately, without verification
-setopt NO_HIST_VERIFY
+# Enabling this option prevents history expansions from
+# occurring immediately, without verification.
+setopt HIST_VERIFY
 
 # Remove function definitions from the history list.
 setopt HIST_NO_FUNCTIONS
@@ -256,17 +267,19 @@ setopt HIST_IGNORE_SPACE
 # just like HIST_IGNORE_ALL_DUPS once the history fills up with unique events.
 setopt HIST_EXPIRE_DUPS_FIRST
 
-# If a new command line being added to the history list duplicates an older one
-# then the older command is not removed from the list
+# Enabling this option will cause existing entries that match 
+# the current command entry to be deleted from the history file.
 setopt NO_HIST_IGNORE_ALL_DUPS
 
-# When searching for history entries in the line editor, do not display
-# duplicates of a line previously found, regardless of whether or not
+# When searching for history entries in the line editor, enabling this option
+# prevents duplicate entries of a command from being returned, regardless of whether
+# or not those two commands were contiguous entries.
 # the duplicates are contiguous.
 setopt NO_HIST_FIND_NO_DUPS
 
-# When writing out the history file, save older commands,
-# including duplicates of commands already found in history
+# When writing out the history file, enabling this option prevents
+# duplicates of commands already found in history from being added
+# to the history file.
 setopt NO_HIST_SAVE_NO_DUPS
 
 # ==============================================================================
@@ -421,11 +434,11 @@ typeset \
 	NULLCMD='cat' \
 
 path=(~/.cargo/bin(N) ${path})
-if [[ $(whence bat) ]]; then
-	PAGER="bat"
-	READNULLCMD="bat"
-	NULLCMD="bat"
-fi
+# if [[ $(whence bat) ]]; then
+# 	PAGER="bat"
+# 	READNULLCMD="bat"
+# 	NULLCMD="bat"
+# fi
 
 # Set the language and locale category
 # typeset -Hxg LANG LC_ALL
@@ -478,6 +491,113 @@ typeset -U \
 	pythonpath \
 	node_path \
 
+
+typeset -A colors=(
+  # [blue]='38;5;27'
+	[blue]='#005fff'
+  # [cyan]='38;5;159'
+	[cyan]='#afffff'
+  # [green]='38;5;158'
+	[green]='#b3ffcc'
+  # [lime]='38;5;155'
+	[lime]='#afff5f'
+  # [mint]='38;5;49'
+	[mint]='#00ffaf'
+  # [orange]='38;5;215'
+	[orange]='#ffaf5f'
+  # [periwinkle]='38;5;75'
+	[periwinkle]='#5fafff'
+  # [pink]='38;5;213'
+	[pink]='#ff87ff'
+  # [magenta]='38;5;99'
+	[magenta]='#875fff'
+  # [red]='38;5;167'
+	[red]='#d75f5f'
+  # [rose]='38;5;225'
+	[rose]='#ffdfff'
+  # [rust]='38;5;173'
+	[rust]='#d7875f'
+  # [violet]='38;5;147'
+	[violet]='#afafff'
+  # [yellow]='38;5;229'
+	[yellow]='#ffffaf'
+  # [white]='38;5;231'
+	[white]='#ffffff'
+  # [black]='38;5;16'
+	[black]='#000000'
+  # [dgray]='38;5;241'
+	[dgray]='#666666'
+  # [lgray]='38;5;250'
+	[lgray]='#bfbfbf'
+)
+
+typeset -A f=([none]='39')
+typeset -A b=([none]='49')
+
+# [blue]='#005fff'
+f[blue]='38;5;27'
+b[blue]='38;5;27'
+# [cyan]='#afffff'
+f[cyan]='38;5;159'
+b[cyan]='38;5;159'
+# [green]='#b3ffcc'
+f[green]='38;5;158'
+b[green]='38;5;158'
+# [lime]='#afff5f'
+f[lime]='38;5;155'
+b[lime]='38;5;155'
+# [mint]='#00ffaf'
+f[mint]='38;5;49'
+b[mint]='38;5;49'
+# [orange]='#ffaf5f'
+f[orange]='38;5;215'
+b[orange]='38;5;215'
+# [periwinkle]='#5fafff'
+f[periwinkle]='38;5;75'
+b[periwinkle]='38;5;75'
+# [pink]='#ff87ff'
+f[pink]='38;5;213'
+b[pink]='38;5;213'
+# [magenta]='#875fff'
+f[magenta]='38;5;99'
+b[magenta]='38;5;99'
+# [red]='#d75f5f'
+f[red]='38;5;167'
+b[red]='38;5;167'
+# [rose]='#ffdfff'
+f[rose]='38;5;225'
+b[rose]='38;5;225'
+# [rust]='#d7875f'
+f[rust]='38;5;173'
+b[rust]='38;5;173'
+# [violet]='#afafff'
+f[violet]='38;5;147'
+b[violet]='38;5;147'
+# [yellow]='#ffffaf'
+f[yellow]='38;5;229'
+b[yellow]='38;5;229'
+# [white]='#ffffff'
+f[white]='38;5;231'
+b[white]='38;5;231'
+# [black]='#000000'
+f[black]='38;5;16'
+b[black]='38;5;16'
+# [dgray]='#666666'
+f[dgray]='38;5;241'
+b[dgray]='38;5;241'
+# [lgray]='#bfbfbf'
+f[lgray]='38;5;250'
+b[lgray]='38;5;250'
+
+# () {
+#     local key
+# 	for key in ${(k)colors}; do
+# 		f[$key]=${${${(%)$(print -n -- "%F{${colors[$key]}}")}##*\[}%%m*}
+# 		b[$key]=${${${(%)$(print -n -- "%K{${colors[$key]}}")}##*\[}%%m*}
+# 	done
+# 	print $'\e[0m'
+# }
+
 # Configure colors for the `ls`, `zls`, and `tree` commands
 typeset -Tx LS_COLORS ls_colors ':'
 typeset -Tx ZLS_COLORS zls_colors ':'
@@ -486,26 +606,26 @@ typeset -Tx JQ_COLORS jq_colors ':'
 
 ls_colors=(
 	'rs=0'
-	'di=01;34'
-	'ln=01;36'
-	'mh=00'
-	'pi=40;33'
-	'so=01;35'
-	'do=01;35'
-	'bd=40;33;01'
-	'cd=40;33;01'
-	'or=40;31;01'
-	'mi=00'
-	'su=37;41'
-	'sg=30;43'
-	'ca=30;41'
-	'tw=30;42'
-	'ow=34;42'
-	'st=37;44'
-	'ex=01;32'
-	'*.'{tar,gz,tgz,7z,t7z,zip,bz,jar,rar}'=01;31'
-	'*.'{{m,j}p{,e}g,gif,bmp,png,heic,svg,tif{,f}'=01;35'
-	'*.'{mov,m4{a,b,v},mp{3,4},fl{,a}c,mkv,avi,aac,wav}'=01;35'
+	"di=01;${f[blue]};${b[none]}"
+	"ln=01;${f[cyan]};${b[none]}"
+	"mh=00;${f[none]};${b[none]}"
+	"pi=00;${f[yellow]};${b[none]}"
+	"so=01;${f[magenta]};${b[none]}"
+	"do=01;${f[magenta]};${b[none]}"
+	"bd=01;${f[yellow]};${b[none]}"
+	"cd=01;${f[yellow]};${b[none]}"
+	"or=01;${f[red]};${b[none]}"
+	"mi=00;${f[none]};${b[none]}"
+	"su=00;${f[white]};${b[red]}"
+	"sg=00;${f[none]};${b[yellow]}"
+	"ca=00;${f[none]};${b[red]}"
+	"tw=00;${f[none]};${b[green]}"
+	"ow=00;${f[blue]};${b[green]}"
+	"st=00;${f[white]};${b[blue]}"
+	"ex=01;${f[green]};${b[none]}"
+	'*.'{tar,gz,tgz,7z,t7z,zip,bz,jar,rar}"=01;${f[red]};${b[none]}"
+	'*.'{{m,j}p{,e}g,gif,bmp,png,heic,svg,tif{,f}"=01;${f[magenta]};${b[none]}"
+	'*.'{mov,m4{a,b,v},mp{3,4},fl{,a}c,mkv,avi,aac,wav}"=01;${f[magenta]};${b[none]}"
 )
 
 zls_colors=(
@@ -529,13 +649,13 @@ jq_colors=(
 
 # Set up a (trivial) list for subdirectories which can be
 # supplied to `cd` regardless of the present working directory
-cdpath+=(
-	./
-	~/
-	~/Developer(/N)
-	~/Desktop(/N)
-	~/Documents(/N)
-)
+# typeset -U cdpath =(
+# 	./
+# 	~/
+# 	~/Developer(/N)
+# 	~/Desktop(/N)
+# 	~/Documents(/N)
+# )
 
 
 
@@ -607,7 +727,8 @@ PROMPT2='> '
 #	commands executed within the line editor, including completion;
 #	commands explicitly marked with the time keyword still cause
 #	the summary to be printed in this case.
-let -x REPORTTIME=3
+let -x REPORTTIME=30
+# See also: REPORTMEMORY
 
 
 # Enable interpretation of SGR escape sequences
@@ -641,7 +762,6 @@ fi
 typeset -U \
 	path \
 	fpath \
-	cdpath \
 	manpath \
 	infopath \
 	fignore \
@@ -768,7 +888,7 @@ bindkey -a 'cs' change-surround
 
 # Add a similar key to escape
 # (Workaround for issue with key configuration in IntelliJ IDEA for Windows)
-bindkey -v '^]' vi-cmd-mode
+# bindkey -v '^]' vi-cmd-mode
 
 # Enable changing text vi-style within delimiters ' " `
 autoload +X select-quoted
@@ -811,8 +931,8 @@ bindkey -v '^F' vi-forward-char
 bindkey -v '^K' vi-kill-eol
 bindkey -v '^N' vi-down-line-or-history
 bindkey -v '^P' vi-up-line-or-history
-bindkey -v '^R' history-incremental-pattern-search-backward
-bindkey -v '^S' history-incremental-pattern-search-forward
+# bindkey -v '^R' history-incremental-pattern-search-backward
+# bindkey -v '^S' history-incremental-pattern-search-forward
 bindkey -v '^T' transpose-chars
 bindkey -v '^U' backward-kill-line
 bindkey -v '^V' vi-quoted-insert
@@ -897,9 +1017,9 @@ bindkey -M isearch '^M' accept-search
 bindkey -M isearch '^J' accept-search
 # Enable the use of regular expressions during a history search
 # w/ GNU readline style history search
-bindkey -M viins '^R' history-incremental-pattern-search-backward
-bindkey -M isearch '^R' history-incremental-pattern-search-backward
-bindkey -M isearch '^S' history-incremental-pattern-search-forward
+# bindkey -M viins '^R' history-incremental-pattern-search-backward
+# bindkey -M isearch '^R' history-incremental-pattern-search-backward
+# bindkey -M isearch '^S' history-incremental-pattern-search-forward
 # w/ vi style history search
 bindkey -M isearch '^P' history-incremental-pattern-search-backward
 bindkey -M isearch '^N' history-incremental-pattern-search-forward
@@ -928,48 +1048,7 @@ bindkey -a '^L' widget-clear-screen
 # # to a vertical line.
 # print -n $'\x1b[5 q'
 
-prompt="|> "
-
-
-function fuzzy-search-history() {
-	# Assemble the list of commands found in history,
-	# such that it only contains the most recent occurrence
-	# of a particular command.
-	typeset -a entries=()
-	for line in ${(f)"$(fc -nl 1)"}; do
-		entries+=${${line//\\n/ }//\\t/ };
-	done
-	BUFFER=$(
-		print -l ${(Oau)entries} \
-			| tr -cd '[:print:]\n' \
-			| grep \
-				-a \
-				--invert-match \
-				--regexp '[[:alnum:]]\{30\}' \
-				--regexp '[^[:space:]]\{79\}' \
-				--regexp '^[[:cntrl:]]*$' \
-				--regexp '^[^[:alnum:]]' \
-				--regexp '^[^[:space:]]*$' \
-			| fzf \
-				--bind 'backward-eof:abort' \
-				--exact \
-				--height='40%' \
-				--min-height='5' \
-				--no-sort \
-				--no-multi \
-				--reverse \
-				--query=${LBUFFER}
-	)
-	CURSOR=${#BUFFER}
-	zle reset-prompt
-	zle vi-add-eol
-}
-zle -N fuzzy-search-history
-# bindkey -v '^O' fuzzy-search-history
-# bindkey -a '^O' fuzzy-search-history
-bindkey -v '^R' fuzzy-search-history
-bindkey -a '^R' fuzzy-search-history
-
+prompt='> '
 function launch-editor() {
 	command ${EDITOR}
 }
@@ -990,8 +1069,8 @@ function zle-keymap-select() {
 	fi
 	if [[ ${KEYMAP} == 'vicmd' ]]; then
 		# For "normal mode"
-		# Set the cursor style to "solid block"
-		print -N '\E[2 q'
+		# Set the cursor style to "blinking block"
+		print -N '\E[1 q'
 	elif [[ ${KEYMAP} =~ 'viins|main' ]]; then
 		# For "insert mode"
 		# Set the cursor style to "blinking bar"
@@ -1019,15 +1098,6 @@ autoload -Uz add-zsh-hook chpwd_recent_dirs cdr
 
 add-zsh-hook chpwd chpwd_recent_dirs
 add-zsh-hook -Uz zsh_directory_name zsh_directory_name_cdr
-
-#compdef toggl
-if [[ "$(basename -- ${(%):-%x})" != "_toggl" ]] && [[ $(whence compdef) ]]; then
-	function _toggl() {
-		eval $(env COMMANDLINE="${words[1,$CURRENT]}" _TOGGL_COMPLETE=complete-zsh toggl)
-	}
-	autoload compdef
-	compdef _toggl toggl
-fi
 
 # Look for the syntax highlighting module for `zsh`, and load it if we find it.
 () {
@@ -1065,9 +1135,9 @@ if [[ $(whence nvim) ]]; then
 	compdef vi=nvim
 	# Set the width of manpages to 80 columns
 	# export MANWIDTH=80
-	if (( ${COLUMNS} >= 80 )); then
-		export MANWIDTH=80
-	fi
+	# if (( ${COLUMNS} >= 80 )); then
+	# 	export MANWIDTH=80
+	# fi
 else
 	# Have `vi` refer to `vim`
 	alias vi='vim'
@@ -1103,44 +1173,6 @@ fi
 	fi
 }
 
-
-# disable sort when completing `git checkout`
-zstyle ':completion:*:git-checkout:*' sort false
-# set list-colors to enable filename colorizing
-zstyle ':completion:*' list-colors ${(s.:.)LS_COLORS}
-# https://github.com/Aloxaf/fzf-tab/wiki/Configuration#group-colors
-zstyle ':fzf-tab:*' switch-group ',' '.'
-# preview directory's content with exa when completing cd
-[[ $(whence exa) ]] && {
-	zstyle ':fzf-tab:complete:cd:*' fzf-preview 'exa -1 --color=always $realpath'
-}
-# set the default color of completion text (white)
-zstyle ':fzf-tab:*' default-color $'\033[38;5;3m'
-zstyle ':fzf-tab:*' prefix '·'
-zstyle ':fzf-tab:*' single-group prefix header
-# set descriptions format to enable group support
-zstyle ':completion:*:descriptions' format '[%d]'
-zstyle ':fzf-tab:*' show-group full
-zstyle ':fzf-tab:*' continuous-trigger '/'
-
-
-[[ $(whence fd) ]] && {
-	# Use fd (https://github.com/sharkdp/fd) instead of the default find
-	# command for listing path candidates.
-	# - The first argument to the function ($1) is the base path to start traversal
-	# - See the source code (completion.{bash,zsh}) for the details.
-	_fzf_compgen_path() {
-		fd --hidden --follow --exclude ".git" . "$1"
-	}
-
-	# Use fd to generate the list for directory completion
-	_fzf_compgen_dir() {
-		fd --type d --hidden --follow --exclude ".git" . "$1"
-	}
-}
-
-# source ~/.fzf.zsh
-
 # Initialize the fuzzy finder utilities, if they are found
 () {
 	[[ -e ~/.local/opt/fzf ]] || {
@@ -1151,20 +1183,50 @@ zstyle ':fzf-tab:*' continuous-trigger '/'
 		print "warning: 'fzf-tab' not found" >&2
 		return
 	}
+
 	export -T FZF_DEFAULT_OPTS fzf_default_opts ' '
-	# fzf_default_opts=(
-	# 	--no-mouse
-	# 	--border=sharp
-	# 	--height=80%
-	# 	--min-height=15
-	# 	--margin=1
-	# 	--layout=reverse
-	# )
-	# export FZF_DEFAULT_COMMAND="fd --type f"
+
+	fzf_default_opts=(
+		--ansi
+		--border='rounded'
+		--select-1
+		--color=16
+		# --exit-0
+		# --color='always'
+		# --min-height=20
+		# --min-width=80
+		# --info='default'
+		# --tabstop='2'
+		# --bind='backward-eof:abort,escape:cancel'
+		# --preview-window=':wrap'
+	)
+	
+	export FZF_DEFAULT_COMMAND='fd --type=file --max-depth=8'
+
+	find_text_within_file() {
+        local RG_PREFIX="rg --files --hidden --column --line-number --no-heading --color=always --smart-case "
+        local INITIAL_QUERY=$BUFFER
+        local FZF_DEFAULT_COMMAND="$RG_PREFIX \'$INITIAL_QUERY\'"
+        local selected=$(fzf \
+			--ansi \
+			--disabled \
+			--query "$INITIAL_QUERY" \
+			--bind "change:reload:sleep 0.1; $RG_PREFIX {q} || true" \
+			--delimiter : \
+			--preview 'bat --color=always {1} --highlight-line {2}' \
+			--preview-window 'up,60%,border-bottom,+{2}+3/3,~3'
+		)
+		BUFFER=${selected%%:*}
+		CURSOR=${#BUFFER}
+	}
+	zle -N find_text_within_file
+	bindkey '^O' find_text_within_file
+
 	source ~/.local/opt/fzf/shell/completion.zsh
 	source ~/.local/opt/fzf/shell/key-bindings.zsh
 	path=(~/.local/opt/fzf/bin(N) ${path})
 	source ~/.local/opt/fzf-tab/fzf-tab.zsh
+
 }
 
 # Load RVM into a shell session, doing so from within a function.
@@ -1179,24 +1241,22 @@ zstyle ':fzf-tab:*' continuous-trigger '/'
 	fi
 }
 
-() {
-	# If the GitHub CLI is installed, disable notifications.
-	if [[ $(whence gh) ]]; then
-		export GH_NO_UPDATE_NOTIFIER=1
-	fi
-}
+# If the GitHub CLI is installed, disable notifications.
+if [[ $(whence gh) ]]; then
+	export GH_NO_UPDATE_NOTIFIER=1
+fi
 
 # Set the CHROME_EXECUTABLE environment variable to the Chrome binary,
 # which, if memory serves, is used by the `puppeteer` framework.
 # Additionally, set the BROWSER environment variable to `firefox`
-# but onl. if the `firefox` binary is found on this machine.
-() {
-	[[ "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" ]] && {
-		export CHROME_EXECUTABLE="/Applications/Google Chrome.app/Contents/MacOS/Google Chrome"
-	}
-	[[ "/Applications/Firefox.app/Contents/MacOS/firefox" ]] && {
-		export BROWSER="firefox"
-	}
+# but only if the `firefox` binary is found on this machine.
+[[ '/Applications/Google Chrome.app/Contents/MacOS/Google Chrome' ]] && {
+	export CHROME_EXECUTABLE='/Applications/Google Chrome.app/Contents/MacOS/Google Chrome'
+}
+
+[[ '/Applications/Firefox.app/Contents/MacOS/firefox' ]] && {
+	path=('/Applications/Firefox.app/Contents/MacOS' ${path})
+	export BROWSER="firefox"
 }
 
 # Add a utility command to print the octal permission code for a given file.
@@ -1214,15 +1274,12 @@ octo() {
 
 path=(~/Library/Python/*/bin(N) ${path})
 
-if [[ -e ~/.local/opt/google-cloud-sdk ]]; then
+[[ -e ~/.local/opt/google-cloud-sdk ]] && {
 	path=( ~/.local/opt/google-cloud-sdk/bin ${path})
 	source ~/.local/opt/google-cloud-sdk/completion.zsh.inc
-else
-	print "warning: 'google-cloud-sdk' not found" >&2
-fi
+}
 
-# if [[ -e /Applications/VMware\ Fusion.app ]]; then
-# 	path+=(/Applications/VMware\ Fusion.app/Contents/Library{,/vkd/bin})
+path+=(/Applications/VMware\ Fusion.app/Contents/Library{,/vkd/bin}(N))
 #
 # 	alias -g 350.vmx="/Users/austin/.vm/CSCI\ 350.vmwarevm/CSCI\ 350.vmx"
 # 	350vm() {
@@ -1240,27 +1297,26 @@ fi
 # 		ssh 353 || ssh 353
 # 	}
 # fi
-#
-# if [[ -e /Applications/VirtualBox.app ]]; then
-# 	cs551() {
-# 		VBoxHeadless -s cs551-vm
-# 		ssh cs551
-# 	}
-# fi
+
+path=(~/sdk/go1.*/bin(N) ${path})
+
+path=(/Applications/Espanso.app/Contents/MacOS(N) ${path})
+
+manpath+=(
+	/usr/share/man(N)
+	/usr/local/share/man(N)
+	/Applications/Xcode.app/Contents/Developer/Toolchains/XcodeDefault.xctoolchain/usr/share/man(N)
+	/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/usr/share/man(N)
+	/Applications/Xcode.app/Contents/Developer/Platforms/MacOSX.platform/Developer/SDKs/MacOSX.sdk/usr/share/man(N)
+	/Applications/Xcode.app/Contents/Developer/usr/share/man(N)
+	~/Developer/manpages(N)
+)
 
 # zprof
 
-scour () {
-	local INITIAL_QUERY=""                                              
-	local RG_PREFIX="rg -l --no-heading --color=always --smart-case "
-	FZF_DEFAULT_COMMAND="$RG_PREFIX '$INITIAL_QUERY'" fzf \
-		--bind "change:reload:$RG_PREFIX {q} || true" \
-		--ansi \
-		--disabled \
-		--query "$INITIAL_QUERY" \
-		--height=50% \
-		--layout=reverse \
-		--preview 'bat --style=numbers --color=always {}'
+ls() {
+	if [[ ${commands[exa]} ]] && [[ -o interactive ]]; then
+		echo "-> exa $@"
+		=exa $@
+	fi
 }
-
-path=(~/sdk/go1.*/bin(N) ${path})

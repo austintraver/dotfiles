@@ -10,11 +10,19 @@
 # Random Tools
 # ================
 
-# journal CLI
-brew 'jrnl'
-
-# mail CLI
+# Command-line tools from beloved Rustaceans
+brew 'nu'
+brew 'rg'
+brew 'fd'
+brew 'sd'
+brew 'bat'
+brew 'exa'
+brew 'xsv'
+brew 'hexyl'
+brew 'pastel'
 brew 'himalaya'
+tap 'espanso/espanso'
+cask 'espanso'
 
 # image/video manipulation
 brew 'webp'
@@ -23,16 +31,8 @@ brew 'librsvg'
 brew 'imagemagick'
 brew 'ffmpeg'
 
-# Packages from beloved Rustaceans
-brew 'rust'
-brew 'ripgrep'
-brew 'exa'
-brew 'fd'
-brew 'bat'
-brew 'himalaya'
-brew 'the_silver_searcher'
-# ----------------
-
+# journal CLI
+brew 'jrnl'
 
 # GitHub CLI
 tap 'github/gh'
@@ -44,17 +44,12 @@ tap 'mongodb/brew'
 tap 'teamookla/speedtest'
 brew 'speedtest'
 
-# Espanso (Text Expander)
-tap 'federico-terzi/espanso'
-brew 'espanso'
-
 # Yippy (Clipboard Manager)
 cask 'yippy'
 
 # tap 'jmespath/jmespath'
 # brew 'jmespath/jmespath/jp'
 
-# https://github.com/microsoft/git-credential-manager-core
 #
 # =================
 # Microsoft Tools
@@ -134,6 +129,7 @@ brew 'node'
 brew 'yarn'
 brew 'webp'
 # brew 'mutt'
+# brew 'neomutt'
 # brew 'perl'
 # brew 'ruby'
 brew 'tree'
@@ -145,27 +141,26 @@ brew 'watch'
 brew 'screen'
 # brew 'pacvim'
 # brew 'hashcat'
-brew 'newman' # Postman CLI
 brew 'neovim'
 brew 'figlet'
 brew 'ffmpeg'
 # brew 'telnet'
 # brew 'tcpdump'
 brew 'python'
-brew 'sphinx-doc'
-brew 'neomutt'
+brew 'python@3.8'
+brew 'python@3.9'
+brew 'python@3.10'
+# brew 'sphinx-doc'
 brew 'openssl'
 brew 'openssh'
 brew 'translate-shell'
 # brew 'transmission-cli'
-# https://github.com/postmanlabs/newman#readme
 brew 'asciinema'
 brew 'newman'
 # ====================
 # Useful Applications
 # ===================
 cask 'vlc'
-cask 'java'
 cask 'authy'
 cask 'twitch'
 cask 'docker'

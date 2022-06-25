@@ -8,8 +8,8 @@
 " set shell=pwsh.exe
 " set shellcmdflag=-c
 
-" Always show the sign column/gutter, 1 column wide
-set signcolumn=yes:1
+" Do not show the sign column because no linters are enabled.
+set signcolumn=no
 
 " Set directories for meta-data stored by nvim
 set backupdir=~/.local/share/nvim/backup
@@ -72,7 +72,8 @@ set confirm
 set nowarn
 
 " Customize the status line that appears at the bottom
-set statusline=%<(%10f)\ %=%y\ \|\ [%l:%c]\ %p%%
+" set statusline=%<(%10f)\ %=%y\ \|\ [%l:%c]\ %p%%
+" set statusline=""
 
 " Display line numbers
 set number
@@ -83,11 +84,19 @@ set relativenumber
 " Ring the bell when an error is encountered
 set errorbells
 
-" Limit the popup menu for autocomplete suggestions to 6 suggestions
-set pumheight=6
+" Configure the 'pop up menu (pum)' for autocomplete suggestions
+" allowing it to stretch limitlessly high to fit additional suggestions.
+set pumheight=0
+
+" Configure the 'pop up menu (pum)' for autocomplete suggestions
+" allowing it to span at most 50 columns.
+set pumwidth=50
 
 " Have the command window take up at least 20 rows
 set cmdwinheight=20
+
+" Only display the status line when there are at least two windows open.
+set laststatus=1
 
 " Set active window to take up at least 10 rows
 set winheight=10
@@ -107,16 +116,19 @@ set previewheight=40
 " which is a multiple of the current value of 'shiftwidth'
 set shiftround
 
+" The number of columns a tab represents. By default, the
+" value is 8, which equals the number of columns output by
+" a printer when a hardcopy of a plaintext document is made
+set tabstop=8
+
 " Determine the number of spaces to use for each stop of audoindent
 " during shift operations performed by '>>' and '<<'.
 " If 'shiftwidth' is set to 0, the number of columns shifted is
 " equal to that of the `tabstop` variable
 set shiftwidth=0
 
-" The number of columns a tab represents. By default, the
-" value is 8, which equals the number of columns output by
-" a printer when a hardcopy of a plaintext document is made
-set tabstop=8
+" Have shift commands round up to the next multiple of shiftwidth
+set shiftround
 
 " Hitting tab in insert mode will produce the appropriate number of spaces
 set expandtab
@@ -149,34 +161,323 @@ set splitright
 " Set horizontal splits to open on the bottom side of the terminal
 set splitbelow
 
-" Have shift commands round up to the next multiple of shiftwidth
-set shiftround
-
 " Allow the cursor to move anywhere in visual block mode
 set virtualedit=block
+
+" If editing Unicode and this option is set, backspace and Normal mode
+" "x" delete each combining character on its own.  When it is off (the
+" default) the character along with its combining characters are
+" deleted.
+set nodelcombine
 
 " Prevent vi from adding a newline at the end of the file
 " whenever one is found to be missing during a :write
 set nofixendofline
 
-set guicursor=n-c-sm:block,v:block,i-ci-ve:ver25-blinkwait0-blinkoff500-blinkon500,r-cr-o:hor20
+set guicursor=n-c-sm:hor100-blinkwait1-blinkoff500-blinkon500,v:hor100,i-ci-ve:ver25-blinkwait1-blinkoff500-blinkon500
+
+let &fillchars = 'stl:∙'
+      \ . ',' . 'stlnc:–'
+      \ . ',' . 'vert:╎'
+      \ . ',' . 'fold:·'
+      \ . ',' . 'foldopen:∵'
+      \ . ',' . 'foldclose:⊹'
+      \ . ',' . 'foldsep:│'
+      \ . ',' . 'diff:-'
+      \ . ',' . 'diff:+'
+      \ . ',' . 'msgsep: '
+      \ . ',' . 'eob:⋆'
+
+
+" ------------------------------------------------------------------------
+" Beginning of Professor color scheme
+" ------------------------------------------------------------------------
+" Setting the background must come *before* setting the colorscheme
+" and the `set background=dark` command must be present in *both*
+" the [/colors/scheme.vim] file *as well as* the [vimrc] config file
+" colorscheme professor
+" ^ embedded directly within init.vim
+set background=dark
+set cursorline
+set cursorlineopt=line,number
+set nocursorcolumn
+highlight clear Normal
+highlight Normal ctermfg=15 ctermbg=none
+highlight clear Cursor
+highlight Cursor ctermfg=none ctermbg=none cterm=standout
+" hl-Cursor but in IME mode
+highlight clear CursorIM
+highlight CursorIM none
+highlight clear CursorLine
+highlight CursorLine ctermfg=none ctermbg=none cterm=none
+highlight clear CursorLineNr  
+highlight CursorLineNr ctermfg=222 ctermbg=none cterm=bold
+highlight clear LineNr  
+highlight LineNr ctermfg=255 ctermbg=none cterm=none
+highlight clear Visual  
+highlight Visual ctermfg=none ctermbg=238 cterm=none
+highlight clear CursorColumn  
+highlight CursorColumn ctermfg=none ctermbg=none cterm=none
+highlight clear ColorColumn  
+highlight ColorColumn ctermfg=255 ctermbg=none cterm=none
+highlight clear VertSplit  
+highlight VertSplit ctermfg=246 ctermbg=none cterm=none
+highlight clear StatusLine  
+highlight StatusLine ctermfg=255 ctermbg=none cterm=none
+highlight clear StatusLineNC  
+highlight StatusLineNC ctermfg=246 ctermbg=none cterm=none
+highlight clear StatusLineTerm
+highlight StatusLineTerm cterm=none ctermfg=none ctermbg=none
+highlight clear StatusLineTermNC
+highlight StatusLineTermNC cterm=none ctermfg=none ctermbg=none
+highlight clear TabLine  
+highlight TabLine ctermfg=255 ctermbg=none cterm=none
+highlight clear TabLineSel  
+highlight TabLineSel ctermfg=255 ctermbg=234 cterm=underline
+highlight clear TabLineFill  
+highlight TabLineFill ctermfg=255 ctermbg=none cterm=none
+highlight clear IncSearch  
+highlight IncSearch ctermfg=255 ctermbg=33 cterm=none
+highlight clear Search  
+highlight Search ctermfg=255 ctermbg=237 cterm=bold,underline,italic
+highlight clear MatchParen  
+highlight MatchParen ctermfg=none ctermbg=none cterm=standout,bold
+highlight clear WildMenu  
+highlight WildMenu ctermfg=none ctermbg=none cterm=standout
+highlight clear Pmenu  
+highlight Pmenu ctermfg=255 ctermbg=234 cterm=none
+highlight clear PmenuSel  
+highlight PmenuSel ctermfg=228 ctermbg=235 cterm=none
+" Popup menu: scrollbar.
+highlight clear PmenuSbar
+highlight PmenuSbar cterm=none ctermfg=none ctermbg=LightGray
+" Popup menu: Thumb of the scrollbar.
+highlight clear PmenuThumb
+highlight PmenuThumb ctermfg=none ctermbg=none cterm=none
+highlight clear Substitute  
+highlight Substitute ctermfg=none ctermbg=none cterm=standout
+highlight clear EndOfBuffer  
+highlight EndOfBuffer ctermfg=246 ctermbg=none cterm=none
+" Cursor in a focused terminal
+highlight clear TermCursor
+highlight TermCursor none
+" Cursor in an unfocused terminal
+highlight clear TermCursorNC
+highlight TermCursorNC none
+" -- INSERT -- that appears for 'showmode'
+highlight clear ModeMsg
+highlight ModeMsg none
+" Area for messages and the command line
+highlight clear MsgArea
+highlight MsgArea none
+" Separator for scrolled messages, msgsep flag of 'display'
+highlight clear MsgSeparator
+highlight MsgSeparator none
+" :h more-prompt
+highlight clear MoreMsg
+highlight MoreMsg none
+highlight clear WarningMsg
+highlight WarningMsg cterm=bold ctermfg=Yellow ctermbg=none
+" Error messages on the command line
+highlight clear ErrorMsg
+highlight ErrorMsg cterm=bold ctermfg=Red ctermbg=none
+" Normal text in floating windows
+highlight clear NormalFloat
+highlight NormalFloat none
+" Normal text in non-current windows
+highlight clear NormalNC
+highlight NormalNC none
+" Current quickfix item in the quickfix item
+highlight clear QuickFixLin
+highlight QuickFixLin none
+" 'nbsp', 'space', 'tab', 'trail' in the ('listchars') option
+highlight clear Whitespace
+" Any comment
+highlight clear Comment
+highlight Comment cterm=none ctermfg=245 ctermbg=none
+" Any constant
+highlight clear Constant
+highlight Constant cterm=none ctermfg=Cyan ctermbg=none
+highlight clear String
+highlight string cterm=none ctermfg=181 ctermbg=none
+highlight! link Character String
+highlight clear Number
+highlight Number cterm=none ctermfg=222 ctermbg=none
+highlight link Float Number
+" A boolean constant: TRUE, false
+highlight clear Boolean
+highlight Boolean cterm=none ctermfg=211 ctermbg=none
+" A normal program variable, (int 'foo')
+highlight clear Variable
+highlight Variable cterm=none ctermfg=Red ctermbg=none
+" A normal program class, (class 'Dog')
+highlight clear Type
+highlight Type cterm=none ctermfg=75 ctermbg=none
+highlight! link Class Type
+highlight! link Structure Type
+" Any variable name
+highlight clear Identifier
+highlight Identifier cterm=none ctermfg=168 ctermbg=none
+" Function name (also: methods for classes)
+highlight clear Function
+highlight Function cterm=none ctermfg=157 ctermbg=none
+highlight! link Method Function
+" Any statement
+highlight clear Statement
+highlight Statement cterm=none ctermfg=183 ctermbg=none
+" Case, default, etc.
+highlight clear Label
+highlight Label cterm=none ctermfg=Cyan ctermbg=none
+"sizeof, +, *, etc.
+highlight clear Operator
+highlight Operator cterm=bold ctermfg=231 ctermbg=none
+" Any other keyword
+highlight clear Keyword
+highlight Keyword cterm=none ctermfg=99 ctermbg=none
+highlight! link StorageClass Keyword
+highlight! link Exception Keyword
+highlight! link Conditional Keyword
+highlight! link Repeat Keyword
+" Generic Preprocessor
+highlight clear PreProc
+highlight PreProc cterm=none ctermfg=159 ctermbg=none
+highlight! link Include PreProc
+highlight! link Define PreProc
+highlight! link PreCondit PreProc
+" Same as Define
+highlight clear link
+highlight link Macro Define
+" a typedef
+highlight clear Typedef
+highlight Typedef cterm=none ctermfg=Magenta ctermbg=none
+" Any special symbol
+highlight clear Special
+highlight Special cterm=none ctermfg=Blue ctermbg=none
+" Any special character
+highlight clear SpecialChar
+highlight SpecialChar cterm=none ctermfg=Cyan ctermbg=none
+" Special things inside a comment
+highlight clear SpecialComment
+highlight SpecialComment cterm=none ctermfg=245 ctermbg=none
+" Debugging statements
+highlight clear Debug
+highlight Debug none
+" Text that stands out HTML links
+highlight clear Underlined
+highlight Underlined cterm=underline
+" Left blank, hidden
+highlight clear Ignore
+highlight Ignore none
+" Any erroneous construct
+highlight clear Error
+highlight Error cterm=underline,italic ctermfg=Red ctermbg=none
+highlight link NvimInternalError Error
+" Anything that needs extra attention; mostly the keywords TODO FIXME and XXX
+highlight clear Todo
+highlight Todo cterm=bold,italic ctermfg=none ctermbg=none
+" Highlighting Groups
+" (descriptions and ordering from `:h highlight-groups`)
+" --------------------
+" Placeholder characters substituted for concealed text (see 'conceallevel')
+highlight clear Conceal
+highlight Conceal none
+" Directory names (and other special names in listings)
+highlight clear Directory
+highlight Directory cterm=none ctermfg=Blue ctermbg=none
+highlight clear Delimiter
+highlight Delimiter cterm=none ctermfg=Cyan ctermbg=none
+" Diff mode: Added line
+highlight clear DiffAdd
+highlight DiffAdd cterm=none ctermfg=114 ctermbg=none
+" Diff mode: Changed line
+highlight clear DiffChange
+highlight DiffChange cterm=none ctermfg=186 ctermbg=none
+" Diff mode: Deleted line (vimdiff)
+highlight clear DiffDelete
+highlight DiffDelete cterm=none ctermfg=217 ctermbg=none
+" Diff mode: Changed text within a changed line
+highlight clear DiffText
+highlight DiffText cterm=none ctermfg=179 ctermbg=none
+" Color used for closed folds
+highlight clear Folded
+highlight Folded cterm=none ctermfg=245 ctermbg=none
+" Color used for fold column
+highlight clear FoldColumn
+highlight FoldColumn cterm=none ctermfg=none ctermbg=none
+" Color for the sign column, left of the line number
+highlight clear SignColumn
+highlight SignColumn cterm=bold ctermfg=none ctermbg=DarkGray
+" '~' and '@' at the end of the window characters from 'showbreak' and
+" Other characters that do not really exist in the text
+" (e.g., '>' displayed when a double-wide character doesn't fit at EOL)
+highlight clear NonText
+highlight NonText cterm=none ctermfg=245 ctermbg=none
+" Hit-enter prompt and yes/no questions
+highlight clear Question
+highlight Question cterm=none ctermfg=Magenta ctermbg=none
+" Current quickfix item in the quickfix window.
+highlight clear QuickFixLine
+highlight QuickFixLine cterm=none ctermfg=none ctermbg=Yellow
+" Meta and special keys listed with ':map' also for text used to
+" show unprintable characters in the text, 'listchars'.
+" generally: text that is displayed differently from what it really is.
+highlight clear SpecialKey
+highlight SpecialKey cterm=none ctermfg=LightGray ctermbg=none
+" Word that is not recognized by the spellchecker.
+" This will be combined with the highlighting used otherwise.
+highlight clear SpellBad
+highlight SpellBad none
+" Word that should start with a capital.
+" This will be combined with the highlighting used otherwise.
+highlight clear SpellCap
+highlight SpellCap none
+" Word that is recognized by the spellchecker as one that is used in
+" another region. This will be combined with the highlighting used otherwise.
+highlight clear SpellLocal
+highlight SpellLocal cterm=none ctermfg=Yellow ctermbg=none
+" Word that is recognized by the spellchecker as one that is hardly ever used.
+" This will be combined with the highlighting used otherwise.
+highlight clear SpellRare
+highlight SpellRare cterm=none ctermfg=Yellow ctermbg=none
+" Terminal window (see terminal-size-color)
+highlight clear Terminal
+highlight Terminal cterm=none ctermfg=none ctermbg=none
+" Titles for output from ':set all' ':autocmd' etc.
+highlight clear Title
+highlight Title cterm=none ctermfg=Green ctermbg=none
+" ------------------------------------------------------------------------
+" End of Professor color scheme
+" ------------------------------------------------------------------------
+
 
 " Additionally check for 'file.ext' when using `gf` or `[I` atop keyword 'file'
-set suffixesadd=.py,.md,.js,.java
+set suffixesadd=.py,.md,.js,.ts,.java
 
 " Prefer not to expand the following suffixes during file globbing
-set suffixes=.tmac,.bak,~,.h,.info,.swp,.obj,.zip,.gz,.tgz,.xml,.old,,
+set suffixes=.tmac,.bak,~,.h,.info,.swp,.obj,.zip,.gz,.tgz,.exe,.xml,.old,.pyc,.pyo,
+" the title of the window will be set to the value of 'titlestring' (if it is
+" not empty), or to: 'filename [+=-] (path) - NVIM'
+set title
+
+" Configure the template for displaying the title of the window. When this
+" option contains printf-style '%' items, they will be expanded according to
+" the rules used for 'statusline'
+set titlestring=%t
+
+
+set wildignorecase
 
 " Be sure not to expand globs when files end in these suffixes
 " ============================================================
 " Don't expand compiled binary class files
-set wildignore+=*.o,*.pyc,*.class,*.plist
-" Don't expand compressed / encrypted / archived files
-set wildignore+=*.tgz,*.gz,*.gpg,*.zip,*.tar
+set wildignore+=*.o,*.so,*.dll,*.exe,*.class,*.jar,*.pyc,*.pyo
 " Don't expand image, video, or audio files
 set wildignore+=*.png,*.jpg,*.jpeg,*.pdf,*.mp3,*.mp4,*.m4a,*.m4b,*.m4v,*.mkv
+set wildignore+=*.aac,*.ogg,*.wav,*.avi,*.mpg,*.mpeg,*.mpa,*.mov,*.webm,*.flv
+set wildignore+=*.ico,*.icns,*.bmp,*.tga,*.tif,*.tiff
 " Don't expand Microsoft {word,powerpoint,excel} files
 set wildignore+=*.doc*,*.ppt*,*.xls*
+set wildignore+=*.docx,*.pptx,*.xlsx
 
 set printencoding=utf-8
 set printoptions=paper:letter,syntax:n
@@ -202,6 +503,11 @@ set path=
 " Add dotfiles to the path
 set path+=${XDG_CONFIG_HOME}
 
+inoremap <expr> <c-x><c-l> fzf#vim#complete(fzf#wrap({
+                        \ 'prefix': '^.*$',
+                        \ 'source': 'rg -n ^ --color always',
+                        \ 'options': '--ansi --delimiter : --nth 3..',
+                        \ 'reducer': { lines -> join(split(lines[0], ':\zs')[2:], '') }}))
 " Add nvim files to the path
 set path+=${XDG_CONFIG_HOME}/nvim
 set path+=${XDG_CONFIG_HOME}/zsh/functions
@@ -226,12 +532,6 @@ let g:html_number_lines = 0
 
 " Call rustfmt when saving files
 let g:rustfmt_autosave = 1
-
-let &fillchars = 'stl: '
-      \ . ',' . 'stlnc: '
-      \ . ',' . 'vert: '
-      \ . ',' . 'fold: '
-      \ . ',' . 'diff: '
 
 " See ':h fo-table' for more info on format option flags
 " augroup format_options
@@ -267,8 +567,28 @@ endfunction
 " Create a command :F[ile] to copy to the clipboard
 command! File call File()
 
+" Redirects the output of a command (e.g.: ':echo a b c')
+" into a new buffer, and opens that buffer in a new tab.
+function! Redir(command)
+  " Execute the command and redirect the output to the unnamed register.
+  " Then, open a buffer in a new window, 
+  " and paste the contents of the unnamed register into it.
+  silent execute 'redir @"> | ' . a:command . ' | redir END'
+  silent execute 'vertical new | normal ""pdd'
+  " Finally, clear the contents of the unnamed register.
+  let @" = ""
+endfunction
+
+" Usage: ':Redirect echo a b c'
+" Redirects the output of a command (e.g.: ':echo a b c')
+" into a new buffer, and opens that buffer in a new tab.
+" In this case, the content of the buffer would be 
+" a new file, containing the following line:
+" >   a b c
+command! -nargs=1 -complete=command Redir call Redir(<q-args>)
+
 " Set the key leader to <\>
-" let g:mapleader = '\\'
+let g:mapleader = "\\"
 
 " Create convenient window navigation commands
 nnoremap <Leader><Left> <CMD>wincmd h<CR>
@@ -276,11 +596,22 @@ nnoremap <Leader><Down> <CMD>wincmd j<CR>
 nnoremap <Leader><Up> <CMD>wincmd k<CR>
 nnoremap <Leader><Right> <CMD>wincmd l<CR>
 
+nnoremap <C-W><S-Left> <CMD>wincmd H<CR>
+nnoremap <C-W><S-Down> <CMD>wincmd J<CR>
+nnoremap <C-W><S-Up> <CMD>wincmd K<CR>
+nnoremap <C-W><S-Right> <CMD>wincmd L<CR>
+
+nnoremap <Leader><S-Left> <CMD>wincmd H<CR>
+nnoremap <Leader><S-Down> <CMD>wincmd J<CR>
+nnoremap <Leader><S-Up> <CMD>wincmd K<CR>
+nnoremap <Leader><S-Right> <CMD>wincmd L<CR>
+
 " Create convenient way to insert today's date
 nnoremap <silent> <Leader>d "=strftime('%Y-%m-%d')<C-M>p
 
 " Create a command to call the SyntaxAttribute function
 command! -nargs=? -complete=highlight SyntaxAttribute call syntaxattribute#SyntaxAttribute()
+nnoremap <silent> <Leader>ks <CMD>SyntaxAttribute<CR>
 
 command! HighlightTest runtime syntax/hitest.vim
 command! ColorTest runtime syntax/colortest.vim
@@ -303,9 +634,6 @@ set mouse=a
 
 " `yank to end of line` instead of `yank entire line`
 map Y y$
-
-nmap ga <Plug>(EasyAlign)
-xmap ga <Plug>(EasyAlign)
 
 " Make 'cw' properly mimic its mirror command 'dwi'
 " nnoremap cw dwi
@@ -375,7 +703,7 @@ let g:markdown_fenced_languages = [
       \ 'zsh', 'shell=zsh', 'sh=zsh', 'bash=sh', 'sql' , 'txt=text',
       \ 'tex', 'sed', 'awk', 'groff', 'wl', 'scpt=applescript',
       \ 'cypher', 'cyp=cypher', 'make', 'cmake', 'liquid', 'gitconfig', 'conf',
-      \ 'ini=dosini', 'dosini', 'ps1', 'powershell=ps1', 'pwsh=ps1'
+      \ 'ini=dosini', 'dosini', 'ps1', 'powershell=ps1', 'pwsh=ps1', 'rust',
       \ ]
 
 " Limit syntax highlighting to a maximum number of consecutive lines
@@ -457,41 +785,60 @@ let g:netrw_cygwin = 1
 " Set up the 'vim-plug' tool.
 call plug#begin('~/.vim/plugged')
 
+" =============================================================================
+" Configure the 'ctrl-p' fuzzy finder tool
+" https://github.com/ctrlpvim/ctrlp.vim>
+" Plug 'ctrlpvim/ctrlp.vim'
+" let g:ctrlp_map = '<c-p>'
+" let g:ctrlp_cmd = 'CtrlP'
+" =============================================================================
 
-" -----------------------------------------------------------------------------
+" =============================================================================
 " Set up the 'vim-easy-align' plugin.
-" <https://github.com/junegunn/vim-easy-align>
-" ==========================================
+" https://github.com/junegunn/vim-easy-align
 Plug 'junegunn/vim-easy-align'
-" -----------------------------------------------------------------------------
-" -----------------------------------------------------------------------------
+" Start interactive EasyAlign in visual mode (e.g.: 'vipga')
+nmap ga <Plug>(EasyAlign)
+" Start interactive EasyAlign for a motion/text object (e.g.: 'gaip')
+xmap ga <Plug>(EasyAlign)
+" =============================================================================
+
+" =============================================================================
+" Set up the 'vim-peekaboo' plugin.
+" https://github.com/junegunn/vim-peekaboo
+Plug 'junegunn/vim-peekaboo'
+let g:peekaboo_compact = 1
+let g:peekaboo_window = 'bo 12new'
+let g:peekaboo_delay = 1000
+" =============================================================================
+
+" =============================================================================
 " Set up the 'vim-commentary' plugin.
-" <https://github.com/tpope/vim-commentary>
-" =======================================
+" https://github.com/tpope/vim-commentary
 Plug 'tpope/vim-commentary'
-" -----------------------------------------------------------------------------
-" -----------------------------------------------------------------------------
+" =============================================================================
+
+" =============================================================================
 " Set up the 'vim-surround' plugin.
-" <https://github.com/tpope/vim-surround>
-" =====================================
+" https://github.com/tpope/vim-surround
 Plug 'tpope/vim-surround'
-" -----------------------------------------------------------------------------
-" -----------------------------------------------------------------------------
+" =============================================================================
+
+" =============================================================================
 " Set up the 'vim-speeddating' plugin.
-" <https://github.com/tpope/vim-speeddating>
-" ==========================================
+" https://github.com/tpope/vim-speeddating
 Plug 'tpope/vim-speeddating'
-" -----------------------------------------------------------------------------
-" -----------------------------------------------------------------------------
+" =============================================================================
+
+" =============================================================================
 " Set up the 'vim-repeat' plugin.
-" <https://github.com/tpope/vim-repeat>
-" ==========================================
+" https://github.com/tpope/vim-repeat
 Plug 'tpope/vim-repeat'
-" -----------------------------------------------------------------------------
-" -----------------------------------------------------------------------------
+" =============================================================================
+
+" =============================================================================
 " Configure the GitHub Copilot plugin
-" <https://github.com/github/copilot.vim>
-" =====================================
+" https://github.com/github/copilot.vim
 Plug 'github/copilot.vim'
 " Configure which filetypes to enable GitHub Copilot for
 let g:copilot_filetypes = {
@@ -499,63 +846,105 @@ let g:copilot_filetypes = {
     \ 'markdown': v:true,
     \ 'help': v:false,
     \ }
-" -----------------------------------------------------------------------------
-" -----------------------------------------------------------------------------
+" =============================================================================
+
+" =============================================================================
 " Configure the Go Language plugin
-" <https://github.com/fatih/vim-go>
-" =================================
+" https://github.com/fatih/vim-go
 Plug 'fatih/vim-go', { 'do': ':GoUpdateBinaries' }
 " let g:go_debug = [ 'gopls' ]
 " let g:go_def_mode='gopls'
 " let g:go_info_mode='gopls'
-" -----------------------------------------------------------------------------
-" -----------------------------------------------------------------------------
+" =============================================================================
+
+" =============================================================================
 " Configure the 'plenary' plugin
-" <https://github.com/nvim-lua/plenary.nvim>
-" ==========================================
+" https://github.com/nvim-lua/plenary.nvim
 Plug 'nvim-lua/plenary.nvim'
-" -----------------------------------------------------------------------------
-" -----------------------------------------------------------------------------
+" =============================================================================
+
+" =============================================================================
 " Configure the Himalaya plugin
-" <https://github.com/soywod/himalaya>
-" ====================================
+" https://github.com/soywod/himalaya
 Plug 'soywod/himalaya', {'rtp': 'vim'}
 " Use telescope to preview mailboxes while making a selection.
 let g:himalaya_telescope_preview_enabled = 1
 " Defines the provider used for picking mailboxes:
 let g:himalaya_mailbox_picker = 'telescope'
-" -----------------------------------------------------------------------------
+" =============================================================================
+
+" =============================================================================
 " Configure the 'telescope' plugin
-" <https://github.com/nvim-telescope/telescope.nvim>
-" ==================================================
+" https://github.com/nvim-telescope/telescope.nvim
 Plug 'nvim-lua/plenary.nvim'
 Plug 'nvim-telescope/telescope.nvim'
-" -----------------------------------------------------------------------------
+
+highlight TelescopeNormal ctermfg=255 ctermbg=none cterm=none gui=none
+map <C-T> <CMD>Telescope<CR>
+map <C-P> <CMD>Telescope find_files<CR>
+map <C-F> <CMD>Telescope search_history<CR>
+" =============================================================================
+
+" =============================================================================
 " Configure the 'tree-sitter' plugin
-" <https://github.com/nvim-treesitter/nvim-treesitter>
-" ====================================================
+" https://github.com/nvim-treesitter/nvim-treesitter
 Plug 'nvim-treesitter/nvim-treesitter', {'do': ':TSUpdate'}
-" -----------------------------------------------------------------------------
-" -----------------------------------------------------------------------------
+" =============================================================================
+
+" =============================================================================
 " Add support for 'fzf' plugin
-" <https://github.com/junegunn/fzf.vim>
-" =====================================
+" https://github.com/junegunn/fzf.vim
 set runtimepath+=$HOME/.local/opt/fzf
 Plug 'junegunn/fzf', { 'do': { -> fzf#install() } }
 Plug 'junegunn/fzf.vim'
-" -----------------------------------------------------------------------------
-" -----------------------------------------------------------------------------
-" Add support for 'rust' language.
-" <https://github.com/rust-lang/rust.vim>
-" =======================================
-Plug 'rust-lang/rust.vim'
-let g:rustfmt_autosave = 1
-" -----------------------------------------------------------------------------
 
-command! -bang -nargs=* Rg
-\ call fzf#vim#grep(
-\   'rg --column  --files-with-matches --line-number --heading --color=always --smart-case -- '.shellescape(<q-args>), 1,
-\   fzf#vim#with_preview(), <bang>0)
+let g:fzf_layout = { 
+        \ 'window': { 
+                \ 'height': 0.9,
+                \ 'width': 0.9,
+        \ }
+\ }
+
+" Path completion with custom source command
+inoremap <expr> <C-X><C-F> fzf#vim#complete#path('fd')
+inoremap <expr> <C-X><C-F> fzf#vim#complete#path('rg --files')
+
+" Mapping selecting mappings
+nmap <leader><tab> <plug>(fzf-maps-n)
+xmap <leader><tab> <plug>(fzf-maps-x)
+omap <leader><tab> <plug>(fzf-maps-o)
+
+" Insert mode completion
+imap <c-x><c-k> <plug>(fzf-complete-word)
+imap <c-x><c-f> <plug>(fzf-complete-path)
+imap <c-x><c-l> <plug>(fzf-complete-line)
+
+" Find files using Telescope command-line sugar.
+nnoremap <leader>ff <cmd>Telescope find_files<cr>
+nnoremap <leader>fg <cmd>Telescope live_grep<cr>
+nnoremap <leader>fb <cmd>Telescope buffers<cr>
+nnoremap <leader>fh <cmd>Telescope help_tags<cr>
+
+
+function! s:fzf_statusline()
+  " Override statusline as you like
+  highlight fzf1 ctermfg=161 ctermbg=251
+  highlight fzf2 ctermfg=23 ctermbg=251
+  highlight fzf3 ctermfg=237 ctermbg=251
+  setlocal statusline=%#fzf1#\ >\ %#fzf2#fz%#fzf3#f
+endfunction
+
+autocmd! User FzfStatusLine call <SID>fzf_statusline()
+
+" Word completion with custom spec with popup layout option
+inoremap <expr> <C-X><C-K> fzf#vim#complete#word({'window': { 'width': 0.4, 'height': 0.4 }})
+autocmd! FileType fzf set laststatus=0 noshowmode noruler
+  \| autocmd BufLeave <buffer> set laststatus=2 showmode ruler
+
+" command! -bang -nargs=* 
+"                         \ call fzf#vim#grep(
+"                         \ 'rg --column --line-number --no-heading --color=always --smart-case -- '
+"                         \ .shellescape(<q-args>), 1, fzf#vim#with_preview(), <bang>0)
 
 function! RipgrepFzf(query, fullscreen)
   let command_fmt = 'rg --column --line-number --no-heading --color=always --smart-case -- %s || true'
@@ -566,13 +955,67 @@ function! RipgrepFzf(query, fullscreen)
 endfunction
 
 command! -nargs=* -bang RG call RipgrepFzf(<q-args>, <bang>0)
+map <leader>rg <CMD>RG<CR>
+" =============================================================================
+
+
+" =============================================================================
+" Add support for 'rust' language.
+" https://github.com/rust-lang/rust.vim
+Plug 'rust-lang/rust.vim'
+let g:rustfmt_autosave = 1
+" =============================================================================
+
+" =============================================================================
+" Add the 'pear-tree' plugin for inserting matching brackets.
+" https://github.com/tmsvg/pear-tree
+" Plug 'tmsvg/pear-tree'
+" let g:pear_tree_pairs = {
+"             \ '(': {'closer': ')'},
+"             \ '[': {'closer': ']'},
+"             \ '{': {'closer': '}'},
+"             \ '\'': {'closer': '\''},
+"             \ '"': {'closer': '"'},
+"             \ '`': {'closer': '`'},
+"             \ }
+" let g:pear_tree_bracket_matching = 1
+" let g:pear_tree_smart_openers = 1
+" let g:pear_tree_smart_closers = 1
+" let g:pear_tree_smart_backspace = 1
+" =============================================================================
+
+" =============================================================================
+" Add the 'which-key' plugin to show a cheat sheet for key bindings.
+" Plug 'liuchengxu/vim-which-key'
+" https://github.com/liuchengxu/vim-which-key
+" Plug 'tmsvg/pear-tree'
+" =============================================================================
+
+" =============================================================================
+
+" Add LSP support, using @hrsh7th's LSP related snippets/completion packages.
+" https://github.com/hrsh7th/nvim-cmp/
+" https://github.com/hrsh7th/vim-vsnip/
+" Plug 'hrsh7th/cmp-nvim-lsp'
+" Plug 'hrsh7th/cmp-buffer'
+" Plug 'hrsh7th/cmp-path'
+" Plug 'hrsh7th/cmp-cmdline'
+" Plug 'hrsh7th/nvim-cmp'
+" Plug 'hrsh7th/cmp-vsnip'
+" Plug 'hrsh7th/vim-vsnip'
+
+" For now, start off with the vanilla Neovim LSP client.
+" Plug 'neovim/nvim-lspconfig'
+
+" TODO: Configure NeoVim LSP functionality.
+
+" lua require('plugins')
+" .config/nvim/lua/plugins.lua
 
 " Initialize plugin system
 call plug#end()
-" ------------------------------------------------------------------------------
 
-" Setting the background must come *before* setting the colorscheme
-" and the `set background=dark` command must be present in *both*
-" the [/colors/scheme.vim] file *as well as* the [vimrc] config file
-set background=dark
-" colorscheme professor
+set completeopt=menu,menuone,noselect
+
+
+" =============================================================================
