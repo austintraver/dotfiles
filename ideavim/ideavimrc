@@ -75,6 +75,29 @@ set nohlsearch
 " Show incremental matches to a search currently being typed
 set incsearch
 
+" --------------------------------------------------------------------
+" <https://github.com/JetBrains/ideavim/blob/master/doc/sethandler.md>
+" Designate a handler for each key combinations.
+" ====================================================================
+" Default to designating the IDE as the handler for all key combinations.
+sethandler a:ide
+sethandler <C-]> a:ide
+sethandler <C-\> a:ide
+sethandler <C-/> a:ide
+
+sethandler <C-2> a:ide
+sethandler <C-S-2> a:ide
+sethandler <C-S-6> a:ide
+
+" Designate IdeaVim as the handler for particular key/mode combinations.
+sethandler <C-a> a:vim
+sethandler <C-c> a:vim
+sethandler <C-[> a:vim
+sethandler <C-v> a:vim
+sethandler <C-w> a:ide
+sethandler <C-b> a:vim
+sethandler <C-r> a:vim
+
 " nnoremap % :action EditorMatchBrace<CR>
 " vnoremap % :action EditorMatchBrace<CR>
 
@@ -90,23 +113,13 @@ set incsearch
 " CloseActiveTab
 " nnoremap <C-w>c <Action>(CloseActiveTab)
 
-" inoremap <C-b> <Left>
-" inoremap <C-n> <Down>
-" inoremap <C-p> <Up>
-" inoremap <C-f> <Right>
-
 " inoremap <A-f> <C-o>W
 " inoremap <A-b> <C-o>B
 
-" vnoremap <Left> h
-" vnoremap <Down> j
-" vnoremap <Up> k
-" vnoremap <Right> l
-
-" vnoremap <M-Left> 0
-" vnoremap <M-Right> $
-" vnoremap <M-Up> gg
-" vnoremap <M-Down> G
+vnoremap <M-Left> 0
+vnoremap <M-Right> $
+vnoremap <M-Up> gg
+vnoremap <M-Down> G
 
 vnoremap <A-f>W
 vnoremap <A-b>B
@@ -118,27 +131,21 @@ nnoremap U <C-r>
 
 vnoremap > >gv
 vnoremap < <gv
-" --------------------------------------------------------------------
-" <https://github.com/JetBrains/ideavim/blob/master/doc/sethandler.md>
-" Designate a handler for each key combinations.
-" ====================================================================
-" Default to designating the IDE as the handler for all key combinations.
-sethandler a:ide
-sethandler <C-]> a:ide
-sethandler <C-\> a:ide
-sethandler <C-2> a:ide
-sethandler <C-S-2> a:ide
-sethandler <C-S-6> a:ide
 
-" Designate IdeaVim as the handler for particular key/mode combinations.
-sethandler <C-a> a:vim
-sethandler <C-c> a:vim
-sethandler <C-[> a:vim
-sethandler <C-v> a:ide
-sethandler <C-r> n:vim
-sethandler <C-w> n:vim
+inoremap <C-b> <Left>
+inoremap <C-f> <Right>
+inoremap <C-n> <Down>
+inoremap <C-p> <Up>
 
 " ------------------------------------------------------------------------------
+" inoremap <A-BS> <Action>(EditorDeleteToWordStart)
+" EditorDeleteToLineEnd
+" inoremap <C-k> <Action>(EditorDeleteToLineEnd)
+" EditorDeleteToLineStart
+" inoremap <C-u> <Action>(EditorDeleteToLineStart)
+" EditorDeleteToWordEnd
+" inoremap <A-Del> <Action>(EditorDeleteToWordEnd)
+" EditorDeleteToWordStart
 " EditorBackspace
 " inoremap <BS> <Action>(EditorBackspace)
 " inoremap <S-BS> <Action>(EditorBackspace)
@@ -164,14 +171,6 @@ sethandler <C-w> n:vim
 " inoremap <C-d> <Action>(EditorDelete)
 " EditorDeleteLine
 " >> inoremap <> <Action>(EditorDeleteLine)
-" EditorDeleteToLineEnd
-" inoremap <C-k> <Action>(EditorDeleteToLineEnd)
-" EditorDeleteToLineStart
-" inoremap <C-u> <Action>(EditorDeleteToLineStart)
-" EditorDeleteToWordEnd
-" inoremap <A-Del> <Action>(EditorDeleteToWordEnd)
-" EditorDeleteToWordStart
-" inoremap <A-BS> <Action>(EditorDeleteToWordStart)
 " EditorDown
 " inoremap <Down> <Action>(EditorDown)
 " inoremap <C-n> <Action>(EditorDown)
@@ -265,42 +264,6 @@ sethandler <C-w> n:vim
 " NewDialogue
 " nnoremap <C-w>n <Action> NewDialogue
 " ---------------------------------------------------------
-" MarkdownNavigator.InsertRow
-" nnoremap <A-C-i>b <Action>(MarkdownNavigator.InsertRow)
-" MarkdownNavigator.InsertRow
-" nnoremap <M-A-Down> <Action>(MarkdownNavigator.InsertRow)
-" MarkdownNavigator.InsertColumn
-" nnoremap <A-C-i>c <Action>(MarkdownNavigator.InsertColumn)
-" MarkdownNavigator.InsertColumn
-" nnoremap <M-A-Left> <Action>(MarkdownNavigator.InsertColumn)
-" MarkdownNavigator.InsertColumnRight
-" nnoremap <A-C-i>o <Action>(MarkdownNavigator.InsertColumnRight)
-" MarkdownNavigator.InsertColumnRight
-" nnoremap <M-A-Right>o <Action>(MarkdownNavigator.InsertColumnRight)
-" MarkdownNavigator.DeleteColumn
-" nnoremap <A-C-e>e <Action>(MarkdownNavigator.DeleteColumn)
-" MarkdownNavigator.DeleteRow
-" nnoremap <A-C-e>d <Action>(MarkdownNavigator.DeleteRow)
-" MarkdownNavigator.MoveColumnLeft
-" nnoremap <A-C-e>h <Action>(MarkdownNavigator.MoveColumnLeft)
-" MarkdownNavigator.MoveColumnRight
-" nnoremap <A-C-e>l <Action>(MarkdownNavigator.MoveColumnRight)
-" MarkdownNavigator.ListToggleTaskItemDone
-" nnoremap <M-S-u> <Action>(MarkdownNavigator.ListToggleTaskItemDone)
-" MarkdownNavigator.ListToggleTaskItemDone
-" inoremap <M-S-u> <Action>(MarkdownNavigator.ListToggleTaskItemDone)
-" MarkdownNavigator.ListTaskItems
-" nnoremap <M-S-l> <Action>(MarkdownNavigator.ListTaskItems)
-" MarkdownNavigator.ListTaskItems
-" inoremap <M-S-l> <Action>(MarkdownNavigator.ListTaskItems)
-" MarkdownNavigator.InsertLink
-" vnoremap <M-k> <Action>(MarkdownNavigator.InsertLink)
-" MarkdownNavigator.ToggleBold
-" inoremap <M-b> <Action>(MarkdownNavigator.ToggleBold)
-" MarkdownNavigator.ToggleItalic
-" inoremap <M-i> <Action>(MarkdownNavigator.ToggleItalic)
-" MarkdownNavigator.ToggleUnderline
-" inoremap <M-u> <Action>(MarkdownNavigator.ToggleUnderline)
 " ---------------------------------------------------------
 " Find
 " nnoremap / <Action>(Find)
@@ -360,66 +323,67 @@ sethandler <C-w> n:vim
 " nmap gcc :action CommentByLineComment<cr>
 
 " -----------------------------------------------------------------------------
-sethandler <c-j> a:vim
-sethandler <c-k> a:vim
-nnoremap <c-z> :action ToggleDistractionFreeMode<CR>
-nnoremap <c-t> :action ActivateTerminalToolWindow<CR>
-nnoremap <leader>t :action Terminal.OpenInTerminal<CR>
-nnoremap <c-\> :action SplitVertically<CR>
-nnoremap <c--> :action SplitHorizontally<CR>
-nnoremap <c-=> :action Unsplit<CR>
-nnoremap <c-m> :action MoveEditorToOppositeTabGroup<CR>
-nnoremap <c-h> <c-w>h
-nnoremap <c-l> <c-w>l
-nnoremap <c-j> <c-w>j
-nnoremap <c-k> <c-w>k
-nnoremap <TAB> :action PreviousTab<CR>
-nnoremap <s-TAB> :action NextTab<CR>
-nnoremap <Leader>en :action EditSourceInNewWindow<CR>
-nnoremap <Leader>n :action NextWindow<CR>
-nnoremap <Leader>q :action CloseContent<CR>
-nnoremap <Leader>qa :action CloseAllEditors<CR>
-vnoremap < <gv
-vnoremap > >gv
-nnoremap [[ :action MethodUp<CR>
-nnoremap ]] :action MethodDown<CR>
-nnoremap zc :action CollapseRegion<CR>
-nnoremap zo :action ExpandRegion<CR>
-nnoremap <leader>zc :action CollapseAllRegions<CR>
-nnoremap <leader>zo :action ExpandAllRegions<CR>
-nnoremap <leader>c :action CommentByLineComment<CR>
-nnoremap <leader>r :action Refactorings.QuickListPopupAction<CR>
-nnoremap <Leader>=  :action ReformatCode<CR>
-nnoremap <leader>o :action OptimizeImports<CR>
-nnoremap <c-r> :action RecentFiles<CR>
-nnoremap <leader>l :action RecentLocations<CR>
-nnoremap <leader>h  :action LocalHistory.ShowHistory<CR>
-nnoremap ge :action GotoNextError<CR>
-nnoremap gE :action GotoPreviousError<CR>
-nnoremap <c-/> :action FindInPath<CR>
-nnoremap <c-a> :action GotoAction<CR>
-nnoremap <c-f> :action GotoFile<CR>
-nnoremap <leader>u :action FindUsages<CR>
-nnoremap <leader>s :action GotoRelated<CR>
-nnoremap <leader>h :action CallHierarchy<CR>
-nnoremap <leader>b :action ShowNavBar<CR>
-nnoremap <c-s> :action FileStructurePopup<CR>
-nnoremap <c-o> :action GotoSymbol<CR>
-nnoremap gc :action GotoClass<CR>
-nnoremap gi :action GotoImplementation<CR>
-nnoremap gd :action GotToDeclaration<CR>
-nnoremap gp :action GotToSuperMethod<CR>
-nnoremap gt :action GotoTest<CR>
-nnoremap gb :action Back<CR>
-nnoremap gf :action Forward<CR>
-nnoremap <c-p> :action JumpToLastWindow<CR>
-nnoremap <c-x> :action HideAllWindows<CR>
-nnoremap ,r :action ContextRun<CR>
-nnoremap ,c :action RunClass<CR>
-nnoremap ,f :action ChooseRunConfiguration<CR>
-nnoremap ,t :action ActivateRunToolWindow<CR>
-nnoremap ,u :action Rerun<CR>
-nnoremap ,f :action RerunFailedTests<CR>
-nnoremap ,b :action ToggleLineBreakpoint<CR>
-nnoremap ,d :action ContextDebug<CR>
-nnoremap ,n :action ActivateDebugToolWindow<CR>
+" Suggested keybindings
+" sethandler <c-j> a:vim
+" sethandler <c-k> a:vim
+" nnoremap <c-z> :action ToggleDistractionFreeMode<CR>
+" nnoremap <c-t> :action ActivateTerminalToolWindow<CR>
+" nnoremap <leader>t :action Terminal.OpenInTerminal<CR>
+" nnoremap <c-\> :action SplitVertically<CR>
+" nnoremap <c--> :action SplitHorizontally<CR>
+" nnoremap <c-=> :action Unsplit<CR>
+" nnoremap <c-m> :action MoveEditorToOppositeTabGroup<CR>
+" nnoremap <c-h> <c-w>h
+" nnoremap <c-l> <c-w>l
+" nnoremap <c-j> <c-w>j
+" nnoremap <c-k> <c-w>k
+" nnoremap <TAB> :action PreviousTab<CR>
+" nnoremap <s-TAB> :action NextTab<CR>
+" nnoremap <Leader>en :action EditSourceInNewWindow<CR>
+" nnoremap <Leader>n :action NextWindow<CR>
+" nnoremap <Leader>q :action CloseContent<CR>
+" nnoremap <Leader>qa :action CloseAllEditors<CR>
+" vnoremap < <gv
+" vnoremap > >gv
+" nnoremap [[ :action MethodUp<CR>
+" nnoremap ]] :action MethodDown<CR>
+" nnoremap zc :action CollapseRegion<CR>
+" nnoremap zo :action ExpandRegion<CR>
+" nnoremap <leader>zc :action CollapseAllRegions<CR>
+" nnoremap <leader>zo :action ExpandAllRegions<CR>
+" nnoremap <leader>c :action CommentByLineComment<CR>
+" nnoremap <leader>r :action Refactorings.QuickListPopupAction<CR>
+" nnoremap <Leader>=  :action ReformatCode<CR>
+" nnoremap <leader>o :action OptimizeImports<CR>
+" nnoremap <c-r> :action RecentFiles<CR>
+" nnoremap <leader>l :action RecentLocations<CR>
+" nnoremap <leader>h  :action LocalHistory.ShowHistory<CR>
+" nnoremap ge :action GotoNextError<CR>
+" nnoremap gE :action GotoPreviousError<CR>
+" nnoremap <c-/> :action FindInPath<CR>
+" nnoremap <c-a> :action GotoAction<CR>
+" nnoremap <c-f> :action GotoFile<CR>
+" nnoremap <leader>u :action FindUsages<CR>
+" nnoremap <leader>s :action GotoRelated<CR>
+" nnoremap <leader>h :action CallHierarchy<CR>
+" nnoremap <leader>b :action ShowNavBar<CR>
+" nnoremap <c-s> :action FileStructurePopup<CR>
+" nnoremap <c-o> :action GotoSymbol<CR>
+" nnoremap gc :action GotoClass<CR>
+" nnoremap gi :action GotoImplementation<CR>
+" nnoremap gd :action GotToDeclaration<CR>
+" nnoremap gp :action GotToSuperMethod<CR>
+" nnoremap gt :action GotoTest<CR>
+" nnoremap gb :action Back<CR>
+" nnoremap gf :action Forward<CR>
+" nnoremap <c-p> :action JumpToLastWindow<CR>
+" nnoremap <c-x> :action HideAllWindows<CR>
+" nnoremap ,r :action ContextRun<CR>
+" nnoremap ,c :action RunClass<CR>
+" nnoremap ,f :action ChooseRunConfiguration<CR>
+" nnoremap ,t :action ActivateRunToolWindow<CR>
+" nnoremap ,u :action Rerun<CR>
+" nnoremap ,f :action RerunFailedTests<CR>
+" nnoremap ,b :action ToggleLineBreakpoint<CR>
+" nnoremap ,d :action ContextDebug<CR>
+" nnoremap ,n :action ActivateDebugToolWindow<CR>
