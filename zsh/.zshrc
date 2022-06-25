@@ -114,6 +114,8 @@ export -T INFOPATH infopath ':'
 
 
 		path=(
+			${HOMEBREW_PREFIX}/bin
+			${HOMEBREW_PREFIX}/sbin
 			/usr/local/bin
 			/usr/local/sbin
 			/usr/bin
@@ -194,8 +196,6 @@ export -T INFOPATH infopath ':'
 		path=(
 			~/.local/bin
 			${XDG_CONFIG_HOME}/bin
-			${HOMEBREW_PREFIX}/bin
-			${HOMEBREW_PREFIX}/sbin
 			${HOMEBREW_PREFIX}/opt/**/*/libexec/gnubin(N)
 			${HOMEBREW_PREFIX}/lib/ruby/gems/3.1.0/bin(N)
 			${path}
@@ -234,11 +234,13 @@ let SAVEHIST=100000
 # Number of directories to remember having visited
 let DIRSTACKSIZE=50
 
-# Allow the `!` character to trigger command expansion
-setopt BANG_HIST
+# Enabling this option causes the `!` character to 
+# trigger command expansion
+setopt NO_BANG_HIST
 
-# Execute history expansions immediately, without verification
-setopt NO_HIST_VERIFY
+# Enabling this option prevents history expansions from
+# occurring immediately, without verification.
+setopt HIST_VERIFY
 
 # Remove function definitions from the history list.
 setopt HIST_NO_FUNCTIONS
@@ -265,17 +267,19 @@ setopt HIST_IGNORE_SPACE
 # just like HIST_IGNORE_ALL_DUPS once the history fills up with unique events.
 setopt HIST_EXPIRE_DUPS_FIRST
 
-# If a new command line being added to the history list duplicates an older one
-# then the older command is not removed from the list
+# Enabling this option will cause existing entries that match 
+# the current command entry to be deleted from the history file.
 setopt NO_HIST_IGNORE_ALL_DUPS
 
-# When searching for history entries in the line editor, do not display
-# duplicates of a line previously found, regardless of whether or not
+# When searching for history entries in the line editor, enabling this option
+# prevents duplicate entries of a command from being returned, regardless of whether
+# or not those two commands were contiguous entries.
 # the duplicates are contiguous.
 setopt NO_HIST_FIND_NO_DUPS
 
-# When writing out the history file, save older commands,
-# including duplicates of commands already found in history
+# When writing out the history file, enabling this option prevents
+# duplicates of commands already found in history from being added
+# to the history file.
 setopt NO_HIST_SAVE_NO_DUPS
 
 # ==============================================================================
@@ -1309,3 +1313,10 @@ manpath+=(
 )
 
 # zprof
+
+ls() {
+	if [[ ${commands[exa]} ]] && [[ -o interactive ]]; then
+		echo "-> exa $@"
+		=exa $@
+	fi
+}

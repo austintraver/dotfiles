@@ -18,7 +18,7 @@ function! generate#Generate(file)
   let l:class = fnamemodify(a:file, ':t:r')
 
   " For C/C++ headers, add the class name
-  if l:ext =~ '\<[h]\(pp\)\?\>'
+  if vim.regex('\<[h]\(pp\)\?\>'):match_str(l:ext) then
     % substitute/ClassName/\=l:class
   " For Java files, add the class name
   elseif l:ext =~ '\<java\>'
